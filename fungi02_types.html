@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>第二站：真菌三大代表登場</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      color: #1f2937;
+      background: linear-gradient(180deg, #f7fbf3 0%, #eef6ff 100%);
+      line-height: 1.75;
+    }
+
+    .page-shell {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 28px 18px 60px;
+    }
+
+    .hero-card {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 24px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+      margin-bottom: 22px;
+    }
+
+    .hero-banner {
+      background: linear-gradient(135deg, #4f7d39, #2563eb);
+      color: white;
+      padding: 30px 26px;
+    }
+
+    .hero-banner .tag {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.18);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .hero-banner h1 {
+      margin: 0 0 10px;
+      font-size: 2.2rem;
+      line-height: 1.25;
+    }
+
+    .hero-banner p {
+      margin: 0;
+      font-size: 1.04rem;
+      opacity: 0.98;
+    }
+
+    .hero-body {
+      padding: 24px;
+    }
+
+    .card {
+      background: #fbfdfb;
+      border: 1px solid #e3ece5;
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .card h2, .card h3, .task-card h3, .task-card h4 {
+      margin-top: 0;
+      color: #1b4332;
+    }
+
+    .content-image {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 18px;
+      border: 2px solid #dbe7d8;
+      margin-bottom: 18px;
+      background: #f8fafc;
+    }
+
+    .fact-list {
+      margin: 12px 0 0;
+      padding-left: 20px;
+    }
+
+    .fact-list li {
+      margin-bottom: 8px;
+    }
+
+    .task-card {
+      background: #ffffff;
+      border: 2px solid #d8e4d9;
+      border-radius: 22px;
+      padding: 22px;
+      margin-bottom: 22px;
+      transition: 0.2s ease;
+    }
+
+    .task-card.correct {
+      border-color: #16a34a;
+      background: #dcfce7;
+    }
+
+    .task-card.incorrect {
+      border-color: #dc2626;
+      background: #fee2e2;
+    }
+
+    .task-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .task-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #e8f5e9;
+      color: #166534;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .task-title {
+      margin: 0;
+      font-size: 1.14rem;
+      color: #1f2937;
+    }
+
+    .task-desc {
+      margin: 6px 0 0;
+      color: #4b5563;
+      font-size: 0.98rem;
+    }
+
+    .flip-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .flip-card {
+      border: 2px solid #dbe4dd;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #f9fbfa;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .flip-card.open {
+      border-color: #2563eb;
+      background: #eff6ff;
+    }
+
+    .flip-front, .flip-back {
+      padding: 16px;
+    }
+
+    .flip-front img {
+      width: 100%;
+      height: 180px;
+      object-fit: contain;
+      display: block;
+      background: #ffffff;
+      border-radius: 14px;
+      border: 1px solid #dbe7d8;
+      margin-bottom: 12px;
+    }
+
+    .flip-front h4, .flip-back h4 {
+      margin: 0 0 8px;
+      color: #1f2937;
+    }
+
+    .flip-back {
+      display: none;
+      border-top: 1px dashed #c7d2fe;
+    }
+
+    .flip-card.open .flip-back {
+      display: block;
+    }
+
+    .drop-zones {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .drop-zone {
+      background: #f8fafc;
+      border: 2px dashed #b6c7d6;
+      border-radius: 18px;
+      min-height: 210px;
+      padding: 14px;
+    }
+
+    .drop-zone h4 {
+      margin: 0 0 10px;
+      color: #1f2937;
+    }
+
+    .drop-hint {
+      font-size: 0.9rem;
+      color: #6b7280;
+      margin-bottom: 12px;
+    }
+
+    .token-bank, .pair-bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .token, .pair-item {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 10px 14px;
+      background: #ffffff;
+      border: 1px solid #d1d5db;
+      border-radius: 14px;
+      cursor: pointer;
+      font-weight: 700;
+      color: #374151;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      user-select: none;
+    }
+
+    .token.selected, .pair-item.selected {
+      outline: 2px solid #2563eb;
+      background: #dbeafe;
+    }
+
+    .token.placed, .pair-item.placed {
+      background: #eff6ff;
+      border-color: #93c5fd;
+    }
+
+    .drop-zone .token {
+      margin: 0 10px 10px 0;
+    }
+
+    .pair-zones {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .pair-zone {
+      background: #f8fafc;
+      border: 2px dashed #b6c7d6;
+      border-radius: 18px;
+      padding: 16px;
+      min-height: 150px;
+    }
+
+    .pair-zone h4 {
+      margin: 0 0 10px;
+    }
+
+    .pair-zone .zone-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .choice-card {
+      border: 2px solid #dbe4dd;
+      border-radius: 18px;
+      background: #f9fbfa;
+      padding: 16px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .choice-card:hover {
+      transform: translateY(-1px);
+    }
+
+    .choice-card.selected {
+      border-color: #2563eb;
+      background: #dbeafe;
+    }
+
+    .choice-visual {
+      height: 180px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 10px;
+      background: linear-gradient(180deg, #edf9ee, #eef5ff);
+      border: 1px dashed #aac8b0;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .choice-image {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      background: #ffffff;
+    }
+
+    [data-task-id="task4"] .choice-visual {
+      height: 180px;
+    }
+
+    [data-task-id="task4"] .choice-image {
+      max-height: 160px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+      min-width: 760px;
+    }
+
+    .summary-table th,
+    .summary-table td {
+      border: 1px solid #d1d5db;
+      padding: 10px;
+      vertical-align: middle;
+    }
+
+    .summary-table th {
+      background: #f8fafc;
+      color: #1f2937;
+    }
+
+    .summary-table select {
+      width: 100%;
+      min-width: 96px;
+      padding: 8px 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      background: #ffffff;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 11px 16px;
+      font-weight: 800;
+      font-size: 0.98rem;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .check-btn {
+      background: #2563eb;
+      color: white;
+    }
+
+    .check-btn:disabled {
+      background: #93c5fd;
+      cursor: not-allowed;
+    }
+
+    .retry-btn {
+      background: #f97316;
+      color: white;
+      display: none;
+    }
+
+    .feedback-box {
+      display: none;
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      font-weight: 700;
+    }
+
+    .feedback-box.show {
+      display: block;
+    }
+
+    .feedback-box.correct {
+      background: #ecfdf3;
+      border: 1px solid #86efac;
+      color: #166534;
+    }
+
+    .feedback-box.incorrect {
+      background: #fff1f2;
+      border: 1px solid #fda4af;
+      color: #b91c1c;
+    }
+
+    .unlock-box {
+      margin-top: 26px;
+      background: #ffffff;
+      border: 1px solid #dbe5df;
+      border-radius: 20px;
+      padding: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .unlock-status {
+      font-weight: 700;
+      color: #374151;
+    }
+
+    .next-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      padding: 14px 22px;
+      border-radius: 14px;
+      font-weight: 800;
+      background: #9ca3af;
+      color: white;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    .next-btn.unlocked {
+      background: linear-gradient(135deg, #2f855a, #2563eb);
+      pointer-events: auto;
+      opacity: 1;
+    }
+
+    .page-nav {
+      margin-top: 18px;
+      display: flex;
+      justify-content: flex-start;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .page-nav .prev-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      padding: 14px 22px;
+      border-radius: 14px;
+      font-weight: 800;
+      background: #f3f4f6;
+      border: 1px solid #d1d5db;
+      color: #374151;
+    }
+
+    @media (max-width: 900px) {
+      .flip-grid,
+      .drop-zones,
+      .pair-zones {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-banner h1 {
+        font-size: 1.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page-shell">
+    <section class="hero-card">
+      <div class="hero-banner">
+        <div class="tag">第二站｜真菌三大代表</div>
+        <h1>真菌三大代表登場</h1>
+        <p>酵母菌、黴菌、蕈類，你分得清楚嗎？</p>
+      </div>
+
+      <div class="hero-body">
+        <div class="card">
+          <img src="fungi02_main.png" alt="真菌三大代表總覽圖" class="content-image">
+          <h2>學習內容</h2>
+          <p>
+            真菌有單細胞的，也有多細胞的。酵母菌是單細胞、無菌絲的真菌；
+            黴菌是多細胞、有菌絲的真菌；蕈類也是多細胞、有菌絲的真菌，屬於大型真菌。
+            黑黴菌與青黴菌都屬於黴菌，其中青黴菌可提煉抗生素。
+          </p>
+          <ul class="fact-list">
+            <li>酵母菌：單細胞、無菌絲</li>
+            <li>黴菌：多細胞、有菌絲</li>
+            <li>蕈類：多細胞、有菌絲、大型真菌</li>
+            <li>青黴菌可提煉抗生素</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="task-card" data-task-id="task1" data-kind="flip">
+      <div class="task-head">
+        <div class="task-number">1</div>
+        <div>
+          <h3 class="task-title">任務一：翻牌認識三大代表</h3>
+          <p class="task-desc">請把三張卡片都點開看過，認識酵母菌、黴菌、蕈類的特徵。</p>
+        </div>
+      </div>
+
+      <div class="flip-grid">
+        <div class="flip-card" data-flip="yeast">
+          <div class="flip-front">
+            <img src="fungi02_yeast.png" alt="酵母菌圖片">
+            <h4>酵母菌</h4>
+            <div>點我看特徵</div>
+          </div>
+          <div class="flip-back">
+            <h4>酵母菌</h4>
+            <div>單細胞、無菌絲</div>
+            <div>可用來做麵包、釀酒</div>
+          </div>
+        </div>
+
+        <div class="flip-card" data-flip="mold">
+          <div class="flip-front">
+            <img src="fungi02_mold.png" alt="黴菌圖片">
+            <h4>黴菌</h4>
+            <div>點我看特徵</div>
+          </div>
+          <div class="flip-back">
+            <h4>黴菌</h4>
+            <div>多細胞、有菌絲</div>
+            <div>黑黴菌、青黴菌都屬於黴菌</div>
+            <div>青黴菌可提煉抗生素</div>
+          </div>
+        </div>
+
+        <div class="flip-card" data-flip="mushroom">
+          <div class="flip-front">
+            <img src="fungi02_mushroom.png" alt="蕈類圖片">
+            <h4>蕈類</h4>
+            <div>點我看特徵</div>
+          </div>
+          <div class="flip-back">
+            <h4>蕈類</h4>
+            <div>多細胞、有菌絲</div>
+            <div>屬於大型真菌</div>
+            <div>例如香菇、木耳</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="check-btn" disabled>檢查答案</button>
+        <button class="retry-btn" type="button">重做本題</button>
+      </div>
+      <div class="feedback-box"></div>
+    </section>
+
+    <section class="task-card" data-task-id="task2" data-kind="classify">
+      <div class="task-head">
+        <div class="task-number">2</div>
+        <div>
+          <h3 class="task-title">任務二：特徵拖曳分類</h3>
+          <p class="task-desc">先點選特徵卡，再點上方正確區域，把特徵放到酵母菌、黴菌或蕈類。</p>
+        </div>
+      </div>
+
+      <div class="drop-zones">
+        <div class="drop-zone" data-zone="yeast">
+          <h4>酵母菌</h4>
+          <div class="drop-hint">把屬於酵母菌的特徵放這裡</div>
+          <div class="zone-content"></div>
+        </div>
+
+        <div class="drop-zone" data-zone="mold">
+          <h4>黴菌</h4>
+          <div class="drop-hint">把屬於黴菌的特徵放這裡</div>
+          <div class="zone-content"></div>
+        </div>
+
+        <div class="drop-zone" data-zone="mushroom">
+          <h4>蕈類</h4>
+          <div class="drop-hint">把屬於蕈類的特徵放這裡</div>
+          <div class="zone-content"></div>
+        </div>
+      </div>
+
+      <div class="token-bank">
+        <div class="token" data-token="single" data-answer="yeast">單細胞</div>
+        <div class="token" data-token="nohyphae" data-answer="yeast">無菌絲</div>
+        <div class="token" data-token="mold-hyphae" data-answer="mold">有菌絲</div>
+        <div class="token" data-token="antibiotic" data-answer="mold">可提煉抗生素</div>
+        <div class="token" data-token="largefungi" data-answer="mushroom">大型真菌</div>
+        <div class="token" data-token="mushroom-hyphae" data-answer="mushroom">有菌絲</div>
+      </div>
+
+      <div class="btn-row">
+        <button class="check-btn" disabled>檢查答案</button>
+        <button class="retry-btn" type="button">重做本題</button>
+      </div>
+      <div class="feedback-box"></div>
+    </section>
+
+    <section class="task-card" data-task-id="task3" data-kind="pair">
+      <div class="task-head">
+        <div class="task-number">3</div>
+        <div>
+          <h3 class="task-title">任務三：生活情境配對</h3>
+          <p class="task-desc">把生活中的現象配對到正確真菌類別。</p>
+        </div>
+      </div>
+
+      <div class="pair-zones">
+        <div class="pair-zone" data-zone="useful">
+          <h4>對人類有幫助</h4>
+          <div class="zone-content"></div>
+        </div>
+        <div class="pair-zone" data-zone="cause">
+          <h4>造成發霉或常見現象</h4>
+          <div class="zone-content"></div>
+        </div>
+      </div>
+
+      <div class="pair-bank">
+        <div class="pair-item" data-pair="useful">麵團膨脹（酵母菌）</div>
+        <div class="pair-item" data-pair="cause">麵包發霉（黴菌）</div>
+        <div class="pair-item" data-pair="cause">黑色霉斑（黑黴菌）</div>
+        <div class="pair-item" data-pair="useful">青黴菌可提煉抗生素</div>
+      </div>
+
+      <div class="btn-row">
+        <button class="check-btn" disabled>檢查答案</button>
+        <button class="retry-btn" type="button">重做本題</button>
+      </div>
+      <div class="feedback-box"></div>
+    </section>
+
+    <section class="task-card" data-task-id="task4" data-kind="choice">
+      <div class="task-head">
+        <div class="task-number">4</div>
+        <div>
+          <h3 class="task-title">任務四：黴菌小偵探</h3>
+          <p class="task-desc">請選出正確敘述。</p>
+        </div>
+      </div>
+
+      <div class="flip-grid" style="grid-template-columns: 1fr 1fr;">
+        <div class="choice-card detective-option" data-value="wrong1">
+          <div class="choice-visual">
+            <img src="fungi02_black_mold.png" alt="黑黴菌圖片" class="choice-image">
+          </div>
+          <strong>選項 A</strong>
+          <div>黑黴菌可用來做麵包。</div>
+        </div>
+
+        <div class="choice-card detective-option" data-value="correct">
+          <div class="choice-visual">
+            <img src="fungi02_penicillium.png" alt="青黴菌圖片" class="choice-image">
+          </div>
+          <strong>選項 B</strong>
+          <div>青黴菌可用來提煉抗生素。</div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="check-btn" disabled>檢查答案</button>
+        <button class="retry-btn" type="button">重做本題</button>
+      </div>
+      <div class="feedback-box"></div>
+    </section>
+
+    <section class="task-card" data-task-id="task5" data-kind="table">
+      <div class="task-head">
+        <div class="task-number">5</div>
+        <div>
+          <h3 class="task-title">任務五：觀念速記</h3>
+          <p class="task-desc">請完成三種真菌特徵的比較表。</p>
+        </div>
+      </div>
+
+      <div class="card table-wrap">
+        <table class="summary-table">
+          <thead>
+            <tr>
+              <th>種類</th>
+              <th>單／多細胞</th>
+              <th>細胞壁</th>
+              <th>菌絲</th>
+              <th>葉綠體</th>
+              <th>主要繁殖方式</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>酵母菌</td>
+              <td>
+                <select data-answer="單細胞">
+                  <option value="">選擇</option>
+                  <option>單細胞</option>
+                  <option>多細胞</option>
+                </select>
+              </td>
+              <td>
+                <select data-answer="有">
+                  <option value="">選擇</option>
+                  <option>有</option>
+                  <option>無</option>
+                </select>
+              </td>
+              <td>
+                <select data-answer="無">
+                  <option value="">選擇</option>
+                  <option>有</option>
+                  <option>無</option>
+                </select>
+              </td>
+              <td>
+                <select data-answer="無">
+                  <option value="">選擇</option>
+                  <option>有</option>
+                  <option>無</option>
+                </select>
+              </td>
+              <td>
+                <select data-answer="出芽生殖">
+                  <option value="">選擇</option>
+                  <option>出芽生殖</option>
+                  <option>孢子繁殖</option>
+                </select>
+              </td>
+            </tr>
+
+            <tr>
+              <td>黴菌</td>
+              <td>
+                <select data-answer="多細胞">
+                  <option value="">選擇</option>
+                  <option>單細胞</option>
+                  <option>多細胞</option>
+                </select>
+              </td>
+              <td>
+                <select data-answer="有">
+                  <option value="">選擇</option>
+                  <option>有</option>
+                  <option>無</option>
+                </select>
+              </td>
+              <td>
+                <select data-answer="有">
+                  <option value="">選擇</option>
+                  <option>有</option>
+                  <option>無</option>
+                </select>
+              </td>
+              <td>
+                <select data-answer="無">
+                  <option value="">選擇</option>
+                  <option>有</option>
+                  <option>無</option>
+                </select>
+              </td>
+              <td>
+                <select data-answer="孢子繁殖">
+                  <option value="">選擇</option>
+                  <option>出芽生殖</option>
+                  <option>孢子繁殖</option>
+                </select>
+              </td>
+            </tr>
+
+            <tr>
+              <td>蕈類</td>
+              <td>
+                <select data-answer="多細胞">
+                  <option value="">選擇</option>
+                  <option>單細胞</option>
+                  <option>多細胞</option>
+                </select>
+              </td>
+              <td>
+                <select data-answer="有">
+                  <option value="">選擇</option>
+                  <option>有</option>
+                  <option>無</option>
+                </select>
+              </td>
+              <td>
+                <select data-answer="有">
+                  <option value="">選擇</option>
+                  <option>有</option>
+                  <option>無</option>
+                </select>
+              </td>
+              <td>
+                <select data-answer="無">
+                  <option value="">選擇</option>
+                  <option>有</option>
+                  <option>無</option>
+                </select>
+              </td>
+              <td>
+                <select data-answer="孢子繁殖">
+                  <option value="">選擇</option>
+                  <option>出芽生殖</option>
+                  <option>孢子繁殖</option>
+                </select>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="btn-row">
+        <button class="check-btn" disabled>檢查答案</button>
+        <button class="retry-btn" type="button">重做本題</button>
+      </div>
+      <div class="feedback-box"></div>
+    </section>
+
+    <section class="unlock-box">
+      <div class="unlock-status" id="unlockStatus">請先完成本頁所有任務，並全部答對，才能進入下一頁。</div>
+      <a class="next-btn" id="nextPageBtn" href="fungi03_life.html" aria-disabled="true">下一頁 →</a>
+    </section>
+  </main>
+
+  <script>
+    const taskCards = document.querySelectorAll('.task-card');
+    const unlockStatus = document.getElementById('unlockStatus');
+    const nextPageBtn = document.getElementById('nextPageBtn');
+
+    function updateUnlockState() {
+      const allCorrect = [...taskCards].every(card => card.dataset.solved === 'true');
+      if (allCorrect) {
+        unlockStatus.textContent = '太好了，你已經答對本頁全部任務，現在可以進入下一頁。';
+        nextPageBtn.classList.add('unlocked');
+        nextPageBtn.setAttribute('aria-disabled', 'false');
+      } else {
+        unlockStatus.textContent = '請先完成本頁所有任務，並全部答對，才能進入下一頁。';
+        nextPageBtn.classList.remove('unlocked');
+        nextPageBtn.setAttribute('aria-disabled', 'true');
+      }
+    }
+
+    function setTaskResult(card, isCorrect, correctText, incorrectText) {
+      const feedbackBox = card.querySelector('.feedback-box');
+      const retryBtn = card.querySelector('.retry-btn');
+      const checkBtn = card.querySelector('.check-btn');
+
+      card.classList.remove('correct', 'incorrect');
+      feedbackBox.classList.remove('correct', 'incorrect');
+      feedbackBox.classList.add('show');
+      checkBtn.disabled = true;
+      card.dataset.locked = 'true';
+
+      if (isCorrect) {
+        card.classList.add('correct');
+        feedbackBox.classList.add('correct');
+        feedbackBox.textContent = correctText;
+        card.dataset.solved = 'true';
+        retryBtn.style.display = 'none';
+      } else {
+        card.classList.add('incorrect');
+        feedbackBox.classList.add('incorrect');
+        feedbackBox.textContent = incorrectText;
+        card.dataset.solved = 'false';
+        retryBtn.style.display = 'inline-flex';
+      }
+
+      updateUnlockState();
+    }
+
+    taskCards.forEach(card => {
+      card.dataset.solved = 'false';
+      card.dataset.locked = 'false';
+    });
+
+    const task1 = document.querySelector('[data-task-id="task1"]');
+    const flipCards = task1.querySelectorAll('.flip-card');
+    const task1CheckBtn = task1.querySelector('.check-btn');
+    const task1RetryBtn = task1.querySelector('.retry-btn');
+    const openedSet = new Set();
+
+    flipCards.forEach(card => {
+      card.addEventListener('click', () => {
+        if (task1.dataset.locked === 'true') return;
+        card.classList.add('open');
+        openedSet.add(card.dataset.flip);
+        if (openedSet.size === flipCards.length) {
+          task1CheckBtn.disabled = false;
+        }
+      });
+    });
+
+    task1CheckBtn.addEventListener('click', () => {
+      const ok = openedSet.size === flipCards.length;
+      setTaskResult(task1, ok, '答對了！你已經看完三大代表的特徵。', '請把三張卡片都打開再試一次。');
+    });
+
+    task1RetryBtn.addEventListener('click', () => {
+      task1.dataset.locked = 'false';
+      task1.dataset.solved = 'false';
+      task1.classList.remove('correct', 'incorrect');
+      task1.querySelector('.feedback-box').className = 'feedback-box';
+      task1.querySelector('.feedback-box').textContent = '';
+      task1RetryBtn.style.display = 'none';
+      flipCards.forEach(card => card.classList.remove('open'));
+      openedSet.clear();
+      task1CheckBtn.disabled = true;
+      updateUnlockState();
+    });
+
+    const task2 = document.querySelector('[data-task-id="task2"]');
+    const task2Tokens = task2.querySelectorAll('.token');
+    const task2Zones = task2.querySelectorAll('.drop-zone');
+    const task2CheckBtn = task2.querySelector('.check-btn');
+    const task2RetryBtn = task2.querySelector('.retry-btn');
+    let activeToken = null;
+
+    function updateTask2CheckState() {
+      const placedCount = [...task2Tokens].filter(t => t.dataset.placedZone).length;
+      task2CheckBtn.disabled = placedCount !== task2Tokens.length || task2.dataset.locked === 'true';
+    }
+
+    task2Tokens.forEach(token => {
+      token.addEventListener('click', () => {
+        if (task2.dataset.locked === 'true') return;
+        task2Tokens.forEach(t => t.classList.remove('selected'));
+        token.classList.add('selected');
+        activeToken = token;
+      });
+    });
+
+    task2Zones.forEach(zone => {
+      zone.addEventListener('click', () => {
+        if (task2.dataset.locked === 'true' || !activeToken) return;
+        zone.querySelector('.zone-content').appendChild(activeToken);
+        activeToken.dataset.placedZone = zone.dataset.zone;
+        activeToken.classList.add('placed');
+        activeToken.classList.remove('selected');
+        activeToken = null;
+        updateTask2CheckState();
+      });
+    });
+
+    task2CheckBtn.addEventListener('click', () => {
+      const ok = [...task2Tokens].every(token => token.dataset.placedZone === token.dataset.answer);
+      setTaskResult(task2, ok, '答對了！你已經把三類真菌的特徵分清楚了。', '還有特徵放錯位置，請重做本題。');
+    });
+
+    task2RetryBtn.addEventListener('click', () => {
+      task2.dataset.locked = 'false';
+      task2.dataset.solved = 'false';
+      task2.classList.remove('correct', 'incorrect');
+      task2.querySelector('.feedback-box').className = 'feedback-box';
+      task2.querySelector('.feedback-box').textContent = '';
+      task2RetryBtn.style.display = 'none';
+
+      const bank = task2.querySelector('.token-bank');
+      task2Tokens.forEach(token => {
+        token.dataset.placedZone = '';
+        token.classList.remove('placed', 'selected');
+        bank.appendChild(token);
+      });
+
+      activeToken = null;
+      updateTask2CheckState();
+      updateUnlockState();
+    });
+
+    const task3 = document.querySelector('[data-task-id="task3"]');
+    const task3Items = task3.querySelectorAll('.pair-item');
+    const task3Zones = task3.querySelectorAll('.pair-zone');
+    const task3CheckBtn = task3.querySelector('.check-btn');
+    const task3RetryBtn = task3.querySelector('.retry-btn');
+    let activePair = null;
+
+    function updateTask3CheckState() {
+      const placedCount = [...task3Items].filter(item => item.dataset.placedZone).length;
+      task3CheckBtn.disabled = placedCount !== task3Items.length || task3.dataset.locked === 'true';
+    }
+
+    task3Items.forEach(item => {
+      item.addEventListener('click', () => {
+        if (task3.dataset.locked === 'true') return;
+        task3Items.forEach(i => i.classList.remove('selected'));
+        item.classList.add('selected');
+        activePair = item;
+      });
+    });
+
+    task3Zones.forEach(zone => {
+      zone.addEventListener('click', () => {
+        if (task3.dataset.locked === 'true' || !activePair) return;
+        zone.querySelector('.zone-content').appendChild(activePair);
+        activePair.dataset.placedZone = zone.dataset.zone;
+        activePair.classList.add('placed');
+        activePair.classList.remove('selected');
+        activePair = null;
+        updateTask3CheckState();
+      });
+    });
+
+    task3CheckBtn.addEventListener('click', () => {
+      const ok = [...task3Items].every(item => item.dataset.placedZone === item.dataset.pair);
+      setTaskResult(task3, ok, '答對了！你已經了解不同真菌和生活的關係。', '有些生活情境配錯了，請重做本題。');
+    });
+
+    task3RetryBtn.addEventListener('click', () => {
+      task3.dataset.locked = 'false';
+      task3.dataset.solved = 'false';
+      task3.classList.remove('correct', 'incorrect');
+      task3.querySelector('.feedback-box').className = 'feedback-box';
+      task3.querySelector('.feedback-box').textContent = '';
+      task3RetryBtn.style.display = 'none';
+
+      const bank = task3.querySelector('.pair-bank');
+      task3Items.forEach(item => {
+        item.dataset.placedZone = '';
+        item.classList.remove('placed', 'selected');
+        bank.appendChild(item);
+      });
+
+      activePair = null;
+      updateTask3CheckState();
+      updateUnlockState();
+    });
+
+    const task4 = document.querySelector('[data-task-id="task4"]');
+    const detectiveOptions = task4.querySelectorAll('.detective-option');
+    const task4CheckBtn = task4.querySelector('.check-btn');
+    const task4RetryBtn = task4.querySelector('.retry-btn');
+    let detectiveSelected = '';
+
+    detectiveOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        if (task4.dataset.locked === 'true') return;
+        detectiveOptions.forEach(o => o.classList.remove('selected'));
+        option.classList.add('selected');
+        detectiveSelected = option.dataset.value;
+        task4CheckBtn.disabled = false;
+      });
+    });
+
+    task4CheckBtn.addEventListener('click', () => {
+      const ok = detectiveSelected === 'correct';
+      setTaskResult(task4, ok, '答對了！青黴菌屬於黴菌，能提煉抗生素。', '答錯了。重點是：青黴菌可提煉抗生素。');
+    });
+
+    task4RetryBtn.addEventListener('click', () => {
+      task4.dataset.locked = 'false';
+      task4.dataset.solved = 'false';
+      task4.classList.remove('correct', 'incorrect');
+      task4.querySelector('.feedback-box').className = 'feedback-box';
+      task4.querySelector('.feedback-box').textContent = '';
+      task4RetryBtn.style.display = 'none';
+      detectiveOptions.forEach(o => o.classList.remove('selected'));
+      detectiveSelected = '';
+      task4CheckBtn.disabled = true;
+      updateUnlockState();
+    });
+
+    const task5 = document.querySelector('[data-task-id="task5"]');
+    const task5Selects = task5.querySelectorAll('select');
+    const task5CheckBtn = task5.querySelector('.check-btn');
+    const task5RetryBtn = task5.querySelector('.retry-btn');
+
+    function updateTask5CheckState() {
+      const allFilled = [...task5Selects].every(select => select.value !== '');
+      task5CheckBtn.disabled = !allFilled || task5.dataset.locked === 'true';
+    }
+
+    task5Selects.forEach(select => {
+      select.addEventListener('change', updateTask5CheckState);
+    });
+
+    task5CheckBtn.addEventListener('click', () => {
+      const ok = [...task5Selects].every(select => select.value === select.dataset.answer);
+      setTaskResult(
+        task5,
+        ok,
+        '答對了！你已經能完整比較酵母菌、黴菌與蕈類的共同點和差異。',
+        '有些欄位還需要再想一想。提示：三種真菌都有細胞壁、沒有葉綠體，但酵母菌是單細胞且沒有菌絲。'
+      );
+
+      task5Selects.forEach(select => {
+        select.disabled = true;
+      });
+    });
+
+    task5RetryBtn.addEventListener('click', () => {
+      task5.dataset.locked = 'false';
+      task5.dataset.solved = 'false';
+      task5.classList.remove('correct', 'incorrect');
+      task5.querySelector('.feedback-box').className = 'feedback-box';
+      task5.querySelector('.feedback-box').textContent = '';
+      task5RetryBtn.style.display = 'none';
+
+      task5Selects.forEach(select => {
+        select.disabled = false;
+        select.value = '';
+      });
+
+      updateTask5CheckState();
+      updateUnlockState();
+    });
+
+    nextPageBtn.addEventListener('click', (event) => {
+      if (!nextPageBtn.classList.contains('unlocked')) {
+        event.preventDefault();
+      }
+    });
+
+    updateTask2CheckState();
+    updateTask3CheckState();
+    updateTask5CheckState();
+    updateUnlockState();
+  </script>
+</body>
+</html>
