@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>第三站：真菌怎麼生活與繁殖？</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      color: #1f2937;
+      background: linear-gradient(180deg, #f7fbf3 0%, #eef6ff 100%);
+      line-height: 1.75;
+    }
+
+    .page-shell {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 28px 18px 60px;
+    }
+
+    .hero-card {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 24px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+      margin-bottom: 22px;
+    }
+
+    .hero-banner {
+      background: linear-gradient(135deg, #3f7d52, #2563eb);
+      color: white;
+      padding: 30px 26px;
+    }
+
+    .hero-banner .tag {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.18);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .hero-banner h1 {
+      margin: 0 0 10px;
+      font-size: 2.2rem;
+      line-height: 1.25;
+    }
+
+    .hero-banner p {
+      margin: 0;
+      font-size: 1.04rem;
+      opacity: 0.98;
+    }
+
+    .hero-body {
+      padding: 24px;
+    }
+
+    .card {
+      background: #fbfdfb;
+      border: 1px solid #e3ece5;
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .card h2, .card h3, .task-card h3, .task-card h4 {
+      margin-top: 0;
+      color: #1b4332;
+    }
+
+    .content-image {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 18px;
+      border: 2px solid #dbe7d8;
+      margin-bottom: 18px;
+      background: #f8fafc;
+    }
+
+    .fact-list {
+      margin: 12px 0 0;
+      padding-left: 20px;
+    }
+
+    .fact-list li {
+      margin-bottom: 8px;
+    }
+
+    .task-card {
+      background: #ffffff;
+      border: 2px solid #d8e4d9;
+      border-radius: 22px;
+      padding: 22px;
+      margin-bottom: 22px;
+      transition: 0.2s ease;
+    }
+
+    .task-card.correct {
+      border-color: #16a34a;
+      background: #dcfce7;
+    }
+
+    .task-card.incorrect {
+      border-color: #dc2626;
+      background: #fee2e2;
+    }
+
+    .task-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .task-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #e8f5e9;
+      color: #166534;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .task-title {
+      margin: 0;
+      font-size: 1.14rem;
+      color: #1f2937;
+    }
+
+    .task-desc {
+      margin: 6px 0 0;
+      color: #4b5563;
+      font-size: 0.98rem;
+    }
+
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .scenario-card {
+      border: 2px solid #dbe4dd;
+      border-radius: 18px;
+      background: #f9fbfa;
+      padding: 16px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .scenario-card:hover {
+      transform: translateY(-1px);
+    }
+
+    .scenario-card.selected {
+      border-color: #2563eb;
+      background: #dbeafe;
+    }
+
+    .scenario-card img {
+      width: 100%;
+      height: 170px;
+      object-fit: contain;
+      display: block;
+      background: #ffffff;
+      border-radius: 14px;
+      border: 1px solid #dbe7d8;
+      margin-bottom: 12px;
+    }
+
+    .drop-zones {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .drop-zone {
+      background: #f8fafc;
+      border: 2px dashed #b6c7d6;
+      border-radius: 18px;
+      min-height: 180px;
+      padding: 14px;
+    }
+
+    .drop-zone h4 {
+      margin: 0 0 10px;
+      color: #1f2937;
+    }
+
+    .drop-hint {
+      font-size: 0.9rem;
+      color: #6b7280;
+      margin-bottom: 12px;
+    }
+
+    .token-bank, .sort-bank, .statement-bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .token, .sort-item, .statement-card {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 10px 14px;
+      background: #ffffff;
+      border: 1px solid #d1d5db;
+      border-radius: 14px;
+      cursor: pointer;
+      font-weight: 700;
+      color: #374151;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      user-select: none;
+    }
+
+    .token.selected, .sort-item.selected, .statement-card.selected {
+      outline: 2px solid #2563eb;
+      background: #dbeafe;
+    }
+
+    .token.placed, .sort-item.placed, .statement-card.placed {
+      background: #eff6ff;
+      border-color: #93c5fd;
+    }
+
+    .drop-zone .token {
+      margin: 0 10px 10px 0;
+    }
+
+    .sort-slots {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .sort-slot {
+      min-height: 58px;
+      background: #f8fafc;
+      border: 2px dashed #b6c7d6;
+      border-radius: 16px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+    }
+
+    .slot-label {
+      font-size: 0.92rem;
+      color: #6b7280;
+      margin-right: 10px;
+      flex-shrink: 0;
+      width: 64px;
+    }
+
+    .slot-content {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .statement-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .statement-card {
+      justify-content: flex-start;
+      text-align: left;
+      width: 100%;
+      min-height: 72px;
+      padding: 14px 16px;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 11px 16px;
+      font-weight: 800;
+      font-size: 0.98rem;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .check-btn {
+      background: #2563eb;
+      color: white;
+    }
+
+    .check-btn:disabled {
+      background: #93c5fd;
+      cursor: not-allowed;
+    }
+
+    .retry-btn {
+      background: #f97316;
+      color: white;
+      display: none;
+    }
+
+    .feedback-box {
+      display: none;
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      font-weight: 700;
+    }
+
+    .feedback-box.show {
+      display: block;
+    }
+
+    .feedback-box.correct {
+      background: #ecfdf3;
+      border: 1px solid #86efac;
+      color: #166534;
+    }
+
+    .feedback-box.incorrect {
+      background: #fff1f2;
+      border: 1px solid #fda4af;
+      color: #b91c1c;
+    }
+
+    .unlock-box {
+      margin-top: 26px;
+      background: #ffffff;
+      border: 1px solid #dbe5df;
+      border-radius: 20px;
+      padding: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .unlock-status {
+      font-weight: 700;
+      color: #374151;
+    }
+
+    .next-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      padding: 14px 22px;
+      border-radius: 14px;
+      font-weight: 800;
+      background: #9ca3af;
+      color: white;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    .next-btn.unlocked {
+      background: linear-gradient(135deg, #2f855a, #2563eb);
+      pointer-events: auto;
+      opacity: 1;
+    }
+
+    .page-nav {
+      margin-top: 18px;
+      display: flex;
+      justify-content: flex-start;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .page-nav .prev-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      padding: 14px 22px;
+      border-radius: 14px;
+      font-weight: 800;
+      background: #f3f4f6;
+      border: 1px solid #d1d5db;
+      color: #374151;
+    }
+
+    @media (max-width: 900px) {
+      .scenario-grid,
+      .drop-zones,
+      .statement-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-banner h1 {
+        font-size: 1.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page-shell">
+    <section class="hero-card">
+      <div class="hero-banner">
+        <div class="tag">第三站｜真菌的生活與繁殖</div>
+        <h1>真菌怎麼生活與繁殖？</h1>
+        <p>分解、寄生、共生，還有出芽生殖與孢子繁殖。</p>
+      </div>
+
+      <div class="hero-body">
+        <div class="card">
+          <img src="fungi03_main.png" alt="真菌生活方式與繁殖總覽圖" class="content-image">
+          <h2>學習內容</h2>
+          <p>
+            真菌不能行光合作用，必須從外界獲得養分。有些真菌會分解枯枝落葉和生物遺體，
+            屬於分解者；有些真菌會寄生在其他生物身上；也有些真菌會和其他生物共生。
+            真菌的繁殖方式很多，酵母菌常用出芽生殖，黴菌和蕈類常以孢子繁殖。
+          </p>
+          <ul class="fact-list">
+            <li>分解：分解枯枝落葉、動植物遺體</li>
+            <li>寄生：從活的生物身上取得養分</li>
+            <li>共生：與其他生物互相幫助</li>
+            <li>酵母菌：常用出芽生殖</li>
+            <li>黴菌、蕈類：常用孢子繁殖</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="task-card" data-task-id="task1" data-kind="life-match">
+      <div class="task-head">
+        <div class="task-number">1</div>
+        <div>
+          <h3 class="task-title">任務一：生活方式配對</h3>
+          <p class="task-desc">請依照圖片與情境，判斷是真菌的分解、寄生還是共生。</p>
+        </div>
+      </div>
+
+      <div class="scenario-grid">
+        <div class="scenario-card" data-answer="decompose" data-value="">
+          <img src="fungi03_decompose.png" alt="分解作用示意圖">
+          <strong>情境 A</strong>
+          <div>真菌長在枯木上，分解木材中的養分。</div>
+        </div>
+
+        <div class="scenario-card" data-answer="parasitic" data-value="">
+          <img src="fungi03_parasitic.png" alt="寄生示意圖">
+          <strong>情境 B</strong>
+          <div>真菌寄生在生物身上，使生物生病。</div>
+        </div>
+
+        <div class="scenario-card" data-answer="symbiosis" data-value="">
+          <img src="fungi03_symbiosis.png" alt="共生示意圖">
+          <strong>情境 C</strong>
+          <div>真菌和藻類一起生活，互相幫助。</div>
+        </div>
+      </div>
+
+      <div class="statement-bank">
+        <div class="statement-card life-option" data-select="symbiosis">共生</div>
+        <div class="statement-card life-option" data-select="decompose">分解</div>
+        <div class="statement-card life-option" data-select="parasitic">寄生</div>
+        
+      </div>
+
+      <div class="btn-row">
+        <button class="check-btn" disabled>檢查答案</button>
+        <button class="retry-btn" type="button">重做本題</button>
+      </div>
+      <div class="feedback-box"></div>
+    </section>
+
+    <section class="task-card" data-task-id="task2" data-kind="classify">
+      <div class="task-head">
+        <div class="task-number">2</div>
+        <div>
+          <h3 class="task-title">任務二：繁殖方式分類</h3>
+          <p class="task-desc">先點選下方卡片，再點上方正確區域，把真菌代表放到正確的繁殖方式。</p>
+        </div>
+      </div>
+
+      <div class="drop-zones" style="grid-template-columns: 1fr 1fr;">
+        <div class="drop-zone" data-zone="budding">
+          <h4>出芽生殖</h4>
+          <div class="drop-hint">把會出芽生殖的真菌放這裡</div>
+          <div class="zone-content"></div>
+        </div>
+
+        <div class="drop-zone" data-zone="spore">
+          <h4>孢子繁殖</h4>
+          <div class="drop-hint">把會孢子繁殖的真菌放這裡</div>
+          <div class="zone-content"></div>
+        </div>
+      </div>
+
+      <div class="token-bank">
+        <div class="token" data-token="yeast" data-answer="budding">酵母菌</div>
+        <div class="token" data-token="mold" data-answer="spore">黴菌</div>
+        <div class="token" data-token="mushroom" data-answer="spore">蕈類</div>
+      </div>
+
+      <div class="btn-row">
+        <button class="check-btn" disabled>檢查答案</button>
+        <button class="retry-btn" type="button">重做本題</button>
+      </div>
+      <div class="feedback-box"></div>
+    </section>
+
+    <section class="task-card" data-task-id="task3" data-kind="sort">
+      <div class="task-head">
+        <div class="task-number">3</div>
+        <div>
+          <h3 class="task-title">任務三：孢子繁殖流程排序</h3>
+          <p class="task-desc">依照真菌進行孢子繁殖的過程，把步驟排成正確順序。</p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom: 14px;">
+        <img src="fungi03_spore.png" alt="孢子繁殖示意圖" class="content-image" style="margin-bottom:0;">
+      </div>
+
+      <div class="sort-slots">
+        <div class="sort-slot" data-position="1">
+          <div class="slot-label">第 1 步</div>
+          <div class="slot-content"></div>
+        </div>
+        <div class="sort-slot" data-position="2">
+          <div class="slot-label">第 2 步</div>
+          <div class="slot-content"></div>
+        </div>
+        <div class="sort-slot" data-position="3">
+          <div class="slot-label">第 3 步</div>
+          <div class="slot-content"></div>
+        </div>
+        <div class="sort-slot" data-position="4">
+          <div class="slot-label">第 4 步</div>
+          <div class="slot-content"></div>
+        </div>
+      </div>
+
+      <div class="sort-bank">
+        
+        <div class="sort-item" data-step="spread">孢子散播</div>
+        <div class="sort-item" data-step="grow">長成新的真菌</div>
+        <div class="sort-item" data-step="make">產生孢子</div>
+        <div class="sort-item" data-step="land">落到適合環境</div>
+        
+      </div>
+
+      <div class="btn-row">
+        <button class="check-btn" disabled>檢查答案</button>
+        <button class="retry-btn" type="button">重做本題</button>
+      </div>
+      <div class="feedback-box"></div>
+    </section>
+
+    <section class="task-card" data-task-id="task4" data-kind="statement">
+      <div class="task-head">
+        <div class="task-number">4</div>
+        <div>
+          <h3 class="task-title">任務四：觀念統整判斷</h3>
+          <p class="task-desc">請點選所有正確敘述。</p>
+        </div>
+      </div>
+
+      <div class="statement-grid">
+        <div class="statement-card truth-card" data-correct="true">酵母菌常用出芽生殖。</div>
+        <div class="statement-card truth-card" data-correct="true">黴菌和蕈類常以孢子繁殖。</div>
+        <div class="statement-card truth-card" data-correct="true">真菌不能行光合作用，需從外界取得養分。</div>
+        <div class="statement-card truth-card" data-correct="false">所有真菌都會寄生在活的生物身上。</div>
+      </div>
+
+      <div class="btn-row">
+        <button class="check-btn" disabled>檢查答案</button>
+        <button class="retry-btn" type="button">重做本題</button>
+      </div>
+      <div class="feedback-box"></div>
+    </section>
+
+    <section class="unlock-box">
+      <div class="unlock-status" id="unlockStatus">請先完成本頁所有任務，並全部答對，才能進入下一頁。</div>
+      <a class="next-btn" id="nextPageBtn" href="fungi04_mushroom.html" aria-disabled="true">下一頁 →</a>
+    </section>
+  </main>
+
+  <script>
+    const taskCards = document.querySelectorAll('.task-card');
+    const unlockStatus = document.getElementById('unlockStatus');
+    const nextPageBtn = document.getElementById('nextPageBtn');
+
+    function updateUnlockState() {
+      const allCorrect = [...taskCards].every(card => card.dataset.solved === 'true');
+      if (allCorrect) {
+        unlockStatus.textContent = '太好了，你已經答對本頁全部任務，現在可以進入下一頁。';
+        nextPageBtn.classList.add('unlocked');
+        nextPageBtn.setAttribute('aria-disabled', 'false');
+      } else {
+        unlockStatus.textContent = '請先完成本頁所有任務，並全部答對，才能進入下一頁。';
+        nextPageBtn.classList.remove('unlocked');
+        nextPageBtn.setAttribute('aria-disabled', 'true');
+      }
+    }
+
+    function setTaskResult(card, isCorrect, correctText, incorrectText) {
+      const feedbackBox = card.querySelector('.feedback-box');
+      const retryBtn = card.querySelector('.retry-btn');
+      const checkBtn = card.querySelector('.check-btn');
+
+      card.classList.remove('correct', 'incorrect');
+      feedbackBox.classList.remove('correct', 'incorrect');
+      feedbackBox.classList.add('show');
+      checkBtn.disabled = true;
+      card.dataset.locked = 'true';
+
+      if (isCorrect) {
+        card.classList.add('correct');
+        feedbackBox.classList.add('correct');
+        feedbackBox.textContent = correctText;
+        card.dataset.solved = 'true';
+        retryBtn.style.display = 'none';
+      } else {
+        card.classList.add('incorrect');
+        feedbackBox.classList.add('incorrect');
+        feedbackBox.textContent = incorrectText;
+        card.dataset.solved = 'false';
+        retryBtn.style.display = 'inline-flex';
+      }
+
+      updateUnlockState();
+    }
+
+    taskCards.forEach(card => {
+      card.dataset.solved = 'false';
+      card.dataset.locked = 'false';
+    });
+
+    const task1 = document.querySelector('[data-task-id="task1"]');
+    const scenarioCards = task1.querySelectorAll('.scenario-card');
+    const lifeOptions = task1.querySelectorAll('.life-option');
+    const task1CheckBtn = task1.querySelector('.check-btn');
+    const task1RetryBtn = task1.querySelector('.retry-btn');
+    let activeLifeOption = null;
+
+    function updateTask1CheckState() {
+      const allAssigned = [...scenarioCards].every(card => card.dataset.value !== '');
+      task1CheckBtn.disabled = !allAssigned || task1.dataset.locked === 'true';
+    }
+
+    lifeOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        if (task1.dataset.locked === 'true') return;
+        lifeOptions.forEach(o => o.classList.remove('selected'));
+        option.classList.add('selected');
+        activeLifeOption = option.dataset.select;
+      });
+    });
+
+    scenarioCards.forEach(card => {
+      card.addEventListener('click', () => {
+        if (task1.dataset.locked === 'true' || !activeLifeOption) return;
+        card.dataset.value = activeLifeOption;
+        card.classList.add('selected');
+        const labelMap = {
+          decompose: '分解',
+          parasitic: '寄生',
+          symbiosis: '共生'
+        };
+        const old = card.querySelector('.selected-label');
+        if (old) old.remove();
+        const label = document.createElement('div');
+        label.className = 'selected-label';
+        label.style.marginTop = '8px';
+        label.style.fontWeight = '800';
+        label.style.color = '#2563eb';
+        label.textContent = '你選的是：' + labelMap[activeLifeOption];
+        card.appendChild(label);
+        updateTask1CheckState();
+      });
+    });
+
+    task1CheckBtn.addEventListener('click', () => {
+      const ok = [...scenarioCards].every(card => card.dataset.value === card.dataset.answer);
+      setTaskResult(
+        task1,
+        ok,
+        '答對了！你已經能分辨真菌的分解、寄生與共生。',
+        '有些情境配錯了，請再想想真菌是如何取得養分。'
+      );
+    });
+
+    task1RetryBtn.addEventListener('click', () => {
+      task1.dataset.locked = 'false';
+      task1.dataset.solved = 'false';
+      task1.classList.remove('correct', 'incorrect');
+      task1.querySelector('.feedback-box').className = 'feedback-box';
+      task1.querySelector('.feedback-box').textContent = '';
+      task1RetryBtn.style.display = 'none';
+      activeLifeOption = null;
+      lifeOptions.forEach(o => o.classList.remove('selected'));
+      scenarioCards.forEach(card => {
+        card.dataset.value = '';
+        card.classList.remove('selected');
+        const label = card.querySelector('.selected-label');
+        if (label) label.remove();
+      });
+      updateTask1CheckState();
+      updateUnlockState();
+    });
+
+    const task2 = document.querySelector('[data-task-id="task2"]');
+    const task2Tokens = task2.querySelectorAll('.token');
+    const task2Zones = task2.querySelectorAll('.drop-zone');
+    const task2CheckBtn = task2.querySelector('.check-btn');
+    const task2RetryBtn = task2.querySelector('.retry-btn');
+    let activeToken = null;
+
+    function updateTask2CheckState() {
+      const placedCount = [...task2Tokens].filter(t => t.dataset.placedZone).length;
+      task2CheckBtn.disabled = placedCount !== task2Tokens.length || task2.dataset.locked === 'true';
+    }
+
+    task2Tokens.forEach(token => {
+      token.addEventListener('click', () => {
+        if (task2.dataset.locked === 'true') return;
+        task2Tokens.forEach(t => t.classList.remove('selected'));
+        token.classList.add('selected');
+        activeToken = token;
+      });
+    });
+
+    task2Zones.forEach(zone => {
+      zone.addEventListener('click', () => {
+        if (task2.dataset.locked === 'true' || !activeToken) return;
+        zone.querySelector('.zone-content').appendChild(activeToken);
+        activeToken.dataset.placedZone = zone.dataset.zone;
+        activeToken.classList.add('placed');
+        activeToken.classList.remove('selected');
+        activeToken = null;
+        updateTask2CheckState();
+      });
+    });
+
+    task2CheckBtn.addEventListener('click', () => {
+      const ok = [...task2Tokens].every(token => token.dataset.placedZone === token.dataset.answer);
+      setTaskResult(
+        task2,
+        ok,
+        '答對了！你已經分清楚出芽生殖和孢子繁殖。',
+        '還有真菌代表放錯位置，請重做本題。'
+      );
+    });
+
+    task2RetryBtn.addEventListener('click', () => {
+      task2.dataset.locked = 'false';
+      task2.dataset.solved = 'false';
+      task2.classList.remove('correct', 'incorrect');
+      task2.querySelector('.feedback-box').className = 'feedback-box';
+      task2.querySelector('.feedback-box').textContent = '';
+      task2RetryBtn.style.display = 'none';
+
+      const bank = task2.querySelector('.token-bank');
+      task2Tokens.forEach(token => {
+        token.dataset.placedZone = '';
+        token.classList.remove('placed', 'selected');
+        bank.appendChild(token);
+      });
+
+      activeToken = null;
+      updateTask2CheckState();
+      updateUnlockState();
+    });
+
+    const task3 = document.querySelector('[data-task-id="task3"]');
+    const task3Items = task3.querySelectorAll('.sort-item');
+    const task3Slots = task3.querySelectorAll('.sort-slot');
+    const task3CheckBtn = task3.querySelector('.check-btn');
+    const task3RetryBtn = task3.querySelector('.retry-btn');
+    let activeSortItem = null;
+
+    function updateTask3CheckState() {
+      const placedCount = [...task3Items].filter(item => item.dataset.position).length;
+      task3CheckBtn.disabled = placedCount !== task3Items.length || task3.dataset.locked === 'true';
+    }
+
+    task3Items.forEach(item => {
+      item.addEventListener('click', () => {
+        if (task3.dataset.locked === 'true') return;
+        task3Items.forEach(i => i.classList.remove('selected'));
+        item.classList.add('selected');
+        activeSortItem = item;
+      });
+    });
+
+    task3Slots.forEach(slot => {
+      slot.addEventListener('click', () => {
+        if (task3.dataset.locked === 'true' || !activeSortItem) return;
+        const content = slot.querySelector('.slot-content');
+        if (content.children.length > 0) return;
+        content.appendChild(activeSortItem);
+        activeSortItem.dataset.position = slot.dataset.position;
+        activeSortItem.classList.add('placed');
+        activeSortItem.classList.remove('selected');
+        activeSortItem = null;
+        updateTask3CheckState();
+      });
+    });
+
+    task3CheckBtn.addEventListener('click', () => {
+      const answer = { make: '1', spread: '2', land: '3', grow: '4' };
+      const ok = [...task3Items].every(item => item.dataset.position === answer[item.dataset.step]);
+      setTaskResult(
+        task3,
+        ok,
+        '答對了！你已經排出真菌孢子繁殖的正確流程。',
+        '順序還不對，請重做本題再重新排列。'
+      );
+    });
+
+    task3RetryBtn.addEventListener('click', () => {
+      task3.dataset.locked = 'false';
+      task3.dataset.solved = 'false';
+      task3.classList.remove('correct', 'incorrect');
+      task3.querySelector('.feedback-box').className = 'feedback-box';
+      task3.querySelector('.feedback-box').textContent = '';
+      task3RetryBtn.style.display = 'none';
+
+      const bank = task3.querySelector('.sort-bank');
+      task3Items.forEach(item => {
+        item.dataset.position = '';
+        item.classList.remove('placed', 'selected');
+        bank.appendChild(item);
+      });
+
+      activeSortItem = null;
+      updateTask3CheckState();
+      updateUnlockState();
+    });
+
+    const task4 = document.querySelector('[data-task-id="task4"]');
+    const truthCards = task4.querySelectorAll('.truth-card');
+    const task4CheckBtn = task4.querySelector('.check-btn');
+    const task4RetryBtn = task4.querySelector('.retry-btn');
+
+    function updateTask4CheckState() {
+      const selectedCount = [...truthCards].filter(card => card.classList.contains('selected')).length;
+      task4CheckBtn.disabled = selectedCount === 0 || task4.dataset.locked === 'true';
+    }
+
+    truthCards.forEach(card => {
+      card.addEventListener('click', () => {
+        if (task4.dataset.locked === 'true') return;
+        card.classList.toggle('selected');
+        updateTask4CheckState();
+      });
+    });
+
+    task4CheckBtn.addEventListener('click', () => {
+      const ok = [...truthCards].every(card => {
+        const shouldSelect = card.dataset.correct === 'true';
+        const isSelected = card.classList.contains('selected');
+        return shouldSelect === isSelected;
+      });
+      setTaskResult(
+        task4,
+        ok,
+        '答對了！你已經掌握真菌生活方式與繁殖的重點。',
+        '有些敘述判斷錯了，請再想想哪些才是正確概念。'
+      );
+    });
+
+    task4RetryBtn.addEventListener('click', () => {
+      task4.dataset.locked = 'false';
+      task4.dataset.solved = 'false';
+      task4.classList.remove('correct', 'incorrect');
+      task4.querySelector('.feedback-box').className = 'feedback-box';
+      task4.querySelector('.feedback-box').textContent = '';
+      task4RetryBtn.style.display = 'none';
+      truthCards.forEach(card => card.classList.remove('selected'));
+      updateTask4CheckState();
+      updateUnlockState();
+    });
+
+    nextPageBtn.addEventListener('click', (event) => {
+      if (!nextPageBtn.classList.contains('unlocked')) {
+        event.preventDefault();
+      }
+    });
+
+    updateTask1CheckState();
+    updateTask2CheckState();
+    updateTask3CheckState();
+    updateTask4CheckState();
+    updateUnlockState();
+  </script>
+</body>
+</html>

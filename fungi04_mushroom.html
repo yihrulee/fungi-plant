@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>真菌射擊評量遊戲</title>
+  <style>
+    :root {
+      --bg1: #f7fbf3;
+      --bg2: #eef6ff;
+      --ink: #1f2937;
+      --sub: #4b5563;
+      --green-dark: #166534;
+      --line: #dbe5df;
+      --red: #b91c1c;
+      --blue: #2563eb;
+      --shadow: 0 12px 30px rgba(0,0,0,.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
+      line-height: 1.7;
+    }
+
+    .page-shell {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 28px 18px 60px;
+    }
+
+    .hero-card {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-bottom: 22px;
+    }
+
+    .hero-banner {
+      background: linear-gradient(135deg, #3f7d52, #2563eb);
+      color: white;
+      padding: 30px 26px;
+    }
+
+    .hero-banner .tag {
+      display: inline-block;
+      background: rgba(255,255,255,.18);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: .92rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .hero-banner h1 {
+      margin: 0 0 10px;
+      font-size: 2.2rem;
+      line-height: 1.25;
+    }
+
+    .hero-banner p {
+      margin: 0;
+      font-size: 1.02rem;
+      opacity: .98;
+    }
+
+    .student-form {
+      padding: 20px 24px 24px;
+      background: #fcfffc;
+      border-top: 1px solid #e8f0ea;
+    }
+
+    .student-form h3 {
+      margin: 0 0 10px;
+      color: #1b4332;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .field label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #374151;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      font-size: .96rem;
+      background: #fff;
+    }
+
+    .game-shell {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+
+    .game-shell h2 {
+      margin-top: 0;
+      color: #1b4332;
+    }
+
+    .note {
+      color: var(--sub);
+      font-size: .95rem;
+      margin-bottom: 16px;
+    }
+
+    .game-area {
+      position: relative;
+      min-height: 760px;
+      overflow: hidden;
+      background:
+        linear-gradient(to top, #d5edbe 0 18%, transparent 18%),
+        linear-gradient(180deg, #def3ff 0%, #f8fcff 52%, #edf9ef 100%);
+      border: 2px solid #d8e6d6;
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      cursor: crosshair;
+      user-select: none;
+    }
+
+    .game-header {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      top: 14px;
+      z-index: 3;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr auto auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .mini-pill {
+      background: rgba(255,255,255,.92);
+      border: 1px solid #dbe7d9;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 800;
+      color: #2d5e3b;
+      text-align: center;
+      min-height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .top-question-bar {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      top: 74px;
+      z-index: 3;
+      background: rgba(255,255,255,.94);
+      border: 1px solid #dbe7d9;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 16px;
+      backdrop-filter: blur(4px);
+    }
+
+    .question-title {
+      color: var(--green-dark);
+      font-weight: 800;
+      margin: 0 0 6px;
+      font-size: 1.02rem;
+    }
+
+    .question-text {
+      margin: 0;
+      color: var(--ink);
+      line-height: 1.8;
+      font-size: 1.05rem;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 11px 18px;
+      font-weight: 800;
+      font-size: .98rem;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+
+    .start-btn, .upload-btn {
+      background: #2563eb;
+      color: white;
+    }
+
+    .pause-btn {
+      background: #f97316;
+      color: white;
+    }
+
+    button:disabled {
+      opacity: .7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .crosshair {
+      position: absolute;
+      width: 44px;
+      height: 44px;
+      border: 3px solid rgba(36,95,56,.75);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 5;
+      display: none;
+    }
+
+    .crosshair::before,
+    .crosshair::after {
+      content: "";
+      position: absolute;
+      background: rgba(36,95,56,.75);
+    }
+
+    .crosshair::before {
+      width: 2px;
+      height: 54px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .crosshair::after {
+      width: 54px;
+      height: 2px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .target {
+      position: absolute;
+      min-width: 118px;
+      max-width: 180px;
+      padding: 12px 14px;
+      border-radius: 18px;
+      color: #fff;
+      font-weight: 800;
+      text-align: center;
+      box-shadow: 0 10px 18px rgba(0,0,0,.14);
+      border: 2px solid rgba(255,255,255,.7);
+      cursor: crosshair;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      line-height: 1.35;
+      background: linear-gradient(135deg, #5f7f68, #486454);
+    }
+
+    .target.hit-mark {
+      opacity: .45;
+      pointer-events: none;
+      filter: grayscale(.25);
+    }
+
+    .hit-effect, .miss-effect {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      font-size: 1.08rem;
+      font-weight: 900;
+      pointer-events: none;
+      z-index: 6;
+      animation: floatUp .85s ease forwards;
+    }
+
+    .hit-effect { color: var(--red); }
+    .miss-effect { color: var(--red); }
+
+    @keyframes floatUp {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(.8); }
+      20% { opacity: 1; }
+      100% { opacity: 0; transform: translate(-50%, -120%) scale(1.05); }
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,.84);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      padding: 24px;
+    }
+
+    .overlay-card {
+      width: min(900px, 100%);
+      background: #fff;
+      border-radius: 24px;
+      border: 1px solid #dbe7d9;
+      padding: 26px 24px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .overlay-card h2 {
+      margin: 0 0 10px;
+      color: var(--green-dark);
+      font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+    }
+
+    .overlay-card p {
+      margin: 0 0 10px;
+      color: var(--sub);
+      line-height: 1.8;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .result-box {
+      background: #f8fafc;
+      border: 1px solid #dbe5ef;
+      border-radius: 16px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .result-box .big {
+      display: block;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #1d4ed8;
+      margin-top: 4px;
+    }
+
+    .upload-panel {
+      margin-top: 16px;
+      padding: 16px;
+      border: 1px solid #dce9db;
+      border-radius: 16px;
+      background: #f8fbff;
+      text-align: left;
+    }
+
+    .upload-panel h3 {
+      margin: 0 0 10px;
+      color: #1b4332;
+      font-size: 1.08rem;
+    }
+
+    .upload-status {
+      margin-top: 10px;
+      min-height: 24px;
+      font-weight: 700;
+    }
+
+    .success-text { color: #166534; }
+    .error-text { color: var(--red); }
+
+    .explain-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+      text-align: left;
+      max-height: 280px;
+      overflow: auto;
+    }
+
+    .explain-card {
+      border: 1px solid #dbe5df;
+      border-radius: 16px;
+      padding: 14px 16px;
+      background: #fbfdfb;
+    }
+
+    .explain-card.correct {
+      border-color: #86efac;
+      background: #ecfdf3;
+    }
+
+    .explain-card.incorrect {
+      border-color: #fda4af;
+      background: #fff1f2;
+    }
+
+    .explain-card h4 {
+      margin: 0 0 8px;
+      color: #1f2937;
+    }
+
+    .mini-line {
+      margin: 4px 0;
+      color: #374151;
+    }
+
+    .next-page-wrap {
+      display: none;
+      margin-top: 16px;
+      text-align: center;
+    }
+
+    .next-page-wrap.show {
+      display: block;
+    }
+
+    .next-page-btn {
+      display: inline-block;
+      text-decoration: none;
+      background: #16a34a;
+      color: #ffffff;
+      padding: 12px 22px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 1rem;
+      box-shadow: 0 8px 20px rgba(22,163,74,.18);
+    }
+
+    .hidden { display: none !important; }
+
+    .page-nav {
+      margin-top: 18px;
+      display: flex;
+      justify-content: flex-start;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .page-nav .prev-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      padding: 14px 22px;
+      border-radius: 14px;
+      font-weight: 800;
+      background: #f3f4f6;
+      border: 1px solid #d1d5db;
+      color: #374151;
+    }
+
+    @media (max-width: 1100px) {
+      .form-grid, .result-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .game-header {
+        grid-template-columns: repeat(3, minmax(0,1fr));
+      }
+    }
+
+    @media (max-width: 680px) {
+      .form-grid, .result-grid, .game-header {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-banner h1 {
+        font-size: 1.85rem;
+      }
+
+      .game-area {
+        min-height: 920px;
+      }
+
+      .target {
+        min-width: 96px;
+        max-width: 138px;
+        font-size: .95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page-shell">
+    <section class="hero-card">
+      <div class="hero-banner">
+        <div class="tag">真菌界複習挑戰</div>
+        <h1>真菌射擊評量遊戲</h1>
+        <p>共 20 題，每題 5 分，滿分 100 分。全部題目完成後會顯示成績、正確答案與解說，並同步上傳到試算表。</p>
+      </div>
+
+      <section class="student-form">
+        <h3>基本資料</h3>
+        <div class="form-grid">
+          <div class="field">
+            <label for="className">班級</label>
+            <input id="className" type="text" placeholder="例如：701" />
+          </div>
+          <div class="field">
+            <label for="seatNumber">座號</label>
+            <input id="seatNumber" type="text" placeholder="例如：12" />
+          </div>
+          <div class="field">
+            <label for="studentName">姓名</label>
+            <input id="studentName" type="text" placeholder="請輸入姓名" />
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="game-shell">
+      <h2>20 題全清挑戰</h2>
+      <div class="note">規則：請射擊符合題目所敘述的答案。第 20 題為雙答案題，必須找出兩個正確答案才算答對。未擊中顯示「落空」，打中錯誤答案顯示「誤射」。</div>
+
+      <main class="game-area" id="gameArea">
+        <div class="game-header">
+          <div class="mini-pill">目前分數：<span id="scoreText">0</span></div>
+          <div class="mini-pill">答對題數：<span id="correctCountText">0</span></div>
+          <div class="mini-pill">完成題數：<span id="doneCountText">0 / 20</span></div>
+          <button class="start-btn" id="startBtn">開始遊戲</button>
+          <button class="pause-btn hidden" id="pauseBtn">暫停</button>
+        </div>
+
+        <div class="top-question-bar">
+          <p class="question-title" id="questionTitle">本題任務</p>
+          <p class="question-text" id="questionText">按下開始遊戲後，題目會顯示在這裡。</p>
+        </div>
+
+        <div class="crosshair" id="crosshair"></div>
+
+        <div class="overlay" id="startOverlay">
+          <div class="overlay-card">
+            <h2>準備開始真菌射擊評量</h2>
+            <p>請先確認班級、座號、姓名已填好，再開始挑戰。</p>
+            <p>共 20 題，每題 5 分，第 20 題需要射中 2 個正確答案。</p>
+            <button class="start-btn" id="overlayStartBtn">開始挑戰</button>
+          </div>
+        </div>
+
+        <div class="overlay hidden" id="pauseOverlay">
+          <div class="overlay-card">
+            <h2>遊戲已暫停</h2>
+            <p>按下下方按鈕繼續作答。</p>
+            <button class="start-btn" id="resumeBtn">繼續遊戲</button>
+          </div>
+        </div>
+
+        <div class="overlay hidden" id="resultOverlay">
+          <div class="overlay-card">
+            <h2>真菌評量完成</h2>
+
+            <div class="result-grid">
+              <div class="result-box">答對題數<span class="big" id="finalCorrectCount">0</span></div>
+              <div class="result-box">答錯題數<span class="big" id="finalWrongCount">0</span></div>
+              <div class="result-box">最終分數<span class="big" id="finalScore">0</span></div>
+            </div>
+
+            <p id="resultSummary">作答完成。</p>
+
+            <div class="upload-panel">
+              <h3>上傳成績</h3>
+              <p style="margin:0 0 10px; color:#4b5563;">會沿用上方已填寫的班級、座號、姓名。</p>
+              <button class="upload-btn" id="uploadBtn">提交答案並上傳成績</button>
+              <div class="upload-status" id="uploadStatus"></div>
+            </div>
+
+            <div class="next-page-wrap" id="nextPageWrap">
+              <a class="next-page-btn" id="nextPageBtn" href="plant01_intro.html">前往下一頁</a>
+            </div>
+
+            <div class="explain-list" id="explainList"></div>
+          </div>
+        </div>
+      </main>
+    </section>
+
+    <footer class="page-nav">
+      <a class="prev-btn" href="fungi03_life.html">← 上一頁</a>
+    </footer>
+  </main>
+
+  <script>
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxPm8kFuG5Rp3UKUYvkqFT2x5EUoc_OI1iWUXRaAnxsHztgiWm5U6chlFK7R2c97Q11/exec';
+    const POINTS_PER_HIT = 5;
+
+    const questionBank = [
+      {
+        type: 'single',
+        prompt: '真菌界的生物屬於哪一類生物？',
+        answer: '真核生物',
+        choices: ['真核生物', '原核生物', '多核生物', '無核生物'],
+        explanation: '真菌屬於真核生物，細胞內有真正的細胞核。'
+      },
+      {
+        type: 'single',
+        prompt: '真菌細胞有沒有細胞壁？',
+        answer: '有',
+        choices: ['有', '沒有', '只有成熟時有', '不一定'],
+        explanation: '真菌細胞有細胞壁，但沒有葉綠體。'
+      },
+      {
+        type: 'single',
+        prompt: '真菌有葉綠體嗎？',
+        answer: '沒有',
+        choices: ['沒有', '有', '只有部分有', '只在孢子有'],
+        explanation: '真菌沒有葉綠體，因此不能行光合作用。'
+      },
+      {
+        type: 'single',
+        prompt: '真菌可以行光合作用嗎？',
+        answer: '不可以',
+        choices: ['不可以', '可以', '只有白天可以', '只在潮濕環境可行'],
+        explanation: '真菌沒有葉綠體，不能行光合作用，必須從外界獲得養分。'
+      },
+      {
+        type: 'single',
+        prompt: '真菌如何獲得養分？',
+        answer: '分泌酵素到體外後再吸收',
+        choices: ['分泌酵素到體外後再吸收', '自己製造葡萄糖', '只靠吸水', '靠陽光製造養分'],
+        explanation: '真菌會先把酵素分泌到體外分解物質，再吸收小分子養分。'
+      },
+      {
+        type: 'single',
+        prompt: '自然界中，大多數真菌扮演什麼角色？',
+        answer: '分解者',
+        choices: ['分解者', '生產者', '消費者', '掠食者'],
+        explanation: '自然界中多數真菌扮演分解者，能分解枯枝落葉與生物遺體。'
+      },
+      {
+        type: 'single',
+        prompt: '哪一種真菌是單細胞、無菌絲？',
+        answer: '酵母菌',
+        choices: ['酵母菌', '黴菌', '蕈類', '地衣'],
+        explanation: '酵母菌屬於單細胞真菌，且沒有菌絲。'
+      },
+      {
+        type: 'single',
+        prompt: '酵母菌分解醣類時會產生什麼？',
+        answer: '酒精及二氧化碳',
+        choices: ['酒精及二氧化碳', '氧氣及葡萄糖', '葉綠素及水', '澱粉及氧氣'],
+        explanation: '酵母菌分解醣類時會產生酒精與二氧化碳，因此可用於釀酒與發酵。'
+      },
+      {
+        type: 'single',
+        prompt: '酵母菌可用來做什麼？',
+        answer: '做麵包與釀酒',
+        choices: ['做麵包與釀酒', '做家具', '製造煤炭', '製作塑膠'],
+        explanation: '酵母菌常用於做麵包與釀酒，是生活中常見的有益真菌。'
+      },
+      {
+        type: 'single',
+        prompt: '黴菌的特徵是什麼？',
+        answer: '多細胞、有菌絲',
+        choices: ['多細胞、有菌絲', '單細胞、無菌絲', '沒有細胞壁', '能行光合作用'],
+        explanation: '黴菌屬於多細胞真菌，身體由菌絲構成。'
+      },
+      {
+        type: 'single',
+        prompt: '有些黴菌感染人類皮膚會造成什麼疾病？',
+        answer: '足癬（香港腳）',
+        choices: ['足癬（香港腳）', '流感', '蛀牙', '近視'],
+        explanation: '有些黴菌會感染人體皮膚，造成足癬，也就是香港腳。'
+      },
+      {
+        type: 'single',
+        prompt: '下列哪組都屬於常見會使物品或食品發霉的黴菌？',
+        answer: '黑黴菌與青黴菌',
+        choices: ['黑黴菌與青黴菌', '香菇與木耳', '竹蓀與靈芝', '酵母菌與香菇'],
+        explanation: '黑黴菌與青黴菌都屬於黴菌，常見於食物或物品發霉。'
+      },
+      {
+        type: 'single',
+        prompt: '哪一種黴菌可用來提煉抗生素？',
+        answer: '青黴菌',
+        choices: ['青黴菌', '黑黴菌', '酵母菌', '木耳'],
+        explanation: '青黴菌可以提煉抗生素，是黴菌中重要的應用例子。'
+      },
+      {
+        type: 'single',
+        prompt: '蕈類的特徵是什麼？',
+        answer: '多細胞、有菌絲',
+        choices: ['多細胞、有菌絲', '單細胞、無菌絲', '沒有細胞壁', '無法繁殖'],
+        explanation: '蕈類屬於大型真菌，為多細胞且具有菌絲。'
+      },
+      {
+        type: 'single',
+        prompt: '下列哪組都屬於蕈類？',
+        answer: '香菇、木耳、竹蓀、靈芝',
+        choices: ['香菇、木耳、竹蓀、靈芝', '黑黴菌、青黴菌', '地錢、土馬騌', '酵母菌、乳酸菌'],
+        explanation: '香菇、木耳、竹蓀、靈芝都屬於蕈類。'
+      },
+      {
+        type: 'single',
+        prompt: '蕈類在生活中可作為什麼用途？',
+        answer: '食材和藥材',
+        choices: ['食材和藥材', '葉綠素來源', '金屬材料', '塑膠原料'],
+        explanation: '蕈類可作為食材，也有些可作為藥材。'
+      },
+      {
+        type: 'single',
+        prompt: '野外看到不認識的菇類應該怎麼做？',
+        answer: '不可隨意採食',
+        choices: ['不可隨意採食', '摘來吃看看', '先舔舔看', '聞起來香就能吃'],
+        explanation: '野外有些菇類有毒，看到不認識的菇類不可隨意採食。'
+      },
+      {
+        type: 'single',
+        prompt: '有關黴菌的敘述，下列何者錯誤？',
+        answer: '黴菌可進行出芽生殖。',
+        choices: ['人類的灰指甲疾病即由黴菌造成', '個體由菌絲組成', '靠體外消化獲得養分', '黴菌可進行出芽生殖。'],
+        explanation: '出芽生殖是酵母菌的代表繁殖方式，不是黴菌的主要繁殖方式。'
+      },
+      {
+        type: 'single',
+        prompt: '酵母菌主要用哪種繁殖方式？',
+        answer: '出芽生殖',
+        choices: ['出芽生殖', '孢子繁殖', '斷裂生殖', '種子繁殖'],
+        explanation: '酵母菌主要以出芽生殖繁殖。'
+      },
+      {
+        type: 'multi',
+        prompt: '小明在野外看到四種真菌，根據課本學到的知識，哪兩種是有毒的？請射擊兩個正確答案。',
+        answer: ['毒瓢蕈', '毒蠅傘'],
+        choices: ['毒瓢蕈', '靈芝', '毒蠅傘', '竹蓀'],
+        explanation: '毒瓢蕈與毒蠅傘都屬於有毒真菌；靈芝與竹蓀不是這題的有毒選項。'
+      }
+    ];
+
+    const gameArea = document.getElementById('gameArea');
+    const crosshair = document.getElementById('crosshair');
+    const startOverlay = document.getElementById('startOverlay');
+    const pauseOverlay = document.getElementById('pauseOverlay');
+    const resultOverlay = document.getElementById('resultOverlay');
+    const startBtn = document.getElementById('startBtn');
+    const overlayStartBtn = document.getElementById('overlayStartBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const resumeBtn = document.getElementById('resumeBtn');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const uploadStatus = document.getElementById('uploadStatus');
+
+    const questionTitleEl = document.getElementById('questionTitle');
+    const questionTextEl = document.getElementById('questionText');
+    const scoreText = document.getElementById('scoreText');
+    const correctCountText = document.getElementById('correctCountText');
+    const doneCountText = document.getElementById('doneCountText');
+
+    const finalCorrectCount = document.getElementById('finalCorrectCount');
+    const finalWrongCount = document.getElementById('finalWrongCount');
+    const finalScore = document.getElementById('finalScore');
+    const resultSummaryEl = document.getElementById('resultSummary');
+    const explainList = document.getElementById('explainList');
+    const nextPageWrap = document.getElementById('nextPageWrap');
+
+    const classNameInput = document.getElementById('className');
+    const seatNumberInput = document.getElementById('seatNumber');
+    const studentNameInput = document.getElementById('studentName');
+
+    let gameState = {
+      currentIndex: 0,
+      score: 0,
+      correctCount: 0,
+      movingTimer: null,
+      currentQuestion: null,
+      answered: false,
+      paused: false,
+      finished: false,
+      answers: {},
+      correctAnswers: {},
+      correctness: {},
+      multiHits: []
+    };
+
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function resetGame() {
+      clearTimers();
+      removeTargets();
+      clearEffects();
+      gameState = {
+        currentIndex: 0,
+        score: 0,
+        correctCount: 0,
+        movingTimer: null,
+        currentQuestion: null,
+        answered: false,
+        paused: false,
+        finished: false,
+        answers: {},
+        correctAnswers: {},
+        correctness: {},
+        multiHits: []
+      };
+      scoreText.textContent = '0';
+      correctCountText.textContent = '0';
+      doneCountText.textContent = `0 / ${questionBank.length}`;
+      questionTitleEl.textContent = '本題任務';
+      questionTextEl.textContent = '按下開始遊戲後，題目會顯示在這裡。';
+      uploadStatus.textContent = '';
+      uploadStatus.className = 'upload-status';
+      nextPageWrap.className = 'next-page-wrap';
+      explainList.innerHTML = '';
+    }
+
+    function clearTimers() {
+      clearInterval(gameState.movingTimer);
+      gameState.movingTimer = null;
+    }
+
+    function removeTargets() {
+      gameArea.querySelectorAll('.target').forEach(el => el.remove());
+    }
+
+    function clearEffects() {
+      gameArea.querySelectorAll('.hit-effect, .miss-effect').forEach(el => el.remove());
+    }
+
+    function updateHeader() {
+      scoreText.textContent = String(gameState.score);
+      correctCountText.textContent = String(gameState.correctCount);
+      doneCountText.textContent = `${gameState.currentIndex} / ${questionBank.length}`;
+    }
+
+    function startGame() {
+      resetGame();
+      startOverlay.classList.add('hidden');
+      resultOverlay.classList.add('hidden');
+      pauseOverlay.classList.add('hidden');
+      pauseBtn.classList.remove('hidden');
+      nextQuestion();
+    }
+
+    function nextQuestion() {
+      clearTimers();
+      removeTargets();
+      clearEffects();
+
+      if (gameState.currentIndex >= questionBank.length) {
+        finishGame();
+        return;
+      }
+
+      gameState.currentQuestion = questionBank[gameState.currentIndex];
+      gameState.answered = false;
+      gameState.multiHits = [];
+
+      questionTitleEl.textContent = `第 ${gameState.currentIndex + 1} 題`;
+      questionTextEl.textContent = gameState.currentQuestion.prompt;
+      spawnTargets(gameState.currentQuestion.choices, gameState.currentQuestion.answer);
+      updateHeader();
+      startMovingTargets();
+    }
+
+    function spawnTargets(choices, answer) {
+      const areaRect = gameArea.getBoundingClientRect();
+      const safeTop = 190;
+      const safeBottom = areaRect.height - 80;
+      const safeLeft = 100;
+      const safeRight = areaRect.width - 100;
+
+      shuffleArray(choices).forEach(choice => {
+        const target = document.createElement('div');
+        target.className = 'target';
+        target.textContent = choice;
+        target.dataset.name = choice;
+        target.dataset.correct = Array.isArray(answer)
+          ? String(answer.includes(choice))
+          : String(choice === answer);
+
+        target.style.left = `${randomNumber(safeLeft, safeRight)}px`;
+        target.style.top = `${randomNumber(safeTop, safeBottom)}px`;
+        target.dataset.vx = String(randomNumber(-2.3, 2.3));
+        target.dataset.vy = String(randomNumber(-1.8, 1.8));
+
+        if (Math.abs(Number(target.dataset.vx)) < 0.8) {
+          target.dataset.vx = String(Number(target.dataset.vx) < 0 ? -1.1 : 1.1);
+        }
+        if (Math.abs(Number(target.dataset.vy)) < 0.6) {
+          target.dataset.vy = String(Number(target.dataset.vy) < 0 ? -0.9 : 0.9);
+        }
+
+        target.addEventListener('click', e => {
+          e.stopPropagation();
+          handleShot(target);
+        });
+
+        gameArea.appendChild(target);
+      });
+    }
+
+    function startMovingTargets() {
+      gameState.movingTimer = setInterval(() => {
+        if (gameState.paused) return;
+
+        const areaRect = gameArea.getBoundingClientRect();
+        const minX = 80;
+        const maxX = areaRect.width - 80;
+        const minY = 190;
+        const maxY = areaRect.height - 80;
+
+        gameArea.querySelectorAll('.target').forEach(target => {
+          if (target.classList.contains('hit-mark')) return;
+
+          let x = parseFloat(target.style.left);
+          let y = parseFloat(target.style.top);
+          let vx = parseFloat(target.dataset.vx);
+          let vy = parseFloat(target.dataset.vy);
+
+          x += vx;
+          y += vy;
+
+          if (x <= minX || x >= maxX) {
+            vx *= -1;
+            x = Math.max(minX, Math.min(maxX, x));
+          }
+          if (y <= minY || y >= maxY) {
+            vy *= -1;
+            y = Math.max(minY, Math.min(maxY, y));
+          }
+
+          target.style.left = `${x}px`;
+          target.style.top = `${y}px`;
+          target.dataset.vx = String(vx);
+          target.dataset.vy = String(vy);
+        });
+      }, 16);
+    }
+
+    function handleShot(target) {
+      if (gameState.answered || gameState.paused) return;
+
+      const q = gameState.currentQuestion;
+      const targetName = target.dataset.name;
+      const isCorrect = target.dataset.correct === 'true';
+
+      if (q.type === 'single') {
+        if (isCorrect) {
+          gameState.score += POINTS_PER_HIT;
+          gameState.correctCount += 1;
+          showFloatingText(target, '精準命中 得分', 'hit-effect');
+          markQuestion(true, targetName, q.answer);
+        } else {
+          showFloatingText(target, '誤射', 'miss-effect');
+          markQuestion(false, targetName, q.answer);
+        }
+        return;
+      }
+
+      if (q.type === 'multi') {
+        if (!isCorrect) {
+          showFloatingText(target, '誤射', 'miss-effect');
+          const chosen = [...gameState.multiHits, targetName];
+          markQuestion(false, chosen, q.answer);
+          return;
+        }
+
+        if (gameState.multiHits.includes(targetName)) return;
+
+        gameState.multiHits.push(targetName);
+        target.classList.add('hit-mark');
+
+        if (gameState.multiHits.length < q.answer.length) {
+          showFloatingText(target, '精準命中', 'hit-effect');
+          return;
+        }
+
+        gameState.score += POINTS_PER_HIT;
+        gameState.correctCount += 1;
+        showFloatingText(target, '精準命中 得分', 'hit-effect');
+        markQuestion(true, [...gameState.multiHits], q.answer);
+      }
+    }
+
+    function markQuestion(isCorrect, selected, answer) {
+      gameState.answered = true;
+      clearTimers();
+
+      const qKey = `q${gameState.currentIndex + 1}`;
+      gameState.answers[qKey] = selected;
+      gameState.correctAnswers[qKey] = answer;
+      gameState.correctness[qKey] = isCorrect;
+
+      updateHeader();
+      removeTargets();
+
+      setTimeout(() => {
+        clearEffects();
+        gameState.currentIndex += 1;
+        nextQuestion();
+      }, 950);
+    }
+
+    function showFloatingText(target, text, className) {
+      const fx = document.createElement('div');
+      fx.className = className;
+      fx.textContent = text;
+      fx.style.left = target.style.left;
+      fx.style.top = target.style.top;
+      gameArea.appendChild(fx);
+      setTimeout(() => fx.remove(), 850);
+    }
+
+    function finishGame() {
+      clearTimers();
+      removeTargets();
+      clearEffects();
+      pauseBtn.classList.add('hidden');
+      gameState.finished = true;
+
+      const wrongCount = questionBank.length - gameState.correctCount;
+      finalCorrectCount.textContent = String(gameState.correctCount);
+      finalWrongCount.textContent = String(wrongCount);
+      finalScore.textContent = String(gameState.score);
+
+      if (gameState.correctCount === questionBank.length) {
+        resultSummaryEl.textContent = '太棒了！你已完成全部題目並獲得滿分。';
+      } else {
+        resultSummaryEl.textContent = `你已完成提交，本次答對 ${gameState.correctCount} 題，得 ${gameState.score} 分。下方可查看各題正確答案與解說。`;
+      }
+
+      renderExplanations();
+      resultOverlay.classList.remove('hidden');
+    }
+
+    function renderExplanations() {
+      explainList.innerHTML = '';
+
+      questionBank.forEach((q, index) => {
+        const qKey = `q${index + 1}`;
+        const isCorrect = !!gameState.correctness[qKey];
+        const studentAnswer = gameState.answers[qKey];
+        const correctAnswer = gameState.correctAnswers[qKey];
+
+        const studentAnswerText = Array.isArray(studentAnswer)
+          ? (studentAnswer.length ? studentAnswer.join('、') : '未作答')
+          : (studentAnswer || '未作答');
+
+        const correctAnswerText = Array.isArray(correctAnswer)
+          ? correctAnswer.join('、')
+          : correctAnswer;
+
+        const div = document.createElement('div');
+        div.className = `explain-card ${isCorrect ? 'correct' : 'incorrect'}`;
+        div.innerHTML = `
+          <h4>第 ${index + 1} 題｜${isCorrect ? '答對' : '答錯'}</h4>
+          <div class="mini-line"><strong>題目：</strong>${q.prompt}</div>
+          <div class="mini-line"><strong>你的答案：</strong>${studentAnswerText}</div>
+          <div class="mini-line"><strong>正確答案：</strong>${correctAnswerText}</div>
+          <div class="mini-line"><strong>解說：</strong>${q.explanation}</div>
+        `;
+        explainList.appendChild(div);
+      });
+    }
+
+    async function submitScoreToSheet(payload) {
+      const response = await fetch(WEB_APP_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      return await response.json();
+    }
+
+    async function uploadResult() {
+      const className = classNameInput.value.trim();
+      const seatNumber = seatNumberInput.value.trim();
+      const studentName = studentNameInput.value.trim();
+
+      if (!className || !seatNumber || !studentName) {
+        uploadStatus.textContent = '請先完整輸入班級、座號與姓名。';
+        uploadStatus.className = 'upload-status error-text';
+        return;
+      }
+
+      const payload = {
+        className,
+        seatNumber,
+        studentName,
+        score: gameState.score,
+        correctCount: gameState.correctCount,
+        wrongCount: questionBank.length - gameState.correctCount,
+        answers: gameState.answers,
+        correctAnswers: gameState.correctAnswers,
+        correctness: gameState.correctness
+      };
+
+      uploadBtn.disabled = true;
+      uploadStatus.textContent = '上傳中...';
+      uploadStatus.className = 'upload-status';
+
+      try {
+        const uploadResult = await submitScoreToSheet(payload);
+
+        if (uploadResult.success) {
+          uploadStatus.textContent = `成績已上傳：${className} 班 ${seatNumber} 號 ${studentName}，分數 ${gameState.score} 分。`;
+          uploadStatus.className = 'upload-status success-text';
+          nextPageWrap.className = 'next-page-wrap show';
+        } else {
+          uploadStatus.textContent = `成績顯示完成，但上傳失敗：${uploadResult.message || '未知錯誤'}`;
+          uploadStatus.className = 'upload-status error-text';
+        }
+      } catch (error) {
+        uploadStatus.textContent = `成績顯示完成，但上傳失敗：${error.message}`;
+        uploadStatus.className = 'upload-status error-text';
+      } finally {
+        uploadBtn.disabled = false;
+      }
+    }
+
+    function randomNumber(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    gameArea.addEventListener('mousemove', e => {
+      const rect = gameArea.getBoundingClientRect();
+      crosshair.style.display = 'block';
+      crosshair.style.left = `${e.clientX - rect.left}px`;
+      crosshair.style.top = `${e.clientY - rect.top}px`;
+    });
+
+    gameArea.addEventListener('mouseleave', () => {
+      crosshair.style.display = 'none';
+    });
+
+    gameArea.addEventListener('click', e => {
+      if (e.target === gameArea && !gameState.answered && !gameState.paused && gameState.currentQuestion) {
+        const fx = document.createElement('div');
+        fx.className = 'miss-effect';
+        fx.textContent = '落空';
+        const rect = gameArea.getBoundingClientRect();
+        fx.style.left = `${e.clientX - rect.left}px`;
+        fx.style.top = `${e.clientY - rect.top}px`;
+        gameArea.appendChild(fx);
+        setTimeout(() => fx.remove(), 850);
+      }
+    });
+
+    function pauseGame() {
+      if (!gameState.currentQuestion || gameState.answered || gameState.finished) return;
+      gameState.paused = true;
+      pauseOverlay.classList.remove('hidden');
+    }
+
+    function resumeGame() {
+      gameState.paused = false;
+      pauseOverlay.classList.add('hidden');
+    }
+
+    startBtn.addEventListener('click', startGame);
+    overlayStartBtn.addEventListener('click', startGame);
+    pauseBtn.addEventListener('click', pauseGame);
+    resumeBtn.addEventListener('click', resumeGame);
+    uploadBtn.addEventListener('click', uploadResult);
+
+    scoreText.textContent = '0';
+    correctCountText.textContent = '0';
+    doneCountText.textContent = `0 / ${questionBank.length}`;
+  </script>
+</body>
+</html>
