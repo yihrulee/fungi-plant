@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>蘚苔植物</title>
+  <style>
+    :root {
+      --bg1: #f7fff4;
+      --bg2: #edf7ec;
+      --card: #ffffff;
+      --ink: #203026;
+      --sub: #5a6f60;
+      --green: #2f7d4a;
+      --green-dark: #245f38;
+      --green-soft: #e9f7ec;
+      --green-border: #67b380;
+      --red: #b94a48;
+      --red-soft: #fdecec;
+      --red-border: #d97a76;
+      --line: #dbe7d9;
+      --brown: #8b6b4a;
+      --brown-soft: #f7f1e8;
+      --blue: #2b6cb0;
+      --orange: #c56a1a;
+      --shadow: 0 8px 24px rgba(0,0,0,.08);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      color: var(--ink);
+      line-height: 1.75;
+      background: radial-gradient(circle at top left, var(--bg1) 0%, var(--bg2) 40%, #e7f1e6 100%);
+    }
+
+    .container {
+      width: min(1100px, 92%);
+      margin: 0 auto;
+      padding: 28px 0 48px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(255,255,255,.97), rgba(236,247,235,.97));
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      padding: 28px 24px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.9rem, 3vw, 2.8rem);
+      color: var(--green-dark);
+    }
+
+    .hero p {
+      margin: 0 0 10px;
+      color: var(--sub);
+      font-size: 1.02rem;
+    }
+
+    .hero-note {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-left: 5px solid var(--green);
+      background: #f8fcf7;
+      border-radius: 12px;
+      font-weight: 700;
+      color: #365641;
+    }
+
+    .guide {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .guide-badge {
+      background: #eef7ed;
+      border: 1px solid #d8e6d6;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: .95rem;
+      color: #335840;
+      font-weight: 700;
+    }
+
+    .mission {
+      background: var(--card);
+      border: 2px solid #e2ece0;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px 18px;
+      margin-bottom: 22px;
+      transition: .2s ease;
+    }
+
+    .mission.correct {
+      background: var(--green-soft);
+      border-color: var(--green-border);
+    }
+
+    .mission.incorrect {
+      background: var(--red-soft);
+      border-color: var(--red-border);
+    }
+
+    .mission-tag {
+      display: inline-block;
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: #eef7ed;
+      color: var(--green);
+      font-size: .9rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .mission h2 {
+      margin: 0 0 8px;
+      font-size: 1.34rem;
+      color: var(--green-dark);
+    }
+
+    .mission .lead {
+      margin: 0;
+      color: var(--sub);
+    }
+
+    .concept-box {
+      margin: 14px 0 18px;
+      padding: 14px 16px;
+      background: #f8fcf7;
+      border: 1px solid #dce9db;
+      border-radius: 14px;
+    }
+
+    .concept-box strong {
+      color: var(--green-dark);
+    }
+
+    .task-box {
+      background: #fff;
+      border: 1px solid #e5ede3;
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .task-title {
+      margin: 0 0 12px;
+      font-weight: 800;
+      color: #2d5e3b;
+      font-size: 1.05rem;
+    }
+
+    .task-sub {
+      margin: -4px 0 12px;
+      color: var(--sub);
+      font-size: .96rem;
+    }
+
+    .kw-green { color: var(--green); font-weight: 800; }
+    .kw-blue { color: var(--blue); font-weight: 800; }
+    .kw-orange { color: var(--orange); font-weight: 800; }
+    .kw-red { color: var(--red); font-weight: 800; }
+
+    .radio-list,
+    .check-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    label.option {
+      display: block;
+      padding: 13px 14px;
+      border: 2px solid #dbe7d9;
+      border-radius: 14px;
+      background: #fcfffb;
+      cursor: pointer;
+      transition: .18s ease;
+    }
+
+    label.option:hover {
+      border-color: #9ec39f;
+      transform: translateY(-1px);
+    }
+
+    label.option input {
+      margin-right: 10px;
+      transform: scale(1.08);
+    }
+
+    .match-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .match-row {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) minmax(220px, 1fr);
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      background: #fbfef9;
+      border: 1px solid #e1ebdf;
+      border-radius: 14px;
+    }
+
+    .match-row .left {
+      font-weight: 800;
+      color: #2d5e3b;
+    }
+
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 2px solid #d8e4d6;
+      background: #fff;
+      font-size: 1rem;
+      color: var(--ink);
+    }
+
+    .scene-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .scene-card {
+      background: linear-gradient(135deg, #fbfef9, #f3f9f1);
+      border: 1px solid #dfe9dc;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .scene-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .scene-body {
+      padding: 12px 14px;
+    }
+
+    .scene-card h4 {
+      margin: 0 0 6px;
+      color: #2d5e3b;
+      font-size: 1.04rem;
+    }
+
+    .scene-card p {
+      margin: 0;
+      color: var(--sub);
+      font-size: .95rem;
+    }
+
+    .water-compare {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      align-items: start;
+      margin-top: 10px;
+    }
+
+    .water-panel {
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid #dce8da;
+      background: #fbfef9;
+    }
+
+    .water-panel h4 {
+      margin: 0 0 10px;
+      color: #2d5e3b;
+      text-align: center;
+    }
+
+    .tube {
+      position: relative;
+      height: 190px;
+      width: 64px;
+      margin: 0 auto 10px;
+      border-radius: 999px;
+      border: 3px solid #bfd9bf;
+      background: linear-gradient(to top, #f8fff8, #eef8ee);
+      overflow: hidden;
+    }
+
+    .fill {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background: linear-gradient(to top, #60b7ff, #a8ddff);
+      height: 0;
+    }
+
+    .tube-note {
+      text-align: center;
+      color: var(--sub);
+      font-size: .94rem;
+    }
+
+    .start-animation-wrap {
+      margin: 14px 0 8px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .start-btn {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .start-btn:disabled {
+      background: #aab8ad;
+      cursor: not-allowed;
+    }
+
+    .replay-btn {
+      background: var(--brown);
+      color: #fff;
+      display: none;
+    }
+
+    .replay-btn.show {
+      display: inline-flex;
+    }
+
+    /* 任務三：恢復正常比例，不壓扁 */
+    .flip-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .flip-card {
+      perspective: 1000px;
+      cursor: pointer;
+      min-height: 320px;
+    }
+
+    .flip-inner {
+      position: relative;
+      width: 100%;
+      min-height: 320px;
+      transition: transform .7s;
+      transform-style: preserve-3d;
+    }
+
+    .flip-card.flipped .flip-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-front,
+    .flip-back {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      border: 2px solid #dce8da;
+      border-radius: 16px;
+      background: #fcfffb;
+      overflow: hidden;
+    }
+
+    .flip-front {
+      background: #fff;
+    }
+
+    .flip-front img {
+      width: 100%;
+      height: 220px;
+      object-fit: contain;
+      object-position: center;
+      display: block;
+      background: #f7faf5;
+    }
+
+    .flip-front .front-body,
+    .flip-back .back-body {
+      padding: 14px;
+      text-align: center;
+    }
+
+    .flip-back {
+      transform: rotateY(180deg);
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .flip-front h4,
+    .flip-back h4 {
+      margin: 0 0 6px;
+      color: #2d5e3b;
+    }
+
+    .flip-front p,
+    .flip-back p {
+      margin: 0;
+      color: var(--sub);
+      font-size: .95rem;
+    }
+
+    /* 任務四：中間小圖版 */
+    .usage-photo {
+      margin: 12px auto 14px;
+      border: 1px solid #dde8db;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fbfef9;
+      max-width: 420px;
+    }
+
+    .usage-photo-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    .usage-photo .caption {
+      padding: 10px 14px;
+      color: var(--sub);
+      font-size: .95rem;
+    }
+
+    .id-card {
+      display: grid;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .id-card-group {
+      background: #fbfef9;
+      border: 1px solid #dfe9dc;
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .id-card-group h4 {
+      margin: 0 0 8px;
+      color: #2d5e3b;
+      font-size: 1rem;
+    }
+
+    .mini-scene {
+      margin: 12px 0 14px;
+      padding: 14px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #f9fcf7, #f2f9f0);
+      border: 1px solid #dde8db;
+    }
+
+    .scene-title {
+      margin: 0 0 8px;
+      font-weight: 800;
+      color: #2d5e3b;
+    }
+
+    .scene-text {
+      margin: 0;
+      color: var(--sub);
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    button,
+    .nav-btn {
+      appearance: none;
+      border: none;
+      border-radius: 999px;
+      padding: 11px 18px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+      transition: .18s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .check-btn {
+      background: var(--green-dark);
+      color: #fff;
+    }
+
+    .check-btn:disabled {
+      background: #aab8ad;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .retry-btn {
+      background: var(--brown);
+      color: #fff;
+      display: none;
+    }
+
+    .feedback {
+      display: none;
+      margin-top: 14px;
+      padding: 13px 15px;
+      border-radius: 14px;
+      font-weight: 700;
+    }
+
+    .feedback.show { display: block; }
+    .feedback.success {
+      background: rgba(76,175,80,.12);
+      color: #255c2c;
+    }
+    .feedback.error {
+      background: rgba(217,83,79,.12);
+      color: #8b2f2c;
+    }
+
+    footer.page-nav {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .nav-btn {
+      border: 2px solid #d9cbb8;
+      background: var(--brown-soft);
+      color: #534b40;
+    }
+
+    .nav-btn.next {
+      background: var(--green-dark);
+      border-color: var(--green-dark);
+      color: #fff;
+    }
+
+    .nav-btn.disabled {
+      opacity: .45;
+      pointer-events: none;
+      filter: grayscale(.25);
+    }
+
+    .unlock-note {
+      width: 100%;
+      color: var(--sub);
+      font-size: .96rem;
+    }
+
+    @media (max-width: 900px) {
+      .match-row {
+        grid-template-columns: 1fr;
+      }
+
+      .usage-photo {
+        max-width: 360px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .scene-card img {
+        height: 130px;
+      }
+
+      .flip-card {
+        min-height: 290px;
+      }
+
+      .flip-inner {
+        min-height: 290px;
+      }
+
+      .flip-front img {
+        height: 190px;
+      }
+
+      .usage-photo {
+        max-width: 100%;
+      }
+
+      .usage-photo-img {
+        height: 190px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <h1>蘚苔植物</h1>
+      <p>
+        蘚苔植物是最早登陸陸地的植物之一。它們已開始適應陸地生活，
+        但仍保留了許多早期植物的特徵。
+      </p>
+      <p>
+        這一頁你會認識<span class="kw-green">蘚苔植物</span>的生活環境、
+        <span class="kw-blue">維管束</span>、外形特徵，以及為什麼它們像是「剛登陸陸地的早期版本」。
+      </p>
+      <div class="hero-note">
+        完成本頁全部任務，且全部答對後，才能解鎖「下一頁 →」。
+      </div>
+      <div class="guide">
+        <div class="guide-badge">先看概念，再做任務</div>
+        <div class="guide-badge">平板也好操作</div>
+        <div class="guide-badge">全部答對才能前往下一頁</div>
+      </div>
+    </section>
+
+    <section class="mission" id="q1" data-type="match">
+      <div class="mission-tag">任務一</div>
+      <h2>幫地錢與土馬騌選出最符合的環境</h2>
+      <p class="lead">
+        <span class="kw-green">蘚苔植物</span>通常喜歡
+        <span class="kw-orange">潮溼</span>環境，常見於土壤、岩石或樹幹表面。
+        其中不同種類也會有比較常見的生長場景。
+      </p>
+
+      <div class="concept-box">
+        <strong>小知識：</strong>
+        <span class="kw-green">地錢</span>通常呈<span class="kw-orange">扁平</span>狀，常平鋪在表面；
+        <span class="kw-green">土馬騌</span>外形較<span class="kw-orange">直立</span>，常見於陰濕環境。
+      </div>
+
+      <div class="task-box">
+        <p class="task-title">互動任務：依照特徵描述，選出最符合的生長場景</p>
+        <p class="task-sub">請注意，這裡要選的是「最符合」的場景。</p>
+
+        <div class="scene-grid">
+          <div class="scene-card">
+            <img src="bryophyte_env_desert.jpg" alt="乾燥沙地">
+            <div class="scene-body">
+              <h4>乾燥沙地</h4>
+              <p>日照強，水分容易散失。</p>
+            </div>
+          </div>
+          <div class="scene-card">
+            <img src="bryophyte_env_wet_rock.jpg" alt="潮溼岩石">
+            <div class="scene-body">
+              <h4>潮溼岩石</h4>
+              <p>表面陰濕，常見平鋪附著。</p>
+            </div>
+          </div>
+          <div class="scene-card">
+            <img src="bryophyte_env_wet_soil.jpg" alt="陰濕土壤">
+            <div class="scene-body">
+              <h4>陰濕土壤</h4>
+              <p>地面潮溼，適合較直立的小型蘚苔植物。</p>
+            </div>
+          </div>
+          <div class="scene-card">
+            <img src="bryophyte_env_dry_bark.jpg" alt="樹幹高處乾燥表面">
+            <div class="scene-body">
+              <h4>樹幹高處乾燥表面</h4>
+              <p>較容易乾燥，不是最適合的生長位置。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="match-grid">
+          <div class="match-row">
+            <div class="left">地錢（扁平、平鋪）</div>
+            <div><select class="match-select" data-answer="wet-rock"></select></div>
+          </div>
+          <div class="match-row">
+            <div class="left">土馬騌（較直立、常見於陰濕地面）</div>
+            <div><select class="match-select" data-answer="wet-soil"></select></div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="check-btn" disabled>檢查答案</button>
+          <button class="retry-btn" type="button">重做本題</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <section class="mission" id="q2" data-type="single">
+      <div class="mission-tag">任務二</div>
+      <h2>有沒有維管束？運水速度觀察</h2>
+      <p class="lead">
+        <span class="kw-green">蘚苔植物</span>沒有<span class="kw-blue">維管束</span>，
+        所以水分運輸速度較慢；而<span class="kw-green">蕨類植物</span>有<span class="kw-blue">維管束</span>，
+        水分可以更快送到較高的位置。
+      </p>
+
+      <div class="concept-box">
+        <strong>小知識：</strong>
+        沒有<span class="kw-blue">維管束</span>，就比較難把水分快速送往全身，
+        因此蘚苔植物通常比較<span class="kw-orange">矮小</span>。
+      </div>
+
+      <div class="task-box">
+        <p class="task-title">互動任務：先按下按鈕觀察，再回答問題</p>
+        <p class="task-sub">觀察哪一邊的水上升比較快、上升得比較高。</p>
+
+        <div class="start-animation-wrap">
+          <button class="start-btn" id="startWaterBtn" type="button">開始觀察水分運輸</button>
+          <button class="replay-btn" id="replayWaterBtn" type="button">再次觀看</button>
+        </div>
+
+        <div class="water-compare">
+          <div class="water-panel">
+            <h4>蘚苔植物</h4>
+            <div class="tube">
+              <div class="fill" id="slowFill"></div>
+            </div>
+            <p class="tube-note">水分慢慢上升，停在較低位置</p>
+          </div>
+          <div class="water-panel">
+            <h4>蕨類植物</h4>
+            <div class="tube">
+              <div class="fill" id="fastFill"></div>
+            </div>
+            <p class="tube-note">水分快速上升，停在較高位置</p>
+          </div>
+        </div>
+
+        <div class="radio-list" data-randomize="true" style="margin-top:14px;">
+          <label class="option">
+            <input type="radio" name="q2" value="a">
+            因為蘚苔植物沒有維管束，水分和養分運輸較慢，所以通常長不高。
+          </label>
+          <label class="option">
+            <input type="radio" name="q2" value="b">
+            因為蘚苔植物沒有葉子，所以一定長不高。
+          </label>
+          <label class="option">
+            <input type="radio" name="q2" value="c">
+            因為蘚苔植物都生長在岩石上，所以長不高。
+          </label>
+        </div>
+
+        <div class="controls">
+          <button class="check-btn" disabled>檢查答案</button>
+          <button class="retry-btn" type="button">重做本題</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <section class="mission" id="q3" data-type="flip">
+      <div class="mission-tag">任務三</div>
+      <h2>外形辨識</h2>
+      <p class="lead">
+        常見的蘚苔植物包括<span class="kw-green">地錢</span>、
+        <span class="kw-green">土馬騌</span>和
+        <span class="kw-green">水苔</span>。
+        它們的外形與用途各不相同。
+      </p>
+
+      <div class="concept-box">
+        <strong>小知識：</strong>
+        <span class="kw-green">地錢</span>通常呈<span class="kw-orange">扁平</span>狀，
+        <span class="kw-green">土馬騌</span>多為<span class="kw-orange">直立</span>狀，
+        而<span class="kw-green">水苔</span>具有良好的<span class="kw-orange">保水性</span>。
+      </div>
+
+      <div class="task-box">
+        <p class="task-title">互動任務：點卡片翻面，讀完特徵後回答問題</p>
+        <p class="task-sub">先把三張卡片都翻開，再選出最符合敘述的植物。</p>
+
+        <div class="flip-grid">
+          <div class="flip-card">
+            <div class="flip-inner">
+              <div class="flip-front">
+                <img src="bryophyte_marchantia.jpg" alt="地錢">
+                <div class="front-body">
+                  <h4>卡片一</h4>
+                  <p>點一下翻面</p>
+                </div>
+              </div>
+              <div class="flip-back">
+                <div class="back-body">
+                  <h4>地錢</h4>
+                  <p>外形扁平，常平鋪在地面或岩石表面。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flip-card">
+            <div class="flip-inner">
+              <div class="flip-front">
+                <img src="bryophyte_polytrichum.jpg" alt="土馬騌">
+                <div class="front-body">
+                  <h4>卡片二</h4>
+                  <p>點一下翻面</p>
+                </div>
+              </div>
+              <div class="flip-back">
+                <div class="back-body">
+                  <h4>土馬騌</h4>
+                  <p>外形較直立，常見於陰濕地面。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flip-card">
+            <div class="flip-inner">
+              <div class="flip-front">
+                <img src="bryophyte_sphagnum.jpg" alt="水苔">
+                <div class="front-body">
+                  <h4>卡片三</h4>
+                  <p>點一下翻面</p>
+                </div>
+              </div>
+              <div class="flip-back">
+                <div class="back-body">
+                  <h4>水苔</h4>
+                  <p>保水性佳，常作為園藝材料。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="radio-list" data-randomize="true" style="margin-top:14px;">
+          <label class="option">
+            <input type="radio" name="q3" value="a">
+            外形扁平、平鋪地面的植物是地錢。
+          </label>
+          <label class="option">
+            <input type="radio" name="q3" value="b">
+            外形扁平、平鋪地面的植物是土馬騌。
+          </label>
+          <label class="option">
+            <input type="radio" name="q3" value="c">
+            外形扁平、平鋪地面的植物是水苔。
+          </label>
+        </div>
+
+        <div class="controls">
+          <button class="check-btn" disabled>檢查答案</button>
+          <button class="retry-btn" type="button">重做本題</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <section class="mission" id="q4" data-type="single">
+      <div class="mission-tag">任務四</div>
+      <h2>保水小任務</h2>
+      <p class="lead">
+        有些蘚苔植物除了能在自然環境中生長，也有生活上的應用。
+        其中<span class="kw-green">水苔</span>因為<span class="kw-orange">保水性佳</span>，
+        常被用在園藝與造景中。
+      </p>
+
+      <div class="concept-box">
+        <strong>小知識：</strong>
+        若要做瓶中景觀或幫植物增加保濕效果，
+        <span class="kw-green">水苔</span>通常是很常見的材料。
+      </div>
+
+      <div class="task-box">
+        <div class="usage-photo">
+          <img class="usage-photo-img" src="bryophyte_sphagnum_gardening.jpg" alt="水苔作為園藝材料">
+          <div class="caption">水苔常用於園藝、保水與造景材料。</div>
+        </div>
+
+        <div class="mini-scene">
+          <p class="scene-title">情境任務</p>
+          <p class="scene-text">
+            小明想做瓶中景觀，想選一種保水效果好的植物材料，應該選哪一個？
+          </p>
+        </div>
+
+        <div class="radio-list" data-randomize="true">
+          <label class="option">
+            <input type="radio" name="q4" value="a">
+            地錢
+          </label>
+          <label class="option">
+            <input type="radio" name="q4" value="b">
+            水苔
+          </label>
+          <label class="option">
+            <input type="radio" name="q4" value="c">
+            腎蕨
+          </label>
+          <label class="option">
+            <input type="radio" name="q4" value="d">
+            松葉
+          </label>
+        </div>
+
+        <div class="controls">
+          <button class="check-btn" disabled>檢查答案</button>
+          <button class="retry-btn" type="button">重做本題</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <section class="mission" id="q5" data-type="match">
+      <div class="mission-tag">任務五</div>
+      <h2>蘚苔生存條件配對</h2>
+      <p class="lead">
+        蘚苔植物的構造和它們的生存方式有密切關係。
+        了解這些特徵，就能知道它們為什麼適合生活在潮溼環境中。
+      </p>
+
+      <div class="concept-box">
+        <strong>小知識：</strong>
+        <span class="kw-orange">角質層</span>可以減少水分散失；
+        沒有<span class="kw-blue">維管束</span>使蘚苔植物多半較<span class="kw-orange">矮小</span>；
+        喜歡潮溼環境則能避免乾燥帶來的影響。
+      </div>
+
+      <div class="task-box">
+        <p class="task-title">互動任務：幫蘚苔植物找到正確原因</p>
+        <p class="task-sub">請替每個特徵選出最合適的解釋。</p>
+
+        <div class="match-grid">
+          <div class="match-row">
+            <div class="left">有角質層</div>
+            <div><select class="match-select-2" data-answer="cuticle"></select></div>
+          </div>
+          <div class="match-row">
+            <div class="left">無維管束</div>
+            <div><select class="match-select-2" data-answer="small"></select></div>
+          </div>
+          <div class="match-row">
+            <div class="left">喜潮溼環境</div>
+            <div><select class="match-select-2" data-answer="avoid-dry"></select></div>
+          </div>
+          <div class="match-row">
+            <div class="left">常見於岩石、樹幹</div>
+            <div><select class="match-select-2" data-answer="attach"></select></div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="check-btn" disabled>檢查答案</button>
+          <button class="retry-btn" type="button">重做本題</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <section class="mission" id="q6" data-type="multi-group">
+      <div class="mission-tag">出口任務</div>
+      <h2>幫蘚苔植物寫身分證</h2>
+      <p class="lead">
+        現在你已經認識蘚苔植物的環境、構造與用途，
+        來幫它完成一張簡單的身分證吧！
+      </p>
+
+      <div class="concept-box">
+        <strong>小知識：</strong>
+        蘚苔植物通常<span class="kw-red">沒有維管束</span>、
+        個體較<span class="kw-orange">矮小</span>、
+        喜歡<span class="kw-orange">潮溼</span>環境，
+        而<span class="kw-green">水苔</span>還具有良好的<span class="kw-orange">保水性</span>。
+      </div>
+
+      <div class="task-box">
+        <p class="task-title">互動任務：完成蘚苔植物身分證</p>
+        <p class="task-sub">每一欄都要選出正確答案。</p>
+
+        <div class="id-card">
+          <div class="id-card-group">
+            <h4>維管束</h4>
+            <div class="radio-list" data-randomize="true">
+              <label class="option"><input type="radio" name="id1" value="a"> 有維管束</label>
+              <label class="option"><input type="radio" name="id1" value="b"> 沒有維管束</label>
+            </div>
+          </div>
+
+          <div class="id-card-group">
+            <h4>個體高度</h4>
+            <div class="radio-list" data-randomize="true">
+              <label class="option"><input type="radio" name="id2" value="a"> 通常高大</label>
+              <label class="option"><input type="radio" name="id2" value="b"> 通常矮小</label>
+            </div>
+          </div>
+
+          <div class="id-card-group">
+            <h4>常見環境</h4>
+            <div class="radio-list" data-randomize="true">
+              <label class="option"><input type="radio" name="id3" value="a"> 乾燥沙地</label>
+              <label class="option"><input type="radio" name="id3" value="b"> 潮溼土壤、岩石、樹幹</label>
+            </div>
+          </div>
+
+          <div class="id-card-group">
+            <h4>是否適合園藝保水</h4>
+            <div class="radio-list" data-randomize="true">
+              <label class="option"><input type="radio" name="id4" value="a"> 水苔適合</label>
+              <label class="option"><input type="radio" name="id4" value="b"> 所有蘚苔植物都不適合</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="check-btn" disabled>檢查答案</button>
+          <button class="retry-btn" type="button">重做本題</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <footer class="page-nav">
+      <a class="nav-btn" href="./plant01_intro.html">← 上一頁</a>
+      <a class="nav-btn next disabled" id="nextBtn" href="./plant03_fern.html" aria-disabled="true">下一頁 →</a>
+      <div class="unlock-note" id="unlockMessage">請先把本頁所有任務都答對，才可前往下一頁。</div>
+    </footer>
+  </div>
+
+  <script>
+    const questionState = {
+      q1: false,
+      q2: false,
+      q3: false,
+      q4: false,
+      q5: false,
+      q6: false
+    };
+
+    let waterObserved = false;
+
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function randomizeOptionLabels(container) {
+      const labels = Array.from(container.querySelectorAll("label.option"));
+      const shuffled = shuffleArray(labels);
+      shuffled.forEach(label => container.appendChild(label));
+    }
+
+    function buildSelectOptions(select, items, placeholder = "請選擇") {
+      select.innerHTML = "";
+      const first = document.createElement("option");
+      first.value = "";
+      first.textContent = placeholder;
+      select.appendChild(first);
+
+      shuffleArray(items).forEach(item => {
+        const opt = document.createElement("option");
+        opt.value = item.value;
+        opt.textContent = item.label;
+        select.appendChild(opt);
+      });
+    }
+
+    function updateNextButton() {
+      const nextBtn = document.getElementById("nextBtn");
+      const unlockMessage = document.getElementById("unlockMessage");
+      const allCorrect = Object.values(questionState).every(Boolean);
+
+      if (allCorrect) {
+        nextBtn.classList.remove("disabled");
+        nextBtn.setAttribute("aria-disabled", "false");
+        unlockMessage.textContent = "全部答對，已解鎖下一頁。";
+      } else {
+        nextBtn.classList.add("disabled");
+        nextBtn.setAttribute("aria-disabled", "true");
+        unlockMessage.textContent = "請先把本頁所有任務都答對，才可前往下一頁。";
+      }
+    }
+
+    function lockInputs(section, locked) {
+      section.querySelectorAll("input, select, .start-btn, .replay-btn").forEach(el => {
+        el.disabled = locked;
+      });
+    }
+
+    function setResult(section, isCorrect, msg) {
+      const feedback = section.querySelector(".feedback");
+      const retryBtn = section.querySelector(".retry-btn");
+      const checkBtn = section.querySelector(".check-btn");
+
+      section.classList.remove("correct", "incorrect");
+      section.classList.add(isCorrect ? "correct" : "incorrect");
+
+      feedback.className = "feedback show " + (isCorrect ? "success" : "error");
+      feedback.innerHTML = msg;
+
+      lockInputs(section, true);
+      checkBtn.disabled = true;
+      retryBtn.style.display = isCorrect ? "none" : "inline-flex";
+    }
+
+    function resetSection(section) {
+      section.classList.remove("correct", "incorrect");
+      const feedback = section.querySelector(".feedback");
+      const retryBtn = section.querySelector(".retry-btn");
+      const checkBtn = section.querySelector(".check-btn");
+
+      feedback.className = "feedback";
+      feedback.innerHTML = "";
+      retryBtn.style.display = "none";
+
+      lockInputs(section, false);
+
+      if (section.dataset.type === "single") {
+        section.querySelectorAll('input[type="radio"]').forEach(input => input.checked = false);
+      }
+
+      if (section.dataset.type === "multi-group") {
+        section.querySelectorAll('input[type="radio"]').forEach(input => input.checked = false);
+      }
+
+      if (section.dataset.type === "match") {
+        if (section.id === "q1") initMatchQ1(section, true);
+        if (section.id === "q5") initMatchQ5(section, true);
+      }
+
+      if (section.dataset.type === "flip") {
+        section.querySelectorAll(".flip-card").forEach(card => card.classList.remove("flipped"));
+        section.querySelectorAll('input[type="radio"]').forEach(input => input.checked = false);
+        initFlipState(section);
+      }
+
+      if (section.id === "q2") {
+        resetWaterAnimation();
+      }
+
+      checkBtn.disabled = true;
+      questionState[section.id] = false;
+      updateNextButton();
+    }
+
+    function initSingleQuestion(section, correctValue, successMsg, errorMsg, extraCheck = null) {
+      const radios = section.querySelectorAll('input[type="radio"]');
+      const checkBtn = section.querySelector(".check-btn");
+      const retryBtn = section.querySelector(".retry-btn");
+
+      function refreshCheck() {
+        const hasAnswer = !!section.querySelector('input[type="radio"]:checked');
+        const extraOk = extraCheck ? extraCheck() : true;
+        checkBtn.disabled = !(hasAnswer && extraOk);
+      }
+
+      radios.forEach(radio => radio.addEventListener("change", refreshCheck));
+
+      if (section.id === "q2") {
+        document.getElementById("startWaterBtn").addEventListener("click", refreshCheck);
+        document.getElementById("replayWaterBtn").addEventListener("click", refreshCheck);
+      }
+
+      checkBtn.addEventListener("click", () => {
+        const selected = section.querySelector('input[type="radio"]:checked');
+        if (!selected) return;
+
+        const ok = selected.value === correctValue;
+        questionState[section.id] = ok;
+        setResult(section, ok, ok ? successMsg : errorMsg);
+        updateNextButton();
+      });
+
+      retryBtn.addEventListener("click", () => resetSection(section));
+    }
+
+    function initMultiGroupQuestion(section, answerMap, successMsg, errorMsg) {
+      const checkBtn = section.querySelector(".check-btn");
+      const retryBtn = section.querySelector(".retry-btn");
+      const groupNames = Object.keys(answerMap);
+
+      function refresh() {
+        const allDone = groupNames.every(name => section.querySelector(`input[name="${name}"]:checked`));
+        checkBtn.disabled = !allDone;
+      }
+
+      section.querySelectorAll('input[type="radio"]').forEach(radio => {
+        radio.addEventListener("change", refresh);
+      });
+
+      checkBtn.addEventListener("click", () => {
+        const ok = groupNames.every(name => {
+          const selected = section.querySelector(`input[name="${name}"]:checked`);
+          return selected && selected.value === answerMap[name];
+        });
+
+        questionState[section.id] = ok;
+        setResult(section, ok, ok ? successMsg : errorMsg);
+        updateNextButton();
+      });
+
+      retryBtn.addEventListener("click", () => resetSection(section));
+    }
+
+    const q1OptionsMarchantia = [
+      { value: "dry-desert", label: "乾燥沙地" },
+      { value: "wet-rock", label: "潮溼岩石" },
+      { value: "dry-bark", label: "樹幹高處乾燥表面" }
+    ];
+
+    const q1OptionsMoss = [
+      { value: "dry-desert", label: "乾燥沙地" },
+      { value: "wet-soil", label: "陰濕土壤" },
+      { value: "dry-bark", label: "樹幹高處乾燥表面" }
+    ];
+
+    function initMatchQ1(section, rebuildOnly = false) {
+      const selects = section.querySelectorAll(".match-select");
+      const checkBtn = section.querySelector(".check-btn");
+      const retryBtn = section.querySelector(".retry-btn");
+
+      selects.forEach(select => {
+        if (select.dataset.answer === "wet-rock") {
+          buildSelectOptions(select, q1OptionsMarchantia);
+        } else if (select.dataset.answer === "wet-soil") {
+          buildSelectOptions(select, q1OptionsMoss);
+        }
+
+        select.addEventListener("change", () => {
+          const allFilled = Array.from(selects).every(s => s.value !== "");
+          checkBtn.disabled = !allFilled;
+        });
+      });
+
+      if (rebuildOnly) return;
+
+      checkBtn.addEventListener("click", () => {
+        const ok = Array.from(selects).every(select => select.value === select.dataset.answer);
+        questionState[section.id] = ok;
+        setResult(
+          section,
+          ok,
+          ok
+            ? "答對了！地錢較符合潮溼岩石的平鋪生長，土馬騌則較符合陰濕土壤。"
+            : "還有配對不正確。請再看一次提示：地錢偏扁平平鋪，土馬騌較直立且常見於陰濕地面。"
+        );
+        updateNextButton();
+      });
+
+      retryBtn.addEventListener("click", () => resetSection(section));
+    }
+
+    const q5Options = [
+      { value: "cuticle", label: "減少水分散失" },
+      { value: "small", label: "個體較矮小" },
+      { value: "avoid-dry", label: "避免乾燥" },
+      { value: "attach", label: "可附著生長" }
+    ];
+
+    function initMatchQ5(section, rebuildOnly = false) {
+      const selects = section.querySelectorAll(".match-select-2");
+      const checkBtn = section.querySelector(".check-btn");
+      const retryBtn = section.querySelector(".retry-btn");
+
+      selects.forEach(select => {
+        buildSelectOptions(select, q5Options);
+        select.addEventListener("change", () => {
+          const allFilled = Array.from(selects).every(s => s.value !== "");
+          checkBtn.disabled = !allFilled;
+        });
+      });
+
+      if (rebuildOnly) return;
+
+      checkBtn.addEventListener("click", () => {
+        const ok = Array.from(selects).every(select => select.value === select.dataset.answer);
+        questionState[section.id] = ok;
+        setResult(
+          section,
+          ok,
+          ok
+            ? "答對了！你已經把蘚苔植物的特徵和生存原因配對完成。"
+            : "還有配對錯誤。請再想想：不同特徵都和蘚苔植物的生存方式有關。"
+        );
+        updateNextButton();
+      });
+
+      retryBtn.addEventListener("click", () => resetSection(section));
+    }
+
+    function initFlipState(section) {
+      const checkBtn = section.querySelector(".check-btn");
+      checkBtn.disabled = true;
+    }
+
+    function initFlipQuestion(section, correctValue, successMsg, errorMsg) {
+      const cards = section.querySelectorAll(".flip-card");
+      const radios = section.querySelectorAll('input[type="radio"]');
+      const checkBtn = section.querySelector(".check-btn");
+      const retryBtn = section.querySelector(".retry-btn");
+
+      initFlipState(section);
+
+      cards.forEach(card => {
+        card.addEventListener("click", () => {
+          if (card.classList.contains("flipped")) return;
+          card.classList.add("flipped");
+
+          const flippedAll = section.querySelectorAll(".flip-card.flipped").length === cards.length;
+          const hasAnswer = !!section.querySelector('input[type="radio"]:checked');
+          checkBtn.disabled = !(flippedAll && hasAnswer);
+        });
+      });
+
+      radios.forEach(radio => {
+        radio.addEventListener("change", () => {
+          const flippedAll = section.querySelectorAll(".flip-card.flipped").length === cards.length;
+          const hasAnswer = !!section.querySelector('input[type="radio"]:checked');
+          checkBtn.disabled = !(flippedAll && hasAnswer);
+        });
+      });
+
+      checkBtn.addEventListener("click", () => {
+        const selected = section.querySelector('input[type="radio"]:checked');
+        if (!selected) return;
+
+        const ok = selected.value === correctValue;
+        questionState[section.id] = ok;
+        setResult(section, ok, ok ? successMsg : errorMsg);
+        updateNextButton();
+      });
+
+      retryBtn.addEventListener("click", () => resetSection(section));
+    }
+
+    function resetWaterAnimation() {
+      const slowFill = document.getElementById("slowFill");
+      const fastFill = document.getElementById("fastFill");
+      const startBtn = document.getElementById("startWaterBtn");
+      const replayBtn = document.getElementById("replayWaterBtn");
+
+      slowFill.style.transition = "none";
+      fastFill.style.transition = "none";
+      slowFill.style.height = "0%";
+      fastFill.style.height = "0%";
+      void slowFill.offsetHeight;
+      void fastFill.offsetHeight;
+      slowFill.style.transition = "";
+      fastFill.style.transition = "";
+
+      waterObserved = false;
+      startBtn.disabled = false;
+      replayBtn.classList.remove("show");
+      replayBtn.disabled = false;
+    }
+
+    function playWaterAnimation() {
+      const slowFill = document.getElementById("slowFill");
+      const fastFill = document.getElementById("fastFill");
+      const startBtn = document.getElementById("startWaterBtn");
+      const replayBtn = document.getElementById("replayWaterBtn");
+      const q2 = document.getElementById("q2");
+      const checkBtn = q2.querySelector(".check-btn");
+
+      waterObserved = false;
+      startBtn.disabled = true;
+      replayBtn.disabled = true;
+
+      slowFill.style.transition = "none";
+      fastFill.style.transition = "none";
+      slowFill.style.height = "0%";
+      fastFill.style.height = "0%";
+      void slowFill.offsetHeight;
+      void fastFill.offsetHeight;
+
+      slowFill.style.transition = "height 4.2s ease-out";
+      fastFill.style.transition = "height 1.6s ease-out";
+
+      requestAnimationFrame(() => {
+        slowFill.style.height = "30%";
+        fastFill.style.height = "82%";
+      });
+
+      setTimeout(() => {
+        waterObserved = true;
+        replayBtn.classList.add("show");
+        replayBtn.disabled = false;
+
+        const hasAnswer = !!q2.querySelector('input[type="radio"]:checked');
+        checkBtn.disabled = !hasAnswer;
+      }, 4300);
+    }
+
+    function initWaterAnimation() {
+      const startBtn = document.getElementById("startWaterBtn");
+      const replayBtn = document.getElementById("replayWaterBtn");
+
+      startBtn.addEventListener("click", playWaterAnimation);
+      replayBtn.addEventListener("click", playWaterAnimation);
+    }
+
+    document.querySelectorAll('[data-randomize="true"]').forEach(container => {
+      randomizeOptionLabels(container);
+    });
+
+    initMatchQ1(document.getElementById("q1"));
+    initWaterAnimation();
+
+    initSingleQuestion(
+      document.getElementById("q2"),
+      "a",
+      "答對了！蘚苔植物沒有維管束，水分和養分運輸較慢，所以通常長不高。",
+      "再想想看。關鍵原因和有沒有維管束有關，不只是生長地點。",
+      () => waterObserved
+    );
+
+    initFlipQuestion(
+      document.getElementById("q3"),
+      "a",
+      "答對了！地錢的特徵就是外形扁平，常平鋪在地面或岩石表面。",
+      "這題不對。請回想三張卡片的特徵：扁平平鋪的是地錢。"
+    );
+
+    initSingleQuestion(
+      document.getElementById("q4"),
+      "b",
+      "答對了！水苔保水性佳，常用於園藝與造景材料。",
+      "再想想看。題目問的是保水效果好的材料，這正是水苔的特色。"
+    );
+
+    initMatchQ5(document.getElementById("q5"));
+
+    initMultiGroupQuestion(
+      document.getElementById("q6"),
+      { id1: "b", id2: "b", id3: "b", id4: "a" },
+      "答對了！你已經幫蘚苔植物完成身分證：沒有維管束、通常矮小、喜歡潮溼環境，水苔還適合園藝保水。",
+      "還有幾欄寫錯了。請再想想蘚苔植物的環境、構造與用途。"
+    );
+
+    updateNextButton();
+  </script>
+</body>
+</html>

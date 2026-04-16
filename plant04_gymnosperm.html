@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>裸子植物</title>
+  <style>
+    :root {
+      --bg1: #f6fff5;
+      --bg2: #eaf6ec;
+      --card: #ffffff;
+      --ink: #203026;
+      --sub: #5a6f60;
+      --green: #2f7d4a;
+      --green-dark: #245f38;
+      --green-soft: #e9f7ec;
+      --green-border: #67b380;
+      --red: #b94a48;
+      --red-soft: #fdecec;
+      --red-border: #d97a76;
+      --line: #dbe7d9;
+      --brown: #8b6b4a;
+      --brown-soft: #f7f1e8;
+      --blue: #2b6cb0;
+      --orange: #c56a1a;
+      --purple: #7b4db5;
+      --shadow: 0 8px 24px rgba(0,0,0,.08);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      color: var(--ink);
+      line-height: 1.75;
+      background: radial-gradient(circle at top left, var(--bg1) 0%, var(--bg2) 42%, #e4f0e6 100%);
+    }
+
+    .container {
+      width: min(1120px, 92%);
+      margin: 0 auto;
+      padding: 28px 0 50px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(255,255,255,.97), rgba(236,247,235,.97));
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      padding: 28px 24px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.95rem, 3vw, 2.8rem);
+      color: var(--green-dark);
+    }
+
+    .hero p {
+      margin: 0 0 10px;
+      color: var(--sub);
+      font-size: 1.02rem;
+    }
+
+    .hero-note {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-left: 5px solid var(--green);
+      background: #f8fcf7;
+      border-radius: 12px;
+      font-weight: 700;
+      color: #365641;
+    }
+
+    .guide {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .guide-badge {
+      background: #eef7ed;
+      border: 1px solid #d8e6d6;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: .95rem;
+      color: #335840;
+      font-weight: 700;
+    }
+
+    .mission {
+      background: var(--card);
+      border: 2px solid #e2ece0;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px 18px;
+      margin-bottom: 22px;
+      transition: .2s ease;
+    }
+
+    .mission.correct {
+      background: var(--green-soft);
+      border-color: var(--green-border);
+    }
+
+    .mission.incorrect {
+      background: var(--red-soft);
+      border-color: var(--red-border);
+    }
+
+    .mission-tag {
+      display: inline-block;
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: #eef7ed;
+      color: var(--green);
+      font-size: .9rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .mission h2 {
+      margin: 0 0 8px;
+      font-size: 1.34rem;
+      color: var(--green-dark);
+    }
+
+    .mission .lead {
+      margin: 0;
+      color: var(--sub);
+    }
+
+    .concept-box {
+      margin: 14px 0 18px;
+      padding: 14px 16px;
+      background: #f8fcf7;
+      border: 1px solid #dce9db;
+      border-radius: 14px;
+    }
+
+    .concept-box strong {
+      color: var(--green-dark);
+    }
+
+    .task-box {
+      background: #fff;
+      border: 1px solid #e5ede3;
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .task-title {
+      margin: 0 0 12px;
+      font-weight: 800;
+      color: #2d5e3b;
+      font-size: 1.05rem;
+    }
+
+    .task-sub {
+      margin: -4px 0 12px;
+      color: var(--sub);
+      font-size: .96rem;
+    }
+
+    .kw-green { color: var(--green); font-weight: 800; }
+    .kw-blue { color: var(--blue); font-weight: 800; }
+    .kw-orange { color: var(--orange); font-weight: 800; }
+    .kw-purple { color: var(--purple); font-weight: 800; }
+    .kw-red { color: var(--red); font-weight: 800; }
+
+    .radio-list,
+    .id-card {
+      display: grid;
+      gap: 10px;
+    }
+
+    label.option {
+      display: block;
+      padding: 13px 14px;
+      border: 2px solid #dbe7d9;
+      border-radius: 14px;
+      background: #fcfffb;
+      cursor: pointer;
+      transition: .18s ease;
+    }
+
+    label.option:hover {
+      border-color: #9ec39f;
+      transform: translateY(-1px);
+    }
+
+    label.option input {
+      margin-right: 10px;
+      transform: scale(1.08);
+    }
+
+    .match-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .match-row {
+      display: grid;
+      grid-template-columns: minmax(180px, 1fr) minmax(220px, 1fr);
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      background: #fbfef9;
+      border: 1px solid #e1ebdf;
+      border-radius: 14px;
+    }
+
+    .match-row .left {
+      font-weight: 800;
+      color: #2d5e3b;
+    }
+
+    .pair-layout {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .pair-targets,
+    .pair-bank {
+      display: grid;
+      gap: 12px;
+    }
+
+    .pair-slot {
+      background: #fbfef9;
+      border: 2px dashed #dce8da;
+      border-radius: 16px;
+      padding: 14px;
+      min-height: 96px;
+      transition: .18s ease;
+    }
+
+    .pair-slot.active {
+      border-color: var(--blue);
+      background: #eef5ff;
+    }
+
+    .pair-slot.filled {
+      border-style: solid;
+    }
+
+    .pair-slot-title {
+      font-weight: 800;
+      color: #2d5e3b;
+      margin-bottom: 8px;
+    }
+
+    .pair-slot-body {
+      min-height: 28px;
+    }
+
+    .pair-card {
+      padding: 14px;
+      border: 2px solid #dbe7d9;
+      border-radius: 14px;
+      background: #fcfffb;
+      cursor: pointer;
+      transition: .18s ease;
+      font-weight: 700;
+      color: #2d5e3b;
+    }
+
+    .pair-card:hover {
+      border-color: #9ec39f;
+      transform: translateY(-1px);
+    }
+
+    .pair-card.selected {
+      border-color: var(--blue);
+      background: #eef5ff;
+      color: var(--blue);
+    }
+
+    .pair-card.used {
+      background: #edf7ee;
+      border-color: var(--green-border);
+      color: #2d5e3b;
+      cursor: default;
+      opacity: .95;
+    }
+
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 2px solid #d8e4d6;
+      background: #fff;
+      font-size: 1rem;
+      color: var(--ink);
+    }
+
+    .flip-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .flip-card {
+      perspective: 1000px;
+      cursor: pointer;
+      min-height: 330px;
+    }
+
+    .flip-inner {
+      position: relative;
+      width: 100%;
+      min-height: 330px;
+      transition: transform .7s;
+      transform-style: preserve-3d;
+    }
+
+    .flip-card.flipped .flip-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-front,
+    .flip-back {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      border: 2px solid #dce8da;
+      border-radius: 16px;
+      background: #fcfffb;
+      overflow: hidden;
+    }
+
+    .flip-front img {
+      width: 100%;
+      height: 210px;
+      object-fit: contain;
+      display: block;
+      background: #f5faf4;
+    }
+
+    .flip-front .front-body,
+    .flip-back .back-body {
+      padding: 14px;
+      text-align: center;
+    }
+
+    .flip-back {
+      transform: rotateY(180deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+    }
+
+    .compare-photo {
+      margin: 12px auto 14px;
+      border: 1px solid #dde8db;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fbfef9;
+      max-width: 820px;
+    }
+
+    .compare-photo img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      background: #f5faf4;
+    }
+
+    .compare-photo .caption {
+      padding: 10px 14px;
+      color: var(--sub);
+      font-size: .95rem;
+    }
+
+    .scene-box {
+      margin: 12px 0 14px;
+      padding: 14px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #f9fcf7, #f2f9f0);
+      border: 1px solid #dde8db;
+    }
+
+    .scene-title {
+      margin: 0 0 8px;
+      font-weight: 800;
+      color: #2d5e3b;
+    }
+
+    .scene-text {
+      margin: 0;
+      color: var(--sub);
+    }
+
+    .sort-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .sort-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 14px;
+      background: #fbfef9;
+      border: 2px solid #dce8da;
+      border-radius: 16px;
+    }
+
+    .sort-text {
+      font-weight: 700;
+      color: #2d5e3b;
+    }
+
+    .sort-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .move-btn {
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: .95rem;
+      background: var(--blue);
+      color: #fff;
+      min-width: 52px;
+    }
+
+    .move-btn:disabled {
+      background: #aab8ad;
+      cursor: not-allowed;
+    }
+
+    .id-card-group {
+      background: #fbfef9;
+      border: 1px solid #dfe9dc;
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .id-card-group h4 {
+      margin: 0 0 8px;
+      color: #2d5e3b;
+      font-size: 1rem;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    button,
+    .nav-btn {
+      appearance: none;
+      border: none;
+      border-radius: 999px;
+      padding: 11px 18px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+      transition: .18s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .check-btn {
+      background: var(--green-dark);
+      color: #fff;
+    }
+
+    .check-btn:disabled {
+      background: #aab8ad;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .retry-btn {
+      background: var(--brown);
+      color: #fff;
+      display: none;
+    }
+
+    .feedback {
+      display: none;
+      margin-top: 14px;
+      padding: 13px 15px;
+      border-radius: 14px;
+      font-weight: 700;
+    }
+
+    .feedback.show { display: block; }
+    .feedback.success {
+      background: rgba(76,175,80,.12);
+      color: #255c2c;
+    }
+    .feedback.error {
+      background: rgba(217,83,79,.12);
+      color: #8b2f2c;
+    }
+
+    footer.page-nav {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .nav-btn {
+      border: 2px solid #d9cbb8;
+      background: var(--brown-soft);
+      color: #534b40;
+    }
+
+    .nav-btn.next {
+      background: var(--green-dark);
+      border-color: var(--green-dark);
+      color: #fff;
+    }
+
+    .nav-btn.disabled {
+      opacity: .45;
+      pointer-events: none;
+      filter: grayscale(.25);
+    }
+
+    .unlock-note {
+      width: 100%;
+      color: var(--sub);
+      font-size: .96rem;
+    }
+
+    @media (max-width: 720px) {
+      .match-row,
+      .pair-layout,
+      .sort-row {
+        grid-template-columns: 1fr;
+      }
+
+      .flip-card,
+      .flip-inner {
+        min-height: 300px;
+      }
+
+      .flip-front img {
+        height: 180px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <h1>裸子植物</h1>
+      <p>
+        裸子植物是<span class="kw-green">種子植物</span>的一群，具有<span class="kw-blue">維管束</span>，
+        能在陸地上穩定生長，也常長成高大的木本植物。
+      </p>
+      <p>
+        這一頁你會認識裸子植物的關鍵特徵：
+        它們以<span class="kw-orange">種子</span>繁殖，
+        但種子<span class="kw-red">沒有果實包住</span>，
+        常見代表有松、杉、柏、蘇鐵與銀杏。
+      </p>
+      <div class="hero-note">
+        完成本頁全部任務，且全部答對後，才能解鎖「下一頁 →」。
+      </div>
+      <div class="guide">
+        <div class="guide-badge">觀察種子與毬果</div>
+        <div class="guide-badge">分辨裸子與被子</div>
+        <div class="guide-badge">看圖認識代表植物</div>
+        <div class="guide-badge">全部答對才能前往下一頁</div>
+      </div>
+    </section>
+
+    <section class="mission" id="q1" data-type="single">
+      <div class="mission-tag">任務一</div>
+      <h2>先抓住裸子植物最重要的特徵</h2>
+      <p class="lead">
+        裸子植物屬於<span class="kw-green">種子植物</span>，
+        具有<span class="kw-blue">維管束</span>，
+        但它們的<span class="kw-orange">種子裸露</span>，沒有被果實包在裡面。
+      </p>
+
+      <div class="concept-box">
+        <strong>小知識：</strong>
+        「裸子」的意思不是沒有種子，而是
+        <span class="kw-red">種子沒有被果實包住</span>。
+      </div>
+
+      <div class="task-box">
+        <p class="task-title">互動任務：哪一句最符合裸子植物？</p>
+        <p class="task-sub">請選出最正確的描述。</p>
+
+        <div class="radio-list" data-randomize="true">
+          <label class="option"><input type="radio" name="q1" value="a"> 裸子植物的種子裸露，沒有果實包住。</label>
+          <label class="option"><input type="radio" name="q1" value="b"> 裸子植物沒有維管束，所以長得很矮小。</label>
+          <label class="option"><input type="radio" name="q1" value="c"> 裸子植物主要靠孢子繁殖，沒有種子。</label>
+        </div>
+
+        <div class="controls">
+          <button class="check-btn" disabled>檢查答案</button>
+          <button class="retry-btn" type="button">重做本題</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <section class="mission" id="q2" data-type="pair">
+      <div class="mission-tag">任務二</div>
+      <h2>裸子植物和被子植物怎麼分？</h2>
+      <p class="lead">
+        裸子植物和被子植物都屬於<span class="kw-green">種子植物</span>，
+        也都有<span class="kw-blue">維管束</span>。
+        最大差別在於：裸子植物的種子<span class="kw-red">裸露</span>，
+        被子植物的種子則包在<span class="kw-orange">果實</span>裡。
+      </p>
+
+      <div class="concept-box">
+        <strong>小知識：</strong>
+        看到果實時，通常表示那是<span class="kw-purple">被子植物</span>，
+        不是裸子植物。
+      </div>
+
+      <div class="task-box">
+        <p class="task-title">互動任務：先點描述卡，再點左邊類別完成配對</p>
+        <p class="task-sub">三組都配對完成後，才能檢查答案。</p>
+
+        <div class="pair-layout">
+          <div class="pair-targets">
+            <div class="pair-slot" data-slot="gymnosperm">
+              <div class="pair-slot-title">裸子植物</div>
+              <div class="pair-slot-body"></div>
+            </div>
+
+            <div class="pair-slot" data-slot="angiosperm">
+              <div class="pair-slot-title">被子植物</div>
+              <div class="pair-slot-body"></div>
+            </div>
+
+            <div class="pair-slot" data-slot="common">
+              <div class="pair-slot-title">共同點</div>
+              <div class="pair-slot-body"></div>
+            </div>
+          </div>
+
+          <div class="pair-bank" data-randomize-cards="true">
+            <div class="pair-card" data-answer="gymnosperm">種子裸露，沒有果實包住</div>
+            <div class="pair-card" data-answer="angiosperm">種子包在果實裡</div>
+            <div class="pair-card" data-answer="common">都是種子植物，也都有維管束</div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="check-btn" disabled>檢查答案</button>
+          <button class="retry-btn" type="button">重做本題</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <section class="mission" id="q3" data-type="flip_single">
+      <div class="mission-tag">任務三</div>
+      <h2>看圖認識常見裸子植物</h2>
+      <p class="lead">
+        常見的裸子植物有<span class="kw-green">松樹、杉樹</span>、
+        <span class="kw-green">蘇鐵</span>、
+        <span class="kw-green">銀杏</span>與<span class="kw-green">柏樹(紅檜也是屬於柏樹)</span>。
+      </p>
+
+      <div class="concept-box">
+        <strong>小知識：</strong>
+        並不是所有裸子植物看起來都像松樹，像<span class="kw-green">蘇鐵</span>和
+        <span class="kw-green">銀杏</span>也屬於裸子植物。
+      </div>
+
+      <div class="task-box">
+        <p class="task-title">互動任務：先翻完卡片，再回答問題</p>
+        <p class="task-sub">把卡片都看過後，選出正確敘述。</p>
+
+        <div class="flip-grid">
+          <div class="flip-card">
+            <div class="flip-inner">
+              <div class="flip-front">
+                <img src="gymnosperm_pine.jpg" alt="松樹">
+                <div class="front-body"><h4>卡片一</h4><p>點一下翻面</p></div>
+              </div>
+              <div class="flip-back">
+                <div class="back-body"><h4>松樹</h4><p>常可見毬果，是常見的裸子植物代表。</p></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flip-card">
+            <div class="flip-inner">
+              <div class="flip-front">
+                <img src="gymnosperm_cycas.jpg" alt="蘇鐵">
+                <div class="front-body"><h4>卡片二</h4><p>點一下翻面</p></div>
+              </div>
+              <div class="flip-back">
+                <div class="back-body"><h4>蘇鐵</h4><p>外形像棕櫚，但屬於裸子植物。</p></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flip-card">
+            <div class="flip-inner">
+              <div class="flip-front">
+                <img src="gymnosperm_ginkgo.jpg" alt="銀杏">
+                <div class="front-body"><h4>卡片三</h4><p>點一下翻面</p></div>
+              </div>
+              <div class="flip-back">
+                <div class="back-body"><h4>銀杏</h4><p>也是裸子植物的代表之一。</p></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flip-card">
+            <div class="flip-inner">
+              <div class="flip-front">
+                <img src="gymnosperm_cypress.jpg" alt="柏樹">
+                <div class="front-body"><h4>卡片四</h4><p>點一下翻面</p></div>
+              </div>
+              <div class="flip-back">
+                <div class="back-body"><h4>柏樹</h4><p>也是常見的木本裸子植物。</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="radio-list" data-randomize="true" style="margin-top:14px;">
+          <label class="option"><input type="radio" name="q3" value="a"> 松樹、蘇鐵、銀杏都屬於裸子植物。</label>
+          <label class="option"><input type="radio" name="q3" value="b"> 只有會開花結果的植物才是裸子植物。</label>
+          <label class="option"><input type="radio" name="q3" value="c"> 銀杏屬於蕨類植物。</label>
+        </div>
+
+        <div class="controls">
+          <button class="check-btn" disabled>檢查答案</button>
+          <button class="retry-btn" type="button">重做本題</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <section class="mission" id="q4" data-type="single">
+      <div class="mission-tag">任務四</div>
+      <h2>毬果和種子有什麼關係？</h2>
+      <p class="lead">
+        很多裸子植物會形成<span class="kw-orange">毬果</span>。
+        它們的種子常著生在毬果的鱗片上，
+        並<span class="kw-red">不會形成真正的果實</span>把種子包住。
+      </p>
+
+      <div class="concept-box">
+        <strong>小知識：</strong>
+        看到松果這類構造時，可以想一想：它保護的是種子，
+        但不是被子植物那種真正的果實。
+      </div>
+
+      <div class="task-box">
+        <div class="compare-photo">
+          <img src="gymnosperm_cone.jpg" alt="松果與種子">
+          <div class="caption">許多裸子植物會形成毬果，種子常著生在毬果鱗片上。</div>
+        </div>
+
+        <p class="task-title">互動任務：判斷正確敘述</p>
+        <p class="task-sub">請選出最符合毬果與種子關係的說法。</p>
+
+        <div class="radio-list" data-randomize="true">
+          <label class="option"><input type="radio" name="q4" value="a"> 裸子植物的種子通常裸露在毬果或鱗片上。</label>
+          <label class="option"><input type="radio" name="q4" value="b"> 裸子植物的種子一定包在甜美果肉裡。</label>
+          <label class="option"><input type="radio" name="q4" value="c"> 毬果就是花瓣聚在一起形成的果實。</label>
+        </div>
+
+        <div class="controls">
+          <button class="check-btn" disabled>檢查答案</button>
+          <button class="retry-btn" type="button">重做本題</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <section class="mission" id="q5" data-type="sequence">
+      <div class="mission-tag">任務五</div>
+      <h2>裸子植物的生殖過程</h2>
+      <p class="lead">
+        裸子植物沒有真正的花，常用<span class="kw-orange">毬果</span>完成生殖。
+        生殖過程中會經過<span class="kw-blue">花粉傳播</span>、
+        <span class="kw-red">受精</span>、
+        <span class="kw-purple">種子形成</span>與
+        <span class="kw-green">萌芽長成新個體</span>等階段。
+      </p>
+
+      <div class="concept-box">
+        <strong>教學重點：</strong>
+        裸子植物沒有<span class="kw-red">花</span>，<span class="kw-orange">毬果</span>是裸子植物的生殖器官，由鱗片組成，有<span class="kw-purple">雌、雄</span>之分。<span class="kw-purple">雌毬果</span>鱗片內側有<span class="kw-blue">胚珠</span>；<span class="kw-purple">雄毬果</span>成熟後會產生<span class="kw-blue">花粉</span>，花粉藉著<span class="kw-green">風力</span>的傳播，落在雌毬果上。完成<span class="kw-red">受精作用</span>後的胚珠會發育成<span class="kw-purple">種子</span>，有些裸子植物的種子有翅，可以隨風飄散，傳播到遠處，若環境適當，則可<span class="kw-green">萌芽</span>長成新個體。
+      </div>
+
+      <div class="task-box">
+        <div class="compare-photo">
+          <img src="gymnosperm_reproduction.jpg" alt="裸子植物生殖過程示意圖">
+        </div>
+
+        <p class="task-title">互動任務：把裸子植物的生殖過程排成正確順序</p>
+        <p class="task-sub">請用上下移動調整順序，再按檢查答案。</p>
+
+        <div class="sort-list" id="q5SequenceList">
+          <div class="sort-row" data-order="1">
+            <div class="sort-text">雄毬果產生花粉，花粉隨風傳播到雌毬果</div>
+            <div class="sort-actions">
+              <button class="move-btn move-up" type="button">↑</button>
+              <button class="move-btn move-down" type="button">↓</button>
+            </div>
+          </div>
+          <div class="sort-row" data-order="2">
+            <div class="sort-text">花粉到達後完成受精作用</div>
+            <div class="sort-actions">
+              <button class="move-btn move-up" type="button">↑</button>
+              <button class="move-btn move-down" type="button">↓</button>
+            </div>
+          </div>
+          <div class="sort-row" data-order="3">
+            <div class="sort-text">胚珠發育成種子</div>
+            <div class="sort-actions">
+              <button class="move-btn move-up" type="button">↑</button>
+              <button class="move-btn move-down" type="button">↓</button>
+            </div>
+          </div>
+          <div class="sort-row" data-order="4">
+            <div class="sort-text">種子散播後在適合環境萌芽長成新個體</div>
+            <div class="sort-actions">
+              <button class="move-btn move-up" type="button">↑</button>
+              <button class="move-btn move-down" type="button">↓</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="check-btn" disabled>檢查答案</button>
+          <button class="retry-btn" type="button">重做本題</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <section class="mission" id="q6" data-type="single">
+      <div class="mission-tag">任務六</div>
+      <h2>生活情境判斷</h2>
+      <p class="lead">
+        裸子植物常見於山區、公園、校園或行道樹環境，
+        有些還是重要的木材來源。
+      </p>
+
+      <div class="concept-box">
+        <strong>小知識：</strong>
+        松、杉、柏等木本植物常讓人聯想到裸子植物，
+        因為它們是常見的代表。
+      </div>
+
+      <div class="task-box">
+        <div class="scene-box">
+          <p class="scene-title">情境任務</p>
+          <p class="scene-text">
+            小華在校園裡看到一棵松樹和地上掉落的毬果，想判斷這是不是裸子植物的特徵。
+          </p>
+        </div>
+
+        <div class="radio-list" data-randomize="true">
+          <label class="option"><input type="radio" name="q6" value="a"> 松樹屬裸子植物，種子沒有果實包住。</label>
+          <label class="option"><input type="radio" name="q6" value="b"> 蕨類植物會形成毬果和裸露種子。</label>
+          <label class="option"><input type="radio" name="q6" value="c"> 蘚苔植物是最常見會形成大型毬果的植物。</label>
+        </div>
+
+        <div class="controls">
+          <button class="check-btn" disabled>檢查答案</button>
+          <button class="retry-btn" type="button">重做本題</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <section class="mission" id="q7" data-type="match">
+      <div class="mission-tag">任務七</div>
+      <h2>植物分類挑戰</h2>
+      <p class="lead">
+        現在你已經認識蘚苔植物、蕨類植物和裸子植物，
+        可以試著把不同植物放回正確的分類了。
+      </p>
+
+      <div class="concept-box">
+        <strong>小知識：</strong>
+        分類時可以先抓關鍵：
+        有沒有維管束、用孢子還是種子繁殖、種子有沒有包在果實裡。
+      </div>
+
+      <div class="task-box">
+        <p class="task-title">互動任務：替每種植物選出正確分類</p>
+        <p class="task-sub">每列都要選好，才能檢查答案。</p>
+
+        <div class="match-grid">
+          <div class="match-row">
+            <div class="left">地錢</div>
+            <div><select class="classify-select" data-answer="bryophyte"></select></div>
+          </div>
+          <div class="match-row">
+            <div class="left">腎蕨</div>
+            <div><select class="classify-select" data-answer="fern"></select></div>
+          </div>
+          <div class="match-row">
+            <div class="left">松樹</div>
+            <div><select class="classify-select" data-answer="gymnosperm"></select></div>
+          </div>
+          <div class="match-row">
+            <div class="left">向日葵</div>
+            <div><select class="classify-select" data-answer="angiosperm"></select></div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="check-btn" disabled>檢查答案</button>
+          <button class="retry-btn" type="button">重做本題</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <section class="mission" id="q8" data-type="multi-group">
+      <div class="mission-tag">出口任務</div>
+      <h2>幫裸子植物寫身分證</h2>
+      <p class="lead">
+        來把這一頁最重要的觀念整理成一張簡單的身分證。
+      </p>
+
+      <div class="concept-box">
+        <strong>小知識：</strong>
+        裸子植物通常<span class="kw-blue">有維管束</span>、
+        用<span class="kw-orange">種子</span>繁殖、
+        種子<span class="kw-red">裸露</span>、
+        不形成真正包住種子的<span class="kw-purple">果實</span>。
+      </div>
+
+      <div class="task-box">
+        <p class="task-title">互動任務：完成裸子植物身分證</p>
+        <p class="task-sub">每一欄都要選出正確答案。</p>
+
+        <div class="id-card">
+          <div class="id-card-group">
+            <h4>維管束</h4>
+            <div class="radio-list" data-randomize="true">
+              <label class="option"><input type="radio" name="id1" value="a"> 有維管束</label>
+              <label class="option"><input type="radio" name="id1" value="b"> 沒有維管束</label>
+            </div>
+          </div>
+
+          <div class="id-card-group">
+            <h4>繁殖方式</h4>
+            <div class="radio-list" data-randomize="true">
+              <label class="option"><input type="radio" name="id2" value="a"> 孢子繁殖</label>
+              <label class="option"><input type="radio" name="id2" value="b"> 種子繁殖</label>
+            </div>
+          </div>
+
+          <div class="id-card-group">
+            <h4>種子特徵</h4>
+            <div class="radio-list" data-randomize="true">
+              <label class="option"><input type="radio" name="id3" value="a"> 種子裸露</label>
+              <label class="option"><input type="radio" name="id3" value="b"> 種子一定包在果實裡</label>
+            </div>
+          </div>
+
+          <div class="id-card-group">
+            <h4>是否形成果實</h4>
+            <div class="radio-list" data-randomize="true">
+              <label class="option"><input type="radio" name="id4" value="a"> 會形成真正包住種子的果實</label>
+              <label class="option"><input type="radio" name="id4" value="b"> 不會形成真正包住種子的果實</label>
+            </div>
+          </div>
+
+          <div class="id-card-group">
+            <h4>是否有花粉管</h4>
+            <div class="radio-list" data-randomize="true">
+              <label class="option"><input type="radio" name="id5" value="a"> 有花粉管</label>
+              <label class="option"><input type="radio" name="id5" value="b"> 沒有花粉管</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="check-btn" disabled>檢查答案</button>
+          <button class="retry-btn" type="button">重做本題</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <footer class="page-nav">
+      <a class="nav-btn" href="plant03_fern.html">← 上一頁</a>
+      <a class="nav-btn next disabled" id="nextBtn" href="plant05_angiosperm.html" aria-disabled="true">下一頁 →</a>
+      <div class="unlock-note" id="unlockMessage">請先把本頁所有任務都答對，才可前往下一頁。</div>
+    </footer>
+  </div>
+
+  <script>
+    const questionState = {
+      q1: false,
+      q2: false,
+      q3: false,
+      q4: false,
+      q5: false,
+      q6: false,
+      q7: false,
+      q8: false
+    };
+
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function randomizeOptionLabels(container) {
+      const labels = Array.from(container.querySelectorAll('label.option'));
+      const shuffled = shuffleArray(labels);
+      shuffled.forEach(label => container.appendChild(label));
+    }
+
+    function randomizeChildren(container, selector) {
+      const items = Array.from(container.querySelectorAll(selector));
+      const shuffled = shuffleArray(items);
+      shuffled.forEach(item => container.appendChild(item));
+    }
+
+    function buildSelectOptions(select, items, placeholder = '請選擇') {
+      select.innerHTML = '';
+      const first = document.createElement('option');
+      first.value = '';
+      first.textContent = placeholder;
+      select.appendChild(first);
+
+      shuffleArray(items).forEach(item => {
+        const opt = document.createElement('option');
+        opt.value = item.value;
+        opt.textContent = item.label;
+        select.appendChild(opt);
+      });
+    }
+
+    function updateNextButton() {
+      const nextBtn = document.getElementById('nextBtn');
+      const unlockMessage = document.getElementById('unlockMessage');
+      const allCorrect = Object.values(questionState).every(Boolean);
+
+      if (allCorrect) {
+        nextBtn.classList.remove('disabled');
+        nextBtn.setAttribute('aria-disabled', 'false');
+        unlockMessage.textContent = '全部答對，已解鎖下一頁。';
+      } else {
+        nextBtn.classList.add('disabled');
+        nextBtn.setAttribute('aria-disabled', 'true');
+        unlockMessage.textContent = '請先把本頁所有任務都答對，才可前往下一頁。';
+      }
+    }
+
+    function markMission(mission, isCorrect, successText, errorText) {
+      const feedback = mission.querySelector('.feedback');
+      const retryBtn = mission.querySelector('.retry-btn');
+      const checkBtn = mission.querySelector('.check-btn');
+
+      mission.classList.remove('correct', 'incorrect');
+      feedback.classList.remove('success', 'error');
+      feedback.classList.add('show');
+
+      if (isCorrect) {
+        mission.classList.add('correct');
+        feedback.classList.add('success');
+        feedback.textContent = successText;
+        retryBtn.style.display = 'none';
+      } else {
+        mission.classList.add('incorrect');
+        feedback.classList.add('error');
+        feedback.textContent = errorText;
+        retryBtn.style.display = 'inline-flex';
+      }
+
+      checkBtn.disabled = true;
+      updateNextButton();
+    }
+
+    document.querySelectorAll('[data-randomize="true"]').forEach(randomizeOptionLabels);
+    document.querySelectorAll('[data-randomize-cards="true"]').forEach(container => {
+      randomizeChildren(container, '.pair-card');
+    });
+
+    document.querySelectorAll('.flip-card').forEach(card => {
+      card.addEventListener('click', () => card.classList.toggle('flipped'));
+    });
+
+    const classifyOptions = [
+      { value: 'bryophyte', label: '蘚苔植物' },
+      { value: 'fern', label: '蕨類植物' },
+      { value: 'gymnosperm', label: '裸子植物' },
+      { value: 'angiosperm', label: '被子植物' }
+    ];
+    document.querySelectorAll('.classify-select').forEach(select => {
+      buildSelectOptions(select, classifyOptions);
+    });
+
+    function bindSingleChoice(missionId, answerValue, successText, errorText) {
+      const mission = document.getElementById(missionId);
+      const inputs = mission.querySelectorAll('input[type="radio"]');
+      const checkBtn = mission.querySelector('.check-btn');
+      const retryBtn = mission.querySelector('.retry-btn');
+
+      inputs.forEach(input => {
+        input.addEventListener('change', () => {
+          checkBtn.disabled = false;
+        });
+      });
+
+      checkBtn.addEventListener('click', () => {
+        const chosen = mission.querySelector('input[type="radio"]:checked');
+        const ok = chosen && chosen.value === answerValue;
+        questionState[missionId] = !!ok;
+        markMission(mission, ok, successText, errorText);
+      });
+
+      retryBtn.addEventListener('click', () => {
+        inputs.forEach(input => input.checked = false);
+        mission.classList.remove('correct', 'incorrect');
+        mission.querySelector('.feedback').className = 'feedback';
+        mission.querySelector('.feedback').textContent = '';
+        retryBtn.style.display = 'none';
+        checkBtn.disabled = true;
+        questionState[missionId] = false;
+        updateNextButton();
+      });
+    }
+
+    bindSingleChoice('q1', 'a',
+      '答對了！裸子植物的重點就是種子裸露，沒有果實包住。',
+      '再想想看，裸子植物不是沒有種子，而是種子沒有被果實包住。'
+    );
+
+    bindSingleChoice('q3', 'a',
+      '答對了！松樹、蘇鐵、銀杏都是裸子植物代表。',
+      '再想想看，裸子植物不一定開花結果，銀杏也不是蕨類。'
+    );
+
+    bindSingleChoice('q4', 'a',
+      '答對了！裸子植物的種子常著生在毬果或鱗片上。',
+      '再想想看，毬果不是被子植物那種真正包住種子的果實。'
+    );
+
+    bindSingleChoice('q6', 'a',
+      '答對了！松樹是裸子植物，常見毬果，種子沒有果實包住。',
+      '再想想看，蕨類和蘚苔植物都不會形成裸子植物那樣的毬果與裸露種子。'
+    );
+
+    (function bindPairQ2() {
+      const mission = document.getElementById('q2');
+      const cards = mission.querySelectorAll('.pair-card');
+      const slots = mission.querySelectorAll('.pair-slot');
+      const checkBtn = mission.querySelector('.check-btn');
+      const retryBtn = mission.querySelector('.retry-btn');
+
+      let selectedCard = null;
+
+      function updateCheckState() {
+        const allFilled = [...slots].every(slot => slot.dataset.selectedAnswer);
+        checkBtn.disabled = !allFilled;
+      }
+
+      function clearSlotActive() {
+        slots.forEach(slot => slot.classList.remove('active'));
+      }
+
+      cards.forEach(card => {
+        card.addEventListener('click', () => {
+          if (card.classList.contains('used')) return;
+          cards.forEach(c => c.classList.remove('selected'));
+          card.classList.add('selected');
+          selectedCard = card;
+          clearSlotActive();
+        });
+      });
+
+      slots.forEach(slot => {
+        slot.addEventListener('click', () => {
+          if (!selectedCard || slot.dataset.selectedAnswer) return;
+
+          slot.dataset.selectedAnswer = selectedCard.dataset.answer;
+          slot.querySelector('.pair-slot-body').textContent = selectedCard.textContent.trim();
+          slot.classList.add('filled');
+
+          selectedCard.classList.remove('selected');
+          selectedCard.classList.add('used');
+          selectedCard = null;
+
+          clearSlotActive();
+          updateCheckState();
+        });
+
+        slot.addEventListener('mouseenter', () => {
+          if (selectedCard && !slot.dataset.selectedAnswer) {
+            slot.classList.add('active');
+          }
+        });
+
+        slot.addEventListener('mouseleave', () => {
+          slot.classList.remove('active');
+        });
+      });
+
+      checkBtn.addEventListener('click', () => {
+        const ok = [...slots].every(slot => slot.dataset.selectedAnswer === slot.dataset.slot);
+        questionState.q2 = ok;
+        markMission(
+          mission,
+          ok,
+          '答對了！你已經能分清楚裸子植物、被子植物和兩者共同點。',
+          '有一兩組配錯了，再想想哪一項是差異，哪一項是共同點。'
+        );
+      });
+
+      retryBtn.addEventListener('click', () => {
+        slots.forEach(slot => {
+          slot.dataset.selectedAnswer = '';
+          slot.classList.remove('filled', 'active');
+          slot.querySelector('.pair-slot-body').textContent = '';
+        });
+
+        cards.forEach(card => {
+          card.classList.remove('selected', 'used');
+        });
+
+        randomizeChildren(mission.querySelector('[data-randomize-cards="true"]'), '.pair-card');
+
+        selectedCard = null;
+        mission.classList.remove('correct', 'incorrect');
+        mission.querySelector('.feedback').className = 'feedback';
+        mission.querySelector('.feedback').textContent = '';
+        retryBtn.style.display = 'none';
+        checkBtn.disabled = true;
+        questionState.q2 = false;
+        updateNextButton();
+      });
+    })();
+
+    (function bindSequenceQ5() {
+      const mission = document.getElementById('q5');
+      const list = document.getElementById('q5SequenceList');
+      const checkBtn = mission.querySelector('.check-btn');
+      const retryBtn = mission.querySelector('.retry-btn');
+
+      const canonicalRows = Array.from(list.querySelectorAll('.sort-row'))
+        .sort((a, b) => Number(a.dataset.order) - Number(b.dataset.order))
+        .map(row => row.cloneNode(true));
+
+      function getRows() {
+        return Array.from(list.querySelectorAll('.sort-row'));
+      }
+
+      function bindRowButtons(row) {
+        row.querySelector('.move-up').addEventListener('click', () => {
+          const prev = row.previousElementSibling;
+          if (!prev) return;
+          list.insertBefore(row, prev);
+          updateMoveButtons();
+        });
+
+        row.querySelector('.move-down').addEventListener('click', () => {
+          const next = row.nextElementSibling;
+          if (!next) return;
+          list.insertBefore(next, row);
+          updateMoveButtons();
+        });
+      }
+
+      function randomizeSequenceRows() {
+        list.innerHTML = '';
+        shuffleArray(canonicalRows.map(row => row.cloneNode(true))).forEach(row => {
+          list.appendChild(row);
+          bindRowButtons(row);
+        });
+      }
+
+      function updateMoveButtons() {
+        const rows = getRows();
+        rows.forEach((row, index) => {
+          row.querySelector('.move-up').disabled = index === 0;
+          row.querySelector('.move-down').disabled = index === rows.length - 1;
+        });
+        checkBtn.disabled = false;
+      }
+
+      randomizeSequenceRows();
+      updateMoveButtons();
+
+      checkBtn.addEventListener('click', () => {
+        const ok = getRows().every((row, index) => Number(row.dataset.order) === index + 1);
+        questionState.q5 = ok;
+        markMission(
+          mission,
+          ok,
+          '答對了！你已經排出裸子植物的生殖過程。',
+          '順序還不對喔，請再依照花粉傳播、受精、種子形成、萌芽的先後重新排列。'
+        );
+      });
+
+      retryBtn.addEventListener('click', () => {
+        randomizeSequenceRows();
+        updateMoveButtons();
+        mission.classList.remove('correct', 'incorrect');
+        mission.querySelector('.feedback').className = 'feedback';
+        mission.querySelector('.feedback').textContent = '';
+        retryBtn.style.display = 'none';
+        questionState.q5 = false;
+        updateNextButton();
+      });
+    })();
+
+    (function bindMatchQ7() {
+      const mission = document.getElementById('q7');
+      const selects = mission.querySelectorAll('.classify-select');
+      const checkBtn = mission.querySelector('.check-btn');
+      const retryBtn = mission.querySelector('.retry-btn');
+
+      selects.forEach(select => {
+        select.addEventListener('change', () => {
+          checkBtn.disabled = [...selects].some(s => !s.value);
+        });
+      });
+
+      checkBtn.addEventListener('click', () => {
+        const ok = [...selects].every(select => select.value === select.dataset.answer);
+        questionState.q7 = ok;
+        markMission(
+          mission,
+          ok,
+          '答對了！你已經能把不同植物放回正確分類。',
+          '還有分類放錯喔，想想它們是用孢子還是種子繁殖，以及是否有果實。'
+        );
+      });
+
+      retryBtn.addEventListener('click', () => {
+        selects.forEach(select => select.value = '');
+        mission.classList.remove('correct', 'incorrect');
+        mission.querySelector('.feedback').className = 'feedback';
+        mission.querySelector('.feedback').textContent = '';
+        retryBtn.style.display = 'none';
+        checkBtn.disabled = true;
+        questionState.q7 = false;
+        updateNextButton();
+      });
+    })();
+
+    (function bindIdCardQ8() {
+      const mission = document.getElementById('q8');
+      const groups = ['id1', 'id2', 'id3', 'id4', 'id5'];
+      const answers = { id1: 'a', id2: 'b', id3: 'a', id4: 'b', id5: 'a' };
+      const checkBtn = mission.querySelector('.check-btn');
+      const retryBtn = mission.querySelector('.retry-btn');
+
+      mission.querySelectorAll('input[type="radio"]').forEach(input => {
+        input.addEventListener('change', () => {
+          const allChecked = groups.every(name =>
+            mission.querySelector(`input[name="${name}"]:checked`)
+          );
+          checkBtn.disabled = !allChecked;
+        });
+      });
+
+      checkBtn.addEventListener('click', () => {
+        const ok = groups.every(name => {
+          const selected = mission.querySelector(`input[name="${name}"]:checked`);
+          return selected && selected.value === answers[name];
+        });
+
+        questionState.q8 = ok;
+        markMission(
+          mission,
+          ok,
+          '答對了！你已經完成裸子植物身分證。',
+          '再檢查一次：裸子植物有維管束、用種子繁殖、種子裸露，且不形成真正包住種子的果實。'
+        );
+      });
+
+      retryBtn.addEventListener('click', () => {
+        mission.querySelectorAll('input[type="radio"]').forEach(input => input.checked = false);
+        mission.classList.remove('correct', 'incorrect');
+        mission.querySelector('.feedback').className = 'feedback';
+        mission.querySelector('.feedback').textContent = '';
+        retryBtn.style.display = 'none';
+        checkBtn.disabled = true;
+        questionState.q8 = false;
+        updateNextButton();
+      });
+    })();
+
+    updateNextButton();
+  </script>
+</body>
+</html>

@@ -1,0 +1,2002 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>蕨類植物</title>
+  <style>
+    :root {
+      --bg1: #f4fff7;
+      --bg2: #e9f6ec;
+      --card: #ffffff;
+      --ink: #203026;
+      --sub: #5a6f60;
+      --green: #2f7d4a;
+      --green-dark: #245f38;
+      --green-soft: #e9f7ec;
+      --green-border: #67b380;
+      --red: #b94a48;
+      --red-soft: #fdecec;
+      --red-border: #d97a76;
+      --line: #dbe7d9;
+      --brown: #8b6b4a;
+      --brown-soft: #f7f1e8;
+      --blue: #2b6cb0;
+      --orange: #c56a1a;
+      --purple: #7b4db5;
+      --shadow: 0 8px 24px rgba(0,0,0,.08);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      color: var(--ink);
+      line-height: 1.75;
+      background: radial-gradient(circle at top left, var(--bg1) 0%, var(--bg2) 42%, #e4f0e6 100%);
+    }
+
+    .container {
+      width: min(1120px, 92%);
+      margin: 0 auto;
+      padding: 28px 0 50px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(255,255,255,.97), rgba(236,247,235,.97));
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      padding: 28px 24px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.95rem, 3vw, 2.8rem);
+      color: var(--green-dark);
+    }
+
+    .hero p {
+      margin: 0 0 10px;
+      color: var(--sub);
+      font-size: 1.02rem;
+    }
+
+    .hero-note {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-left: 5px solid var(--green);
+      background: #f8fcf7;
+      border-radius: 12px;
+      font-weight: 700;
+      color: #365641;
+    }
+
+    .guide {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .guide-badge {
+      background: #eef7ed;
+      border: 1px solid #d8e6d6;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: .95rem;
+      color: #335840;
+      font-weight: 700;
+    }
+
+    .mission {
+      background: var(--card);
+      border: 2px solid #e2ece0;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px 18px;
+      margin-bottom: 22px;
+      transition: .2s ease;
+    }
+
+    .mission.correct {
+      background: var(--green-soft);
+      border-color: var(--green-border);
+    }
+
+    .mission.incorrect {
+      background: var(--red-soft);
+      border-color: var(--red-border);
+    }
+
+    .mission-tag {
+      display: inline-block;
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: #eef7ed;
+      color: var(--green);
+      font-size: .9rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .mission h2 {
+      margin: 0 0 8px;
+      font-size: 1.34rem;
+      color: var(--green-dark);
+    }
+
+    .mission .lead {
+      margin: 0;
+      color: var(--sub);
+    }
+
+    .concept-box {
+      margin: 14px 0 18px;
+      padding: 14px 16px;
+      background: #f8fcf7;
+      border: 1px solid #dce9db;
+      border-radius: 14px;
+    }
+
+    .concept-box strong {
+      color: var(--green-dark);
+    }
+
+    .task-box {
+      background: #fff;
+      border: 1px solid #e5ede3;
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .task-title {
+      margin: 0 0 12px;
+      font-weight: 800;
+      color: #2d5e3b;
+      font-size: 1.05rem;
+    }
+
+    .task-sub {
+      margin: -4px 0 12px;
+      color: var(--sub);
+      font-size: .96rem;
+    }
+
+    .kw-green { color: var(--green); font-weight: 800; }
+    .kw-blue { color: var(--blue); font-weight: 800; }
+    .kw-orange { color: var(--orange); font-weight: 800; }
+    .kw-purple { color: var(--purple); font-weight: 800; }
+    .kw-red { color: var(--red); font-weight: 800; }
+
+    .radio-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    label.option {
+      display: block;
+      padding: 13px 14px;
+      border: 2px solid #dbe7d9;
+      border-radius: 14px;
+      background: #fcfffb;
+      cursor: pointer;
+      transition: .18s ease;
+    }
+
+    label.option:hover {
+      border-color: #9ec39f;
+      transform: translateY(-1px);
+    }
+
+    label.option input {
+      margin-right: 10px;
+      transform: scale(1.08);
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    button,
+    .nav-btn {
+      appearance: none;
+      border: none;
+      border-radius: 999px;
+      padding: 11px 18px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+      transition: .18s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .check-btn {
+      background: var(--green-dark);
+      color: #fff;
+    }
+
+    .check-btn:disabled,
+    .action-btn:disabled {
+      background: #aab8ad;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .action-btn {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .retry-btn {
+      background: var(--brown);
+      color: #fff;
+      display: none;
+    }
+
+    .feedback {
+      display: none;
+      margin-top: 14px;
+      padding: 13px 15px;
+      border-radius: 14px;
+      font-weight: 700;
+    }
+
+    .feedback.show { display: block; }
+    .feedback.success {
+      background: rgba(76,175,80,.12);
+      color: #255c2c;
+    }
+    .feedback.error {
+      background: rgba(217,83,79,.12);
+      color: #8b2f2c;
+    }
+
+    /* 任務一 */
+    .body-map-grid {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .parts-panel {
+      display: grid;
+      gap: 10px;
+    }
+
+    .part-btn {
+      border-radius: 14px;
+      border: 2px solid #d8e6d6;
+      background: #fcfffb;
+      color: #2d5e3b;
+      padding: 12px 14px;
+      font-weight: 800;
+    }
+
+    .part-btn.active {
+      border-color: var(--blue);
+      background: #eef5ff;
+      color: var(--blue);
+    }
+
+    .part-btn.done {
+      border-color: var(--green-border);
+      background: #eef8ef;
+      color: var(--green-dark);
+    }
+
+    .body-map {
+      border: 1px solid #dce8da;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #f9fcf8;
+      padding: 12px;
+    }
+
+    .body-map-figure {
+      position: relative;
+      width: 100%;
+      max-width: 980px;
+      margin: 0 auto;
+      line-height: 0;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .body-map-figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #f5faf4;
+      border-radius: 12px;
+    }
+
+    .hotspot {
+      position: absolute;
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      border: 4px solid rgba(36,95,56,.85);
+      background: rgba(255,255,255,.72);
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+      transition: .18s ease;
+    }
+
+
+    .hotspot:hover {
+      transform: translate(-50%, -50%) scale(1.08);
+    }
+
+    .hotspot.correct-mark {
+      background: rgba(76,175,80,.22);
+      border-color: #3e9d58;
+      box-shadow: 0 0 0 10px rgba(76,175,80,.10);
+    }
+
+    .hotspot.wrong-mark {
+      background: rgba(217,83,79,.2);
+      border-color: #b94a48;
+      animation: shake .22s linear 2;
+    }
+
+    .map-note {
+      margin-top: 12px;
+      padding: 10px 12px;
+      background: #f8fbf7;
+      border: 1px dashed #cfe0cf;
+      border-radius: 12px;
+      color: var(--sub);
+      font-size: .95rem;
+    }
+
+    .mini-msg {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #eef6ff;
+      color: #34506f;
+      font-weight: 700;
+      display: none;
+    }
+
+    .mini-msg.show {
+      display: block;
+    }
+
+    /* 任務二 */
+    .flip-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .flip-card {
+      perspective: 1000px;
+      cursor: pointer;
+      min-height: 420px;
+    }
+
+    .flip-inner {
+      position: relative;
+      width: 100%;
+      min-height: 420px;
+      transition: transform .7s;
+      transform-style: preserve-3d;
+    }
+
+    .flip-card.flipped .flip-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-front,
+    .flip-back {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      border: 2px solid #dce8da;
+      border-radius: 16px;
+      background: #fcfffb;
+      overflow: hidden;
+    }
+
+    .flip-front {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .flip-front img {
+      width: 100%;
+      height: 240px;
+      object-fit: contain;
+      display: block;
+      background: #f5faf4;
+      flex-shrink: 0;
+    }
+
+    .flip-front .front-body,
+    .flip-back .back-body {
+      padding: 18px 14px 20px;
+      text-align: center;
+    }
+
+    .flip-front .front-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .flip-back {
+      transform: rotateY(180deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .leaf-demo {
+      margin-top: 14px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .leaf-anim-box {
+      width: min(420px, 100%);
+      background: #f8fcf7;
+      border: 1px solid #dce8da;
+      border-radius: 18px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .leaf-stage {
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      transition: .4s ease;
+    }
+
+    .leaf-stage.unfold {
+      transform: scaleX(1.12);
+    }
+
+    .leaf-text {
+      color: var(--sub);
+      font-size: .95rem;
+      margin-top: 8px;
+      min-height: 28px;
+    }
+
+    /* 任務三 */
+    .sori-panel {
+      display: grid;
+      gap: 12px;
+    }
+
+    .sori-map {
+      position: relative;
+      border: 1px solid #dce8da;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #f8fcf7;
+    }
+
+    .sori-map img {
+      width: 100%;
+      height: 420px;
+      object-fit: contain;
+      display: block;
+      background: #f5faf4;
+    }
+
+    .sori-spot {
+      position: absolute;
+      width: 52px;
+      height: 52px;
+      border-radius: 999px;
+      border: 3px solid rgba(88,88,88,.8);
+      background: rgba(255,255,255,.75);
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+      transition: .18s ease;
+    }
+
+    .sori-spot.correct-hit {
+      border-color: #8d5f2a;
+      background: rgba(185,130,67,.28);
+      box-shadow: 0 0 0 12px rgba(185,130,67,.12);
+    }
+
+    .sori-spot.wrong-hit {
+      border-color: #b94a48;
+      background: rgba(217,83,79,.18);
+      animation: shake .22s linear 2;
+    }
+
+    .magnifier {
+      display: none;
+      padding: 14px;
+      border-radius: 16px;
+      background: #fff8ef;
+      border: 1px solid #ecd6b8;
+      color: #67461f;
+      font-weight: 700;
+    }
+
+    .magnifier.show {
+      display: block;
+    }
+
+    .spore-burst {
+      height: 60px;
+      position: relative;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+
+    .spore {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #b77a37;
+      opacity: 0;
+    }
+
+    .spore.fly {
+      animation: burst 1.4s ease-out forwards;
+    }
+
+    /* 任務四 */
+    .sequence-steps {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .sequence-slot {
+      min-height: 180px;
+      border: 3px dashed #c7d6c5;
+      border-radius: 22px;
+      background: #f8fbf7;
+      padding: 18px 14px;
+      text-align: center;
+      transition: .18s ease;
+    }
+
+    .sequence-slot.active {
+      border-color: #9fc39f;
+      box-shadow: 0 0 0 4px rgba(103,179,128,.08);
+    }
+
+    .sequence-slot.filled {
+      border-style: solid;
+      border-color: var(--green-border);
+      background: #eef8ef;
+    }
+
+    .slot-title {
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: var(--green-dark);
+      margin-bottom: 16px;
+    }
+
+    .slot-placeholder {
+      color: #5d6f61;
+      font-weight: 800;
+      line-height: 1.6;
+    }
+
+    .slot-choice-text {
+      font-size: 1.02rem;
+      font-weight: 900;
+      line-height: 1.55;
+      color: #203026;
+    }
+
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .choice-card {
+      border: 2px solid #dce8da;
+      border-radius: 22px;
+      background: #fbfef9;
+      padding: 20px 16px;
+      cursor: pointer;
+      transition: .18s ease;
+      font-size: 1rem;
+      font-weight: 900;
+      line-height: 1.55;
+      min-height: 116px;
+      text-align: center;
+      color: #203026;
+    }
+
+    .choice-card:hover {
+      border-color: #9fc39f;
+      transform: translateY(-1px);
+    }
+
+    .choice-card.selected {
+      border-color: var(--blue);
+      background: #eef5ff;
+      color: var(--blue);
+      box-shadow: 0 0 0 4px rgba(43,108,176,.08);
+    }
+
+    .choice-card.used {
+      border-color: var(--green-border);
+      background: #eef8ef;
+      color: #557060;
+      cursor: default;
+      opacity: .78;
+    }
+
+    .choice-card.wrong {
+      border-color: var(--red-border);
+      background: #fdeeee;
+      animation: choiceShake .22s linear 2;
+    }
+
+    .flow-track {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .flow-dot {
+      height: 10px;
+      border-radius: 999px;
+      background: #d8e4d6;
+    }
+
+    .flow-dot.active {
+      background: var(--green);
+    }
+    /* 任務五 */
+    .map-kingdom-grid {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .taiwan-map-box {
+      position: relative;
+      border: 1px solid #dce8da;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #f8fcf7;
+    }
+
+    .taiwan-map-box img {
+      width: 100%;
+      height: 360px;
+      object-fit: contain;
+      display: block;
+      background: #f5faf4;
+    }
+
+    .map-pin {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: #ffcf5c;
+      border: 3px solid #aa7a11;
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+      animation: bob 1.6s ease-in-out infinite;
+    }
+
+    .map-popup {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: #fff8ef;
+      border: 1px solid #ecd6b8;
+      color: #6c4b21;
+      font-weight: 700;
+    }
+
+    .map-popup.show {
+      display: block;
+    }
+
+    .map-side {
+      display: grid;
+      gap: 12px;
+    }
+
+    .fact-card {
+      background: #fbfef9;
+      border: 1px solid #dce8da;
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    /* 任務六 */
+    .match-use-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .match-use-row {
+      display: grid;
+      grid-template-columns: 120px 1fr 1fr;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      background: #fbfef9;
+      border: 1px solid #e1ebdf;
+      border-radius: 14px;
+    }
+
+    .use-thumb {
+      width: 100%;
+      height: 82px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid #d7e4d5;
+      background: #f5faf4;
+    }
+
+    /* 出口任務 */
+    .judge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+    }
+
+    .judge-card {
+      border: 1px solid #dce8da;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fbfef9;
+    }
+
+    .judge-card img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+      display: block;
+      background: #f5faf4;
+    }
+
+    .judge-body {
+      padding: 14px;
+    }
+
+    .clue-btn {
+      background: var(--purple);
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .clue-box {
+      display: none;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #f5efff;
+      color: #5c4291;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .clue-box.show {
+      display: block;
+    }
+
+    footer.page-nav {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .nav-btn {
+      border: 2px solid #d9cbb8;
+      background: var(--brown-soft);
+      color: #534b40;
+    }
+
+    .nav-btn.next {
+      background: var(--green-dark);
+      border-color: var(--green-dark);
+      color: #fff;
+    }
+
+    .nav-btn.disabled {
+      opacity: .45;
+      pointer-events: none;
+      filter: grayscale(.25);
+    }
+
+    .unlock-note {
+      width: 100%;
+      color: var(--sub);
+      font-size: .96rem;
+    }
+
+    @keyframes shake {
+      0% { transform: translate(-50%, -50%) translateX(0); }
+      25% { transform: translate(-50%, -50%) translateX(-3px); }
+      50% { transform: translate(-50%, -50%) translateX(3px); }
+      75% { transform: translate(-50%, -50%) translateX(-2px); }
+      100% { transform: translate(-50%, -50%) translateX(0); }
+    }
+
+    @keyframes choiceShake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-3px); }
+      50% { transform: translateX(3px); }
+      75% { transform: translateX(-2px); }
+      100% { transform: translateX(0); }
+    }
+
+    @keyframes burst {
+      0% { opacity: 0; transform: translate(0, 0) scale(.8); }
+      10% { opacity: 1; }
+      100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1.1); }
+    }
+
+    @keyframes bob {
+      0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+      50% { transform: translate(-50%, -50%) translateY(-5px); }
+    }
+
+    @media (max-width: 920px) {
+      .body-map-grid,
+      .map-kingdom-grid,
+      .sequence-steps,
+      .choice-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .body-map-grid,
+      .map-kingdom-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .match-use-row {
+        grid-template-columns: 1fr;
+      }
+
+      .use-thumb {
+        width: 140px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .sori-map img {
+        height: 320px;
+      }
+
+      .flip-card,
+      .flip-inner {
+        min-height: 360px;
+      }
+
+      .flip-front img {
+        height: 200px;
+      }
+
+      .taiwan-map-box img {
+        height: 280px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <h1>蕨類植物</h1>
+      <p>
+        蕨類植物比蘚苔植物有更完整的陸地生活構造。它們有
+        <span class="kw-blue">維管束</span>，因此通常能長得比較高，
+        也有明顯的<span class="kw-green">根、莖、葉</span>。
+      </p>
+      <p>
+        這一頁你會觀察蕨類的身體構造、幼葉外形、
+        <span class="kw-orange">孢子囊堆</span>與孢子傳播流程，
+        還會認識臺灣「<span class="kw-purple">蕨類王國</span>」的小知識。
+      </p>
+      <div class="hero-note">
+        完成本頁全部任務，且全部答對後，才能解鎖「下一頁 →」。
+      </div>
+      <div class="guide">
+        <div class="guide-badge">點圖觀察</div>
+        <div class="guide-badge">翻牌辨識</div>
+        <div class="guide-badge">流程互動</div>
+        <div class="guide-badge">全部答對才能前往下一頁</div>
+      </div>
+    </section>
+
+    <section class="mission" id="q1" data-type="hotspot_match">
+      <div class="mission-tag">任務一</div>
+      <h2>蕨類找身體</h2>
+      <p class="lead">
+        蕨類植物具有明顯的<span class="kw-green">根、莖、葉</span>，
+        許多種類還可以看到<span class="kw-orange">捲曲幼葉</span>與葉背的<span class="kw-orange">孢子囊堆</span>。
+      </p>
+
+      <div class="concept-box">
+        <strong>小知識：</strong>
+        蕨類植物的<span class="kw-blue">地下莖</span>通常在靠近地面的地方，
+        而<span class="kw-orange">幼葉</span>常呈捲曲狀，葉背可形成<span class="kw-orange">孢子囊堆</span>。
+      </div>
+
+      <div class="task-box">
+        <p class="task-title">互動任務：先點左邊名稱，再點右邊圖片上的正確位置</p>
+        <p class="task-sub">全部找完後，才可以檢查答案。</p>
+
+        <div class="body-map-grid">
+          <div class="parts-panel" id="partsPanel">
+            <button class="part-btn" type="button" data-part="root">根</button>
+            <button class="part-btn" type="button" data-part="rhizome">地下莖</button>
+            <button class="part-btn" type="button" data-part="leaf">葉</button>
+            <button class="part-btn" type="button" data-part="young">幼葉</button>
+            <button class="part-btn" type="button" data-part="sori">孢子囊堆</button>
+          </div>
+
+          <div>
+            <div class="body-map" id="bodyMap">
+              <div class="body-map-figure">
+                <img src="fern_whole_plant.jpg" alt="蕨類整株圖" id="fernBodyImg">
+                <button class="hotspot" type="button" style="left:22.4%; top:88.8%;" data-target="root" aria-label="根"></button>
+                <button class="hotspot" type="button" style="left:9.7%; top:75.1%;" data-target="rhizome" aria-label="地下莖"></button>
+                <button class="hotspot" type="button" style="left:45.4%; top:19.5%;" data-target="leaf" aria-label="葉"></button>
+                <button class="hotspot" type="button" style="left:30%; top:66.7%;" data-target="young" aria-label="幼葉"></button>
+                <button class="hotspot" type="button" style="left:72.2%; top:28.8%;" data-target="sori" aria-label="孢子囊堆"></button>
+              </div>
+            </div>
+            <div class="map-note">點對部位後，該部位會亮起來。</div>
+            <div class="mini-msg" id="q1MiniMsg"></div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="check-btn" disabled>檢查答案</button>
+          <button class="retry-btn" type="button">重做本題</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <section class="mission" id="q2" data-type="flip_single">
+      <div class="mission-tag">任務二</div>
+      <h2>幼葉 vs 成熟葉</h2>
+      <p class="lead">
+        蕨類剛長出的葉常呈<span class="kw-orange">捲曲</span>狀，
+        成熟後會慢慢<span class="kw-green">展開</span>。
+      </p>
+
+      <div class="concept-box">
+        <strong>小知識：</strong>
+        蕨類的幼葉常像小捲圈，因此有人會用這個特徵來辨認蕨類。
+      </div>
+
+      <div class="task-box">
+        <p class="task-title">互動任務：先翻看卡片，再選出剛長出的蕨類葉</p>
+        <p class="task-sub">三張卡片都翻過後，才能檢查答案。</p>
+
+        <div class="flip-grid">
+          <div class="flip-card">
+            <div class="flip-inner">
+              <div class="flip-front">
+                <img src="fern_young_fiddlehead.jpg" alt="捲曲幼葉">
+                <div class="front-body">
+                  <h4>卡片一</h4>
+                  <p>點一下翻面</p>
+                </div>
+              </div>
+              <div class="flip-back">
+                <div class="back-body">
+                  <h4>捲曲幼葉</h4>
+                  <p>剛長出的蕨類葉，常呈捲曲狀。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flip-card">
+            <div class="flip-inner">
+              <div class="flip-front">
+                <img src="fern_mature_frond.jpg" alt="成熟蕨葉">
+                <div class="front-body">
+                  <h4>卡片二</h4>
+                  <p>點一下翻面</p>
+                </div>
+              </div>
+              <div class="flip-back">
+                <div class="back-body">
+                  <h4>成熟葉</h4>
+                  <p>葉片展開後，面積變大，更容易進行光合作用。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flip-card">
+            <div class="flip-inner">
+              <div class="flip-front">
+                <img src="fern_whole_plant.jpg" alt="蕨類整株">
+                <div class="front-body">
+                  <h4>卡片三</h4>
+                  <p>點一下翻面</p>
+                </div>
+              </div>
+              <div class="flip-back">
+                <div class="back-body">
+                  <h4>整株觀察</h4>
+                  <p>從整株來看，更容易比較幼葉與成熟葉的差異。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="radio-list" data-randomize="true" style="margin-top:14px;">
+          <label class="option"><input type="radio" name="q2" value="a"> 捲曲的幼葉是剛長出的蕨類葉。</label>
+          <label class="option"><input type="radio" name="q2" value="b"> 完全展開的大葉子才是剛長出的蕨類葉。</label>
+          <label class="option"><input type="radio" name="q2" value="c"> 蕨類剛長出的葉與成熟葉沒有差別。</label>
+        </div>
+
+        <div class="leaf-demo">
+          <div class="leaf-anim-box">
+            <button class="action-btn" id="playLeafBtn" type="button">觀看幼葉展開</button>
+            <video id="leafVideo" controls preload="metadata" style="display:none; width:100%; margin-top:14px; border-radius:14px; background:#000;">
+              <source src="plant03_fern.mp4" type="video/mp4">
+              您的瀏覽器不支援影片播放。
+            </video>
+            <div class="leaf-text" id="leafText">按下按鈕，觀察幼葉展開。</div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="check-btn" disabled>檢查答案</button>
+          <button class="retry-btn" type="button">重做本題</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <section class="mission" id="q3" data-type="hotspot_single">
+      <div class="mission-tag">任務三</div>
+      <h2>孢子囊堆觀察員</h2>
+      <p class="lead">
+        蕨類葉背常可以看到褐色的<span class="kw-orange">孢子囊堆</span>，
+        這是蕨類形成孢子的地方。
+      </p>
+
+      <div class="concept-box">
+        <strong>小知識：</strong>
+        <span class="kw-orange">孢子囊堆</span>由許多<span class="kw-orange">孢子囊</span>聚集而成，
+        成熟後會散出孢子。
+      </div>
+
+      <div class="task-box">
+        <p class="task-title">互動任務：點選葉背圖上的孢子囊堆</p>
+        <p class="task-sub">找對位置後，才可以檢查答案。</p>
+
+        <div class="sori-panel">
+          <div class="sori-map" id="soriMap">
+            <img src="fern_frond_back_sori.jpg" alt="蕨類葉背圖">
+            <button class="sori-spot" type="button" style="left:36.0%; top:40.0%;" data-correct="false" aria-label="位置1"></button>
+            <button class="sori-spot" type="button" style="left:53.8%; top:45.8%;" data-correct="true" aria-label="位置2"></button>
+            <button class="sori-spot" type="button" style="left:73.5%; top:35.5%;" data-correct="false" aria-label="位置3"></button>
+            <button class="sori-spot" type="button" style="left:80.8%; top:73.5%;" data-correct="false" aria-label="位置4"></button>
+          </div>
+
+          <div class="magnifier" id="magnifierBox">
+            找到了！孢子囊堆由許多孢子囊聚集而成，成熟後會散出孢子。
+            <div class="spore-burst" id="sporeBurst"></div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="check-btn" disabled>檢查答案</button>
+          <button class="retry-btn" type="button">重做本題</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <section class="mission" id="q4" data-type="sequence">
+      <div class="mission-tag">任務四</div>
+      <h2>孢子傳播流程排序</h2>
+      <p class="lead">
+        蕨類植物不用種子繁殖，而是靠<span class="kw-orange">孢子</span>完成生活史。
+      </p>
+
+      <div class="concept-box">
+        <strong>小知識：</strong>
+        蕨類的孢子成熟後會散出，遇到適合的環境才有機會萌發，最後形成新植株。
+      </div>
+
+      <div class="task-box">
+        <p class="task-title">互動任務：依照正確順序點選流程卡片</p>
+        <p class="task-sub">先點下方選項，再點上方對應步驟放入。選項會隨機排列。</p>
+
+        <div class="sequence-steps" id="sequenceSteps">
+          <button class="sequence-slot" type="button" data-step="1">
+            <div class="slot-title">步驟一</div>
+            <div class="slot-placeholder">點選正確選項放入這一步</div>
+          </button>
+          <button class="sequence-slot" type="button" data-step="2">
+            <div class="slot-title">步驟二</div>
+            <div class="slot-placeholder">點選正確選項放入這一步</div>
+          </button>
+          <button class="sequence-slot" type="button" data-step="3">
+            <div class="slot-title">步驟三</div>
+            <div class="slot-placeholder">點選正確選項放入這一步</div>
+          </button>
+          <button class="sequence-slot" type="button" data-step="4">
+            <div class="slot-title">步驟四</div>
+            <div class="slot-placeholder">點選正確選項放入這一步</div>
+          </button>
+        </div>
+
+        <div class="choice-grid" id="sequenceChoices"></div>
+
+        <div class="flow-track">
+          <div class="flow-dot" id="flow1"></div>
+          <div class="flow-dot" id="flow2"></div>
+          <div class="flow-dot" id="flow3"></div>
+          <div class="flow-dot" id="flow4"></div>
+        </div>
+
+        <div class="mini-msg" id="q4MiniMsg"></div>
+
+        <div class="controls">
+          <button class="check-btn" disabled>檢查答案</button>
+          <button class="retry-btn" type="button">重做本題</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <section class="mission" id="q5" data-type="map_single">
+      <div class="mission-tag">任務五</div>
+      <h2>蕨類王國地圖</h2>
+      <p class="lead">
+        臺灣環境潮溼、多山，適合許多蕨類生長，因此有「<span class="kw-purple">蕨類王國</span>」之稱。
+      </p>
+
+      <div class="concept-box">
+        <strong>小知識：</strong>
+        臺灣已發現八百多種蕨類，種類相當豐富。
+      </div>
+
+      <div class="task-box">
+        <p class="task-title">互動任務：先點地圖上的知識點，再回答問題</p>
+        <p class="task-sub">讀完彈窗知識後，再選出最合理的原因。</p>
+
+        <div class="map-kingdom-grid">
+          <div>
+            <div class="taiwan-map-box">
+              <img src="taiwan_fern_map.png" alt="台灣地圖">
+              <button class="map-pin" type="button" id="mapPin1" style="left:54%; top:33%;" aria-label="知識點1"></button>
+              <button class="map-pin" type="button" id="mapPin2" style="left:46%; top:52%;" aria-label="知識點2"></button>
+              <button class="map-pin" type="button" id="mapPin3" style="left:51%; top:69%;" aria-label="知識點3"></button>
+            </div>
+            <div class="map-popup" id="mapPopup">
+              臺灣已發現八百多種蕨類，因此有蕨類王國之稱。
+            </div>
+          </div>
+
+          <div class="map-side">
+            <div class="fact-card">
+              點地圖上的任一標記，讀完小知識後再回答右下問題。
+            </div>
+            <div class="radio-list" data-randomize="true">
+              <label class="option"><input type="radio" name="q5" value="a"> 因為臺灣潮溼多山，適合許多蕨類生長。</label>
+              <label class="option"><input type="radio" name="q5" value="b"> 因為臺灣全年都非常乾燥，所以蕨類很多。</label>
+              <label class="option"><input type="radio" name="q5" value="c"> 因為臺灣有大片沙漠，所以蕨類很多。</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="check-btn" disabled>檢查答案</button>
+          <button class="retry-btn" type="button">重做本題</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <section class="mission" id="q6" data-type="match">
+      <div class="mission-tag">任務六</div>
+      <h2>蕨類生活應用配對</h2>
+      <p class="lead">
+        有些蕨類可以做為<span class="kw-green">觀葉植物</span>，
+        有些可以<span class="kw-orange">食用</span>，還有些屬於高大的<span class="kw-purple">樹狀蕨類</span>。
+      </p>
+
+      <div class="concept-box">
+        <strong>小知識：</strong>
+        蕨類不只存在森林裡，也和我們的生活有關。
+      </div>
+
+      <div class="task-box">
+        <p class="task-title">互動任務：幫蕨類選出最合適的用途或分類</p>
+        <p class="task-sub">每列都要選好，才能檢查答案。</p>
+
+        <div class="match-use-grid">
+          <div class="match-use-row">
+            <img class="use-thumb" src="fern_maidenhair.jpg" alt="鐵線蕨">
+            <div><strong>鐵線蕨</strong></div>
+            <div><select class="use-select" data-answer="ornamental" data-options="ornamental,edible,tree"></select></div>
+          </div>
+          <div class="match-use-row">
+            <img class="use-thumb" src="fern_boston.jpg" alt="腎蕨">
+            <div><strong>腎蕨</strong></div>
+            <div><select class="use-select" data-answer="root_edible" data-options="root_edible,edible,tree"></select></div>
+          </div>
+          <div class="match-use-row">
+            <img class="use-thumb" src="fern_birdnest.jpg" alt="鳥巢蕨">
+            <div><strong>鳥巢蕨</strong></div>
+            <div><select class="use-select" data-answer="birdnest_special" data-options="birdnest_special,edible,tree"></select></div>
+          </div>
+          <div class="match-use-row">
+            <img class="use-thumb" src="fern_gogocai.jpg" alt="過溝菜蕨">
+            <div><strong>過溝菜蕨（過貓）</strong></div>
+            <div><select class="use-select" data-answer="edible" data-options="ornamental,edible,tree"></select></div>
+          </div>
+          <div class="match-use-row">
+            <img class="use-thumb" src="fern_tree_fern.jpg" alt="筆筒樹">
+            <div><strong>筆筒樹</strong></div>
+            <div><select class="use-select" data-answer="tree" data-options="ornamental,edible,tree"></select></div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="check-btn" disabled>檢查答案</button>
+          <button class="retry-btn" type="button">重做本題</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <section class="mission" id="q7" data-type="judge_group">
+      <div class="mission-tag">出口任務</div>
+      <h2>我是蕨類嗎？</h2>
+      <p class="lead">
+        依照<span class="kw-green">有根、莖、葉</span>、
+        <span class="kw-orange">幼葉捲曲</span>、
+        <span class="kw-orange">葉背孢子囊堆</span>等線索，
+        來判斷這些植物是不是蕨類。
+      </p>
+
+      <div class="concept-box">
+        <strong>小知識：</strong>
+        不是所有綠色植物都是蕨類，判斷時要看關鍵特徵。
+      </div>
+
+      <div class="task-box">
+        <p class="task-title">互動任務：先看線索，再判斷是不是蕨類</p>
+        <p class="task-sub">每張卡都要完成判斷。</p>
+
+        <div class="judge-grid">
+          <div class="judge-card">
+            <img src="fern_judge_01.jpg" alt="判斷圖1">
+            <div class="judge-body">
+              <button class="clue-btn" type="button">檢視線索</button>
+              <div class="clue-box">有根、莖、葉；羽狀複葉；葉背可見孢子囊堆。</div>
+              <div class="radio-list" data-randomize="true">
+                <label class="option"><input type="radio" name="judge1" value="yes"> 是蕨類</label>
+                <label class="option"><input type="radio" name="judge1" value="no"> 不是蕨類</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="judge-card">
+            <img src="fern_judge_02.jpg" alt="判斷圖2">
+            <div class="judge-body">
+              <button class="clue-btn" type="button">檢視線索</button>
+              <div class="clue-box">會形成果實、種子，也看不到葉背孢子囊堆。</div>
+              <div class="radio-list" data-randomize="true">
+                <label class="option"><input type="radio" name="judge2" value="yes"> 是蕨類</label>
+                <label class="option"><input type="radio" name="judge2" value="no"> 不是蕨類</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="judge-card">
+            <img src="fern_judge_03.jpg" alt="判斷圖3">
+            <div class="judge-body">
+              <button class="clue-btn" type="button">檢視線索</button>
+              <div class="clue-box">葉片明顯，幼葉捲曲，沒有花與果實。</div>
+              <div class="radio-list" data-randomize="true">
+                <label class="option"><input type="radio" name="judge3" value="yes"> 是蕨類</label>
+                <label class="option"><input type="radio" name="judge3" value="no"> 不是蕨類</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="judge-card">
+            <img src="fern_judge_04.jpg" alt="判斷圖4">
+            <div class="judge-body">
+              <button class="clue-btn" type="button">檢視線索</button>
+              <div class="clue-box">有花朵，會結果，靠種子繁殖。</div>
+              <div class="radio-list" data-randomize="true">
+                <label class="option"><input type="radio" name="judge4" value="yes"> 是蕨類</label>
+                <label class="option"><input type="radio" name="judge4" value="no"> 不是蕨類</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="judge-card">
+            <img src="fern_judge_05.jpg" alt="判斷圖5">
+            <div class="judge-body">
+              <button class="clue-btn" type="button">檢視線索</button>
+              <div class="clue-box">高大的樹狀植物，葉片像大型蕨葉，沒有花與果實。</div>
+              <div class="radio-list" data-randomize="true">
+                <label class="option"><input type="radio" name="judge5" value="yes"> 是蕨類</label>
+                <label class="option"><input type="radio" name="judge5" value="no"> 不是蕨類</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="check-btn" disabled>檢查答案</button>
+          <button class="retry-btn" type="button">重做本題</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <footer class="page-nav">
+      <a class="nav-btn" href="./plant02_bryophyte.html">← 上一頁</a>
+      <a class="nav-btn next disabled" id="nextBtn" href="./plant04_gymnosperm.html" aria-disabled="true">下一頁 →</a>
+      <div class="unlock-note" id="unlockMessage">請先把本頁所有任務都答對，才可前往下一頁。</div>
+    </footer>
+  </div>
+
+  <script>
+    const questionState = {
+      q1: false,
+      q2: false,
+      q3: false,
+      q4: false,
+      q5: false,
+      q6: false,
+      q7: false
+    };
+
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function randomizeOptionLabels(container) {
+      const labels = Array.from(container.querySelectorAll("label.option"));
+      const shuffled = shuffleArray(labels);
+      shuffled.forEach(label => container.appendChild(label));
+    }
+
+    function updateNextButton() {
+      const nextBtn = document.getElementById("nextBtn");
+      const unlockMessage = document.getElementById("unlockMessage");
+      const missionSections = Array.from(document.querySelectorAll(".mission"));
+      const allCorrectByState = Object.values(questionState).every(Boolean);
+      const allCorrectByDom = missionSections.length > 0 && missionSections.every(section => section.classList.contains("correct"));
+      const allCorrect = allCorrectByState || allCorrectByDom;
+
+      if (allCorrect) {
+        nextBtn.classList.remove("disabled");
+        nextBtn.setAttribute("aria-disabled", "false");
+        nextBtn.href = "./plant04_gymnosperm.html";
+        unlockMessage.textContent = "全部答對，已解鎖下一頁。";
+      } else {
+        nextBtn.classList.add("disabled");
+        nextBtn.setAttribute("aria-disabled", "true");
+        nextBtn.href = "./plant04_gymnosperm.html";
+        unlockMessage.textContent = "請先把本頁所有任務都答對，才可前往下一頁。";
+      }
+    }
+
+    document.getElementById("nextBtn").addEventListener("click", (event) => {
+      if (event.currentTarget.classList.contains("disabled")) {
+        event.preventDefault();
+      }
+    });
+
+    function lockInputs(section, locked) {
+      section.querySelectorAll("input, select, button.part-btn, button.hotspot, button.sori-spot, button.sequence-slot, button.choice-card, button.clue-btn, button.map-pin, button.action-btn").forEach(el => {
+        if (!el.classList.contains("retry-btn") && !el.classList.contains("check-btn")) {
+          el.disabled = locked;
+        }
+      });
+    }
+
+    function setResult(section, isCorrect, msg) {
+      const feedback = section.querySelector(".feedback");
+      const retryBtn = section.querySelector(".retry-btn");
+      const checkBtn = section.querySelector(".check-btn");
+
+      section.classList.remove("correct", "incorrect");
+      section.classList.add(isCorrect ? "correct" : "incorrect");
+
+      feedback.className = "feedback show " + (isCorrect ? "success" : "error");
+      feedback.innerHTML = msg;
+
+      lockInputs(section, true);
+      checkBtn.disabled = true;
+      retryBtn.style.display = isCorrect ? "none" : "inline-flex";
+    }
+
+    function resetSection(section) {
+      section.classList.remove("correct", "incorrect");
+      const feedback = section.querySelector(".feedback");
+      const retryBtn = section.querySelector(".retry-btn");
+      const checkBtn = section.querySelector(".check-btn");
+
+      feedback.className = "feedback";
+      feedback.innerHTML = "";
+      retryBtn.style.display = "none";
+
+      if (section.id === "q1") resetQ1();
+      if (section.id === "q2") resetQ2();
+      if (section.id === "q3") resetQ3();
+      if (section.id === "q4") resetQ4();
+      if (section.id === "q5") resetQ5();
+      if (section.id === "q6") resetQ6();
+      if (section.id === "q7") resetQ7();
+
+      lockInputs(section, false);
+      checkBtn.disabled = true;
+      questionState[section.id] = false;
+      updateNextButton();
+    }
+
+    // 任務一
+    const q1Section = document.getElementById("q1");
+    const q1CheckBtn = q1Section.querySelector(".check-btn");
+    const q1RetryBtn = q1Section.querySelector(".retry-btn");
+    const q1PartBtns = Array.from(document.querySelectorAll("#partsPanel .part-btn"));
+    const q1Hotspots = Array.from(document.querySelectorAll("#bodyMap .hotspot"));
+    const q1MiniMsg = document.getElementById("q1MiniMsg");
+    let q1CurrentPart = null;
+    let q1Solved = {};
+
+    function refreshQ1Check() {
+      q1CheckBtn.disabled = Object.keys(q1Solved).length !== 5;
+    }
+
+    function showQ1Msg(text) {
+      q1MiniMsg.textContent = text;
+      q1MiniMsg.classList.add("show");
+    }
+
+    q1PartBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        if (btn.classList.contains("done")) return;
+        q1PartBtns.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        q1CurrentPart = btn.dataset.part;
+        showQ1Msg(`請在圖片上找出「${btn.textContent}」的位置。`);
+      });
+    });
+
+    q1Hotspots.forEach(hotspot => {
+      hotspot.addEventListener("click", () => {
+        if (!q1CurrentPart || q1Solved[hotspot.dataset.target]) return;
+
+        if (hotspot.dataset.target === q1CurrentPart) {
+          q1Solved[q1CurrentPart] = true;
+          hotspot.classList.remove("wrong-mark");
+          hotspot.classList.add("correct-mark");
+
+          const currentBtn = q1PartBtns.find(btn => btn.dataset.part === q1CurrentPart);
+          currentBtn.classList.remove("active");
+          currentBtn.classList.add("done");
+
+          showQ1Msg(`答對了！你找到了「${currentBtn.textContent}」。`);
+          q1CurrentPart = null;
+          refreshQ1Check();
+        } else {
+          hotspot.classList.remove("wrong-mark");
+          void hotspot.offsetWidth;
+          hotspot.classList.add("wrong-mark");
+          showQ1Msg("這個位置不對，再試一次。");
+        }
+      });
+    });
+
+    q1CheckBtn.addEventListener("click", () => {
+      questionState.q1 = true;
+      setResult(q1Section, true, "答對了！你已經找出蕨類的重要構造：根、地下莖、葉、幼葉與孢子囊堆。");
+      updateNextButton();
+    });
+
+    q1RetryBtn.addEventListener("click", () => resetSection(q1Section));
+
+    function resetQ1() {
+      q1Solved = {};
+      q1CurrentPart = null;
+      q1MiniMsg.textContent = "";
+      q1MiniMsg.classList.remove("show");
+      q1PartBtns.forEach(btn => btn.classList.remove("active", "done"));
+      q1Hotspots.forEach(spot => spot.classList.remove("correct-mark", "wrong-mark"));
+    }
+
+    // 任務二
+    const q2Section = document.getElementById("q2");
+    const q2CheckBtn = q2Section.querySelector(".check-btn");
+    const q2RetryBtn = q2Section.querySelector(".retry-btn");
+    const q2Cards = Array.from(q2Section.querySelectorAll(".flip-card"));
+    const q2Radios = Array.from(q2Section.querySelectorAll('input[type="radio"]'));
+    const playLeafBtn = document.getElementById("playLeafBtn");
+    const leafVideo = document.getElementById("leafVideo");
+    const leafText = document.getElementById("leafText");
+    let q2Played = false;
+
+    q2Cards.forEach(card => {
+      card.addEventListener("click", () => {
+        card.classList.add("flipped");
+        refreshQ2Check();
+      });
+    });
+
+    q2Radios.forEach(r => r.addEventListener("change", refreshQ2Check));
+
+    function refreshQ2Check() {
+      const allFlipped = q2Section.querySelectorAll(".flip-card.flipped").length === q2Cards.length;
+      const hasAnswer = !!q2Section.querySelector('input[type="radio"]:checked');
+      q2CheckBtn.disabled = !(allFlipped && hasAnswer && q2Played);
+    }
+
+    playLeafBtn.addEventListener("click", () => {
+      q2Played = true;
+      leafVideo.style.display = "block";
+      leafVideo.currentTime = 0;
+      leafVideo.play().catch(() => {});
+      leafText.textContent = "請觀看影片，觀察幼葉如何慢慢展開。";
+      refreshQ2Check();
+    });
+
+    q2CheckBtn.addEventListener("click", () => {
+      const selected = q2Section.querySelector('input[type="radio"]:checked');
+      const ok = selected && selected.value === "a";
+      questionState.q2 = ok;
+      setResult(
+        q2Section,
+        ok,
+        ok
+          ? "答對了！蕨類剛長出的葉常呈捲曲狀，之後才慢慢展開。"
+          : "再想想看。剛長出的蕨類葉常是捲曲的，不是完全展開的樣子。"
+      );
+      updateNextButton();
+    });
+
+    q2RetryBtn.addEventListener("click", () => resetSection(q2Section));
+
+    function resetQ2() {
+      q2Cards.forEach(card => card.classList.remove("flipped"));
+      q2Radios.forEach(r => r.checked = false);
+      q2Played = false;
+      leafVideo.pause();
+      leafVideo.currentTime = 0;
+      leafVideo.style.display = "none";
+      leafText.textContent = "按下按鈕，觀察幼葉展開。";
+    }
+
+    // 任務三
+    const q3Section = document.getElementById("q3");
+    const q3CheckBtn = q3Section.querySelector(".check-btn");
+    const q3RetryBtn = q3Section.querySelector(".retry-btn");
+    const soriSpots = Array.from(q3Section.querySelectorAll(".sori-spot"));
+    const magnifierBox = document.getElementById("magnifierBox");
+    const sporeBurst = document.getElementById("sporeBurst");
+    let q3Found = false;
+
+    function makeSpores() {
+      sporeBurst.innerHTML = "";
+      const offsets = [
+        ["-40px", "-10px"], ["30px", "-25px"], ["55px", "-5px"],
+        ["-60px", "12px"], ["15px", "20px"], ["75px", "16px"]
+      ];
+      offsets.forEach(([dx, dy], i) => {
+        const s = document.createElement("span");
+        s.className = "spore fly";
+        s.style.left = "50%";
+        s.style.top = "50%";
+        s.style.setProperty("--dx", dx);
+        s.style.setProperty("--dy", dy);
+        s.style.animationDelay = `${i * 0.05}s`;
+        sporeBurst.appendChild(s);
+      });
+    }
+
+    soriSpots.forEach(spot => {
+      spot.addEventListener("click", () => {
+        if (spot.dataset.correct === "true") {
+          q3Found = true;
+          spot.classList.add("correct-hit");
+          magnifierBox.classList.add("show");
+          makeSpores();
+          q3CheckBtn.disabled = false;
+        } else {
+          spot.classList.remove("wrong-hit");
+          void spot.offsetWidth;
+          spot.classList.add("wrong-hit");
+        }
+      });
+    });
+
+    q3CheckBtn.addEventListener("click", () => {
+      questionState.q3 = q3Found;
+      setResult(
+        q3Section,
+        q3Found,
+        q3Found
+          ? "答對了！蕨類葉背的孢子囊堆是形成孢子的地方。"
+          : "還沒找到正確位置，請再觀察葉背。"
+      );
+      updateNextButton();
+    });
+
+    q3RetryBtn.addEventListener("click", () => resetSection(q3Section));
+
+    function resetQ3() {
+      q3Found = false;
+      q3CheckBtn.disabled = true;
+      magnifierBox.classList.remove("show");
+      sporeBurst.innerHTML = "";
+      soriSpots.forEach(spot => spot.classList.remove("correct-hit", "wrong-hit"));
+    }
+
+    // 任務四
+    const q4Section = document.getElementById("q4");
+    const q4CheckBtn = q4Section.querySelector(".check-btn");
+    const q4RetryBtn = q4Section.querySelector(".retry-btn");
+    const q4MiniMsg = document.getElementById("q4MiniMsg");
+    const sequenceChoices = document.getElementById("sequenceChoices");
+    let q4SelectedChoice = null;
+    let q4Placed = {};
+    const q4AnswerMap = {
+      "葉背形成孢子囊堆": 1,
+      "孢子成熟散出": 2,
+      "遇適合環境萌發": 3,
+      "經過發育形成新植株": 4
+    };
+    const q4ChoiceTexts = Object.keys(q4AnswerMap);
+
+    function getQ4Slots() {
+      return Array.from(q4Section.querySelectorAll(".sequence-slot"));
+    }
+
+    function getQ4Choices() {
+      return Array.from(q4Section.querySelectorAll(".choice-card"));
+    }
+
+    function setFlow(n) {
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById(`flow${i}`).classList.toggle("active", i <= n);
+      }
+    }
+
+    function refreshQ4Check() {
+      q4CheckBtn.disabled = Object.keys(q4Placed).length !== 4;
+    }
+
+    function updateQ4Flow() {
+      let count = 0;
+      for (let i = 1; i <= 4; i++) {
+        if (q4Placed[i]) count += 1;
+      }
+      setFlow(count);
+    }
+
+    function clearQ4SelectedChoice() {
+      q4SelectedChoice = null;
+      getQ4Choices().forEach(choice => choice.classList.remove("selected"));
+      getQ4Slots().forEach(slot => slot.classList.remove("active"));
+    }
+
+    function buildQ4Choices() {
+      sequenceChoices.innerHTML = "";
+      shuffleArray(q4ChoiceTexts).forEach(text => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "choice-card";
+        btn.dataset.text = text;
+        btn.textContent = text;
+        btn.addEventListener("click", () => {
+          if (btn.classList.contains("used")) return;
+          q4SelectedChoice = text;
+          getQ4Choices().forEach(choice => choice.classList.remove("selected"));
+          btn.classList.add("selected");
+          getQ4Slots().forEach(slot => {
+            if (!slot.classList.contains("filled")) {
+              slot.classList.add("active");
+            } else {
+              slot.classList.remove("active");
+            }
+          });
+          q4MiniMsg.classList.add("show");
+          q4MiniMsg.textContent = "已選擇下方選項，請點上方對應步驟放入。";
+        });
+        sequenceChoices.appendChild(btn);
+      });
+    }
+
+    function fillQ4Slot(slot, text) {
+      const step = Number(slot.dataset.step);
+      q4Placed[step] = text;
+      slot.classList.remove("active");
+      slot.classList.add("filled");
+      slot.innerHTML = `
+        <div class="slot-title">步驟${["一","二","三","四"][step - 1]}</div>
+        <div class="slot-choice-text">${text}</div>
+      `;
+
+      const choice = getQ4Choices().find(btn => btn.dataset.text === text);
+      if (choice) {
+        choice.classList.remove("selected", "wrong");
+        choice.classList.add("used");
+        choice.disabled = true;
+      }
+
+      clearQ4SelectedChoice();
+      updateQ4Flow();
+      refreshQ4Check();
+      q4MiniMsg.classList.add("show");
+      q4MiniMsg.textContent = `已放入步驟${["一","二","三","四"][step - 1]}。`;
+    }
+
+    function resetQ4Slots() {
+      getQ4Slots().forEach(slot => {
+        const step = Number(slot.dataset.step);
+        slot.className = "sequence-slot";
+        slot.innerHTML = `
+          <div class="slot-title">步驟${["一","二","三","四"][step - 1]}</div>
+          <div class="slot-placeholder">點選正確選項放入這一步</div>
+        `;
+      });
+    }
+
+    getQ4Slots().forEach(slot => {
+      slot.addEventListener("click", () => {
+        const step = Number(slot.dataset.step);
+        if (q4Placed[step] || !q4SelectedChoice) return;
+        if (q4AnswerMap[q4SelectedChoice] === step) {
+          fillQ4Slot(slot, q4SelectedChoice);
+          if (Object.keys(q4Placed).length === 4) {
+            q4MiniMsg.textContent = "四個步驟都完成了，現在可以檢查答案。";
+          }
+        } else {
+          const activeChoice = getQ4Choices().find(btn => btn.dataset.text === q4SelectedChoice);
+          if (activeChoice) {
+            activeChoice.classList.remove("wrong");
+            void activeChoice.offsetWidth;
+            activeChoice.classList.add("wrong");
+          }
+          q4MiniMsg.classList.add("show");
+          q4MiniMsg.textContent = "這個選項不屬於這一步，請再想想。";
+        }
+      });
+    });
+
+    q4CheckBtn.addEventListener("click", () => {
+      const ok = [1, 2, 3, 4].every(step => q4Placed[step] && q4AnswerMap[q4Placed[step]] === step);
+      questionState.q4 = ok;
+      setResult(
+        q4Section,
+        ok,
+        ok
+          ? "答對了！你已經完成蕨類孢子傳播流程排序。"
+          : "還有步驟放錯位置，請再試一次。"
+      );
+      updateNextButton();
+    });
+
+    q4RetryBtn.addEventListener("click", () => resetSection(q4Section));
+
+    function resetQ4() {
+      q4Placed = {};
+      q4SelectedChoice = null;
+      q4MiniMsg.textContent = "";
+      q4MiniMsg.classList.remove("show");
+      q4CheckBtn.disabled = true;
+      resetQ4Slots();
+      buildQ4Choices();
+      setFlow(0);
+    }
+    resetQ4();
+
+    // 任務五
+    const q5Section = document.getElementById("q5");
+    const q5CheckBtn = q5Section.querySelector(".check-btn");
+    const q5RetryBtn = q5Section.querySelector(".retry-btn");
+    const q5Pins = Array.from(q5Section.querySelectorAll(".map-pin"));
+    const mapPopup = document.getElementById("mapPopup");
+    const q5Radios = Array.from(q5Section.querySelectorAll('input[type="radio"]'));
+    let q5Opened = false;
+
+    q5Pins.forEach(pin => {
+      pin.addEventListener("click", () => {
+        q5Opened = true;
+        mapPopup.classList.add("show");
+        refreshQ5Check();
+      });
+    });
+
+    q5Radios.forEach(r => r.addEventListener("change", refreshQ5Check));
+
+    function refreshQ5Check() {
+      const hasAnswer = !!q5Section.querySelector('input[type="radio"]:checked');
+      q5CheckBtn.disabled = !(q5Opened && hasAnswer);
+    }
+
+    q5CheckBtn.addEventListener("click", () => {
+      const selected = q5Section.querySelector('input[type="radio"]:checked');
+      const ok = selected && selected.value === "a";
+      questionState.q5 = ok;
+      setResult(
+        q5Section,
+        ok,
+        ok
+          ? "答對了！臺灣潮溼多山，適合許多蕨類生長，因此有蕨類王國之稱。"
+          : "再想想看。蕨類多半喜歡潮溼環境，不是乾燥沙漠環境。"
+      );
+      updateNextButton();
+    });
+
+    q5RetryBtn.addEventListener("click", () => resetSection(q5Section));
+
+    function resetQ5() {
+      q5Opened = false;
+      mapPopup.classList.remove("show");
+      q5Radios.forEach(r => r.checked = false);
+      q5CheckBtn.disabled = true;
+    }
+
+    // 任務六
+    const q6Section = document.getElementById("q6");
+    const q6CheckBtn = q6Section.querySelector(".check-btn");
+    const q6RetryBtn = q6Section.querySelector(".retry-btn");
+    const useSelects = Array.from(q6Section.querySelectorAll(".use-select"));
+    const useOptionMap = {
+      ornamental: "觀葉植物",
+      root_edible: "觀葉植物（地下莖可食）",
+      birdnest_special: "觀葉植物（嫩葉可食）",
+      edible: "食用植物",
+      tree: "大型樹狀蕨類"
+    };
+
+    function buildUseOptions() {
+      useSelects.forEach(select => {
+        select.innerHTML = "";
+        const first = document.createElement("option");
+        first.value = "";
+        first.textContent = "請選擇";
+        select.appendChild(first);
+
+        const optionKeys = (select.dataset.options || "").split(",").map(s => s.trim()).filter(Boolean);
+        shuffleArray(optionKeys).forEach(key => {
+          const opt = document.createElement("option");
+          opt.value = key;
+          opt.textContent = useOptionMap[key];
+          select.appendChild(opt);
+        });
+      });
+    }
+
+    function refreshQ6Check() {
+      q6CheckBtn.disabled = !useSelects.every(s => s.value !== "");
+    }
+
+    useSelects.forEach(select => select.addEventListener("change", refreshQ6Check));
+
+    q6CheckBtn.addEventListener("click", () => {
+      const ok = useSelects.every(select => select.value === select.dataset.answer);
+      questionState.q6 = ok;
+      setResult(
+        q6Section,
+        ok,
+        ok
+          ? "答對了！你已完成蕨類生活應用配對。"
+          : "還有配對錯誤。請再想想哪些蕨類適合觀賞、食用或屬於樹狀蕨類。"
+      );
+      updateNextButton();
+    });
+
+    q6RetryBtn.addEventListener("click", () => resetSection(q6Section));
+
+    function resetQ6() {
+      buildUseOptions();
+      q6CheckBtn.disabled = true;
+    }
+    buildUseOptions();
+
+    // 任務七
+    const q7Section = document.getElementById("q7");
+    const q7CheckBtn = q7Section.querySelector(".check-btn");
+    const q7RetryBtn = q7Section.querySelector(".retry-btn");
+    const clueBtns = Array.from(q7Section.querySelectorAll(".clue-btn"));
+    const judgeAnswers = {
+      judge1: "yes",
+      judge2: "no",
+      judge3: "yes",
+      judge4: "no",
+      judge5: "yes"
+    };
+
+    clueBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        btn.nextElementSibling.classList.toggle("show");
+      });
+    });
+
+    q7Section.querySelectorAll('input[type="radio"]').forEach(r => {
+      r.addEventListener("change", () => {
+        const allDone = Object.keys(judgeAnswers).every(name => q7Section.querySelector(`input[name="${name}"]:checked`));
+        q7CheckBtn.disabled = !allDone;
+      });
+    });
+
+    q7CheckBtn.addEventListener("click", () => {
+      const ok = Object.entries(judgeAnswers).every(([name, val]) => {
+        const selected = q7Section.querySelector(`input[name="${name}"]:checked`);
+        return selected && selected.value === val;
+      });
+
+      questionState.q7 = ok;
+      setResult(
+        q7Section,
+        ok,
+        ok
+          ? "答對了！你已經能根據關鍵特徵判斷哪些植物是蕨類。"
+          : "還有幾張判斷錯誤。請再根據線索：有沒有花果、幼葉是否捲曲、葉背是否有孢子囊堆。"
+      );
+      updateNextButton();
+    });
+
+    q7RetryBtn.addEventListener("click", () => resetSection(q7Section));
+
+    function resetQ7() {
+      q7Section.querySelectorAll('.clue-box').forEach(box => box.classList.remove("show"));
+      q7Section.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+      q7CheckBtn.disabled = true;
+    }
+
+    // 單選題容器隨機
+    document.querySelectorAll('[data-randomize="true"]').forEach(container => {
+      randomizeOptionLabels(container);
+    });
+
+    updateNextButton();
+  </script>
+</body>
+</html>

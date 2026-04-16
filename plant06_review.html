@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>植物界射擊評量遊戲</title>
+  <style>
+    :root {
+      --bg1: #eef8ee;
+      --bg2: #dff0e1;
+      --ink: #203026;
+      --sub: #5a6f60;
+      --green-dark: #245f38;
+      --line: #dbe7d9;
+      --red: #b94a48;
+      --blue: #2b6cb0;
+      --shadow: 0 12px 28px rgba(0,0,0,.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at top left, var(--bg1), var(--bg2));
+    }
+
+    .container {
+      width: min(1180px, 94%);
+      margin: 0 auto;
+      padding: 24px 0 40px;
+    }
+
+    .hero {
+      background: rgba(255,255,255,.96);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 26px 24px;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      color: var(--green-dark);
+      font-size: clamp(2rem, 3vw, 2.9rem);
+    }
+
+    .hero p {
+      margin: 0 0 8px;
+      color: var(--sub);
+      line-height: 1.8;
+    }
+
+    .game-area {
+      position: relative;
+      min-height: 760px;
+      overflow: hidden;
+      background:
+        linear-gradient(to top, #cfe8b9 0 18%, transparent 18%),
+        linear-gradient(180deg, #dff5ff 0%, #f7fcff 52%, #ebf8ec 100%);
+      border: 2px solid #d8e6d6;
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      cursor: crosshair;
+      user-select: none;
+    }
+
+    .game-header {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      top: 14px;
+      z-index: 3;
+      display: grid;
+      grid-template-columns: 1.3fr 1fr auto auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .mini-pill {
+      background: rgba(255,255,255,.9);
+      border: 1px solid #dbe7d9;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 800;
+      color: #2d5e3b;
+      text-align: center;
+      min-height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .top-question-bar {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      top: 74px;
+      z-index: 3;
+      background: rgba(255,255,255,.92);
+      border: 1px solid #dbe7d9;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 16px;
+      backdrop-filter: blur(4px);
+    }
+
+    .question-title {
+      color: var(--green-dark);
+      font-weight: 800;
+      margin: 0 0 6px;
+      font-size: 1.02rem;
+    }
+
+    .question-text {
+      margin: 0;
+      color: var(--ink);
+      line-height: 1.8;
+      font-size: 1.05rem;
+    }
+
+    button {
+      appearance: none;
+      border: none;
+      border-radius: 999px;
+      padding: 11px 18px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: .18s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+    button:disabled {
+      opacity: .65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .start-btn, .upload-btn {
+      background: var(--green-dark);
+      color: #fff;
+    }
+
+    .pause-btn {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .secondary-btn {
+      background: #8b6b4a;
+      color: #fff;
+    }
+
+    .crosshair {
+      position: absolute;
+      width: 44px;
+      height: 44px;
+      border: 3px solid rgba(36,95,56,.75);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 5;
+      display: none;
+    }
+
+    .crosshair::before,
+    .crosshair::after {
+      content: "";
+      position: absolute;
+      background: rgba(36,95,56,.75);
+    }
+
+    .crosshair::before {
+      width: 2px;
+      height: 54px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .crosshair::after {
+      width: 54px;
+      height: 2px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .target {
+      position: absolute;
+      min-width: 118px;
+      max-width: 170px;
+      padding: 12px 14px;
+      border-radius: 18px;
+      color: #fff;
+      font-weight: 800;
+      text-align: center;
+      box-shadow: 0 10px 18px rgba(0,0,0,.14);
+      border: 2px solid rgba(255,255,255,.7);
+      cursor: crosshair;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      line-height: 1.35;
+      background: linear-gradient(135deg, #5f7f68, #486454);
+    }
+
+    .hit-effect, .miss-effect {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      font-size: 1.1rem;
+      font-weight: 900;
+      pointer-events: none;
+      z-index: 6;
+      animation: floatUp .8s ease forwards;
+    }
+
+    .hit-effect { color: var(--red); }
+    .miss-effect { color: var(--red); }
+
+    @keyframes floatUp {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(.8); }
+      20% { opacity: 1; }
+      100% { opacity: 0; transform: translate(-50%, -120%) scale(1.05); }
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,.82);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      padding: 24px;
+    }
+
+    .overlay-card {
+      width: min(820px, 100%);
+      background: #fff;
+      border-radius: 24px;
+      border: 1px solid #dbe7d9;
+      padding: 26px 24px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .overlay-card h2 {
+      margin: 0 0 10px;
+      color: var(--green-dark);
+      font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+    }
+
+    .overlay-card p {
+      margin: 0 0 10px;
+      color: var(--sub);
+      line-height: 1.8;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .result-box {
+      background: #f8fcf7;
+      border: 1px solid #dce9db;
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .result-box .big {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--green-dark);
+    }
+
+    .review-list {
+      text-align: left;
+      margin-top: 14px;
+      display: grid;
+      gap: 10px;
+      max-height: 220px;
+      overflow: auto;
+    }
+
+    .review-item {
+      border: 1px solid #dde8db;
+      border-radius: 14px;
+      padding: 12px;
+      background: #fbfef9;
+    }
+
+    .review-item strong { color: var(--green-dark); }
+
+    .upload-panel {
+      margin-top: 16px;
+      padding: 16px;
+      border: 1px solid #dce9db;
+      border-radius: 16px;
+      background: #f8fcf7;
+      text-align: left;
+    }
+
+    .upload-panel h3 {
+      margin: 0 0 10px;
+      color: var(--green-dark);
+      font-size: 1.1rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .field label {
+      display: block;
+      font-weight: 700;
+      color: #355740;
+      margin-bottom: 6px;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 2px solid #d8e4d6;
+      border-radius: 12px;
+      font-size: 1rem;
+    }
+
+    .upload-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .upload-status {
+      margin-top: 10px;
+      font-weight: 700;
+      min-height: 24px;
+    }
+
+    .success-text { color: var(--green-dark); }
+    .error-text { color: var(--red); }
+
+    .hidden { display: none !important; }
+
+    .page-nav {
+      margin-top: 18px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .page-nav .nav-btn {
+      appearance: none;
+      border: none;
+      border-radius: 999px;
+      padding: 11px 18px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+      transition: .18s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #d9cbb8;
+      background: #f7f1e8;
+      color: #534b40;
+    }
+
+    @media (max-width: 900px) {
+      .game-header {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .game-area {
+        min-height: 820px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .game-header {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .game-area {
+        min-height: 920px;
+      }
+
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .target {
+        min-width: 96px;
+        max-width: 138px;
+        font-size: .95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <h1>植物界射擊評量遊戲</h1>
+      <p>請射擊符合題目所敘述的植物。每題會出現 4 個植物名稱目標，其中只有 1 個是正確答案。共 15 題。</p>
+      <p>若未擊中任何目標，會顯示「落空」；若擊中正確答案，會顯示「精準命中 得分」；若擊中錯誤答案，會顯示「誤射」。</p>
+    </section>
+
+    <main class="game-area" id="gameArea">
+      <div class="game-header">
+        <div class="mini-pill">題號：<span id="currentQuestion">0</span> / 15</div>
+        <div class="mini-pill">分數：<span id="scoreValue">0</span></div>
+        <button class="start-btn" id="startBtn">開始遊戲</button>
+        <button class="pause-btn hidden" id="pauseBtn">暫停</button>
+      </div>
+
+      <div class="top-question-bar">
+        <p class="question-title">本題任務</p>
+        <p class="question-text" id="questionText">按下開始遊戲後，題目會顯示在這裡。</p>
+      </div>
+
+      <div class="crosshair" id="crosshair"></div>
+
+      <div class="overlay" id="startOverlay">
+        <div class="overlay-card">
+          <h2>準備開始植物界射擊評量</h2>
+          <p>請射擊符合題目所敘述的植物。</p>
+          <p>每題會出現 4 個植物名稱目標，其中只有 1 個是正確答案。共 15 題。</p>
+          <button class="start-btn" id="overlayStartBtn">開始挑戰</button>
+        </div>
+      </div>
+
+      <div class="overlay hidden" id="pauseOverlay">
+        <div class="overlay-card">
+          <h2>遊戲已暫停</h2>
+          <p>按下下方按鈕繼續作答。</p>
+          <button class="start-btn" id="resumeBtn">繼續遊戲</button>
+        </div>
+      </div>
+
+      <div class="overlay hidden" id="resultOverlay">
+        <div class="overlay-card">
+          <h2>植物界射擊評量完成</h2>
+          <div class="result-grid">
+            <div class="result-box">
+              <div>總分</div>
+              <div class="big" id="finalScore">0</div>
+            </div>
+            <div class="result-box">
+              <div>答對題數</div>
+              <div class="big" id="finalCorrect">0 / 15</div>
+            </div>
+            <div class="result-box">
+              <div>正確率</div>
+              <div class="big" id="finalAccuracy">0%</div>
+            </div>
+          </div>
+
+          <p id="resultSummary">你已完成所有題目。</p>
+
+          <div class="upload-panel" id="uploadPanel">
+            <h3>請上傳成績</h3>
+            <div class="form-grid">
+              <div class="field">
+                <label for="className">班級</label>
+                <input id="className" type="text" placeholder="例如：五年一班" />
+              </div>
+              <div class="field">
+                <label for="seatNumber">座號</label>
+                <input id="seatNumber" type="text" placeholder="例如：12" />
+              </div>
+              <div class="field">
+                <label for="studentName">姓名</label>
+                <input id="studentName" type="text" placeholder="例如：王小明" />
+              </div>
+            </div>
+            <div class="upload-actions">
+              <button class="upload-btn" id="uploadBtn">上傳成績</button>
+            </div>
+            <div class="upload-status" id="uploadStatus"></div>
+          </div>
+
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="page-nav">
+      <a class="nav-btn" href="plant05_angiosperm.html">← 上一頁</a>
+      <a class="nav-btn" href="index.html">回首頁</a>
+    </footer>
+  </div>
+
+  <script>
+    const questionBank = [
+      {
+        prompt: '沒有真正的根、莖、葉，植物體較矮小，常生長在潮溼環境。請射擊符合題目所敘述的植物。',
+        answer: '地錢',
+        choices: ['地錢', '松樹', '向日葵', '百合']
+      },
+      {
+        prompt: '沒有維管束，喜歡潮溼環境，也常被用在園藝或保水材料中。請射擊符合題目所敘述的植物。',
+        answer: '水苔',
+        choices: ['水苔', '銀杏', '番茄', '玉米']
+      },
+      {
+        prompt: '具有維管束，但沒有種子，也不會開花結果，而是靠孢子繁殖。請射擊符合題目所敘述的植物。',
+        answer: '腎蕨',
+        choices: ['腎蕨', '柏樹', '土馬騌', '蘇鐵']
+      },
+      {
+        prompt: '屬於蕨類植物，名稱中有「鐵」字，葉片細小而輕巧。請射擊符合題目所敘述的植物。',
+        answer: '鐵線蕨',
+        choices: ['鐵線蕨', '蘇鐵', '地鐵', '鐵釘']
+      },
+      {
+        prompt: '屬於蕨類植物，利用孢子繁殖，也是常見的觀賞植物。請射擊符合題目所敘述的植物。',
+        answer: '鳥巢蕨',
+        choices: ['鳥巢蕨', '松樹', '水苔', '向日葵']
+      },
+      {
+        prompt: '外形像樹，但實際上屬於蕨類植物，不是裸子植物。請射擊符合題目所敘述的植物。',
+        answer: '筆筒樹',
+        choices: ['筆筒樹', '柏樹', '銀杏', '玉米']
+      },
+      {
+        prompt: '具有維管束，以種子繁殖，種子沒有果實包住，常可見毬果。請射擊符合題目所敘述的植物。',
+        answer: '松樹',
+        choices: ['松樹', '腎蕨', '番茄', '地錢']
+      },
+      {
+        prompt: '生殖器官是毬果，葉形呈針狀，利用種子繁殖。請射擊符合題目所敘述的植物。',
+        answer: '蘇鐵',
+        choices: ['蘇鐵', '百合', '鐵線蕨', '水苔']
+      },
+      {
+        prompt: '具有種子，種子沒有果實包覆，常見於校園、公園或行道樹，葉片形狀也很有特色。請射擊符合題目所敘述的植物。',
+        answer: '銀杏',
+        choices: ['銀杏', '向日葵', '地錢', '番茄']
+      },
+      {
+        prompt: '具有花粉管，種子裸露，常見於庭園、公園或校園綠化植物中。請射擊符合題目所敘述的植物。',
+        answer: '柏樹',
+        choices: ['柏樹', '蘋果樹', '鳥巢蕨', '櫻花']
+      },
+      {
+        prompt: '會開花，也會結果，種子包在果實裡，花朵常又大又明顯。請射擊符合題目所敘述的植物。',
+        answer: '向日葵',
+        choices: ['向日葵', '松樹', '銀杏', '地錢']
+      },
+      {
+        prompt: '屬於被子植物，也是常見花卉之一，有五瓣花瓣。請射擊符合題目所敘述的植物。',
+        answer: '菩提',
+        choices: ['菩提', '玉米', '竹子', '水仙']
+      },
+      {
+        prompt: '會開花，具有果實，花瓣數目是3的倍數。請射擊符合題目所敘述的植物。',
+        answer: '玉米',
+        choices: ['玉米', '櫻花', '向日葵', '綠豆']
+      },
+      {
+        prompt: '屬於被子植物，會形成果實，且屬於木本植物。請射擊符合題目所敘述的植物。',
+        answer: '蘋果樹',
+        choices: ['蘋果樹', '柏樹', '鐵線蕨', '水苔']
+      },
+      {
+        prompt: '會開花，常見特徵是平行脈、鬚根。請射擊符合題目所敘述的植物。',
+        answer: '玉米',
+        choices: ['玉米', '綠豆', '向日葵', '銀杏']
+      }
+    ];
+
+    const UPLOAD_URL = 'https://script.google.com/macros/s/AKfycbwRFv3QOyJHNOjrwVCapGc-HBWvYFlECtOolQ0BPlFMSSJ6e0w0M9cIE6p-mAxItRRV/exec';
+    const POINTS_PER_HIT = 10;
+
+    const gameArea = document.getElementById('gameArea');
+    const crosshair = document.getElementById('crosshair');
+    const startOverlay = document.getElementById('startOverlay');
+    const pauseOverlay = document.getElementById('pauseOverlay');
+    const resultOverlay = document.getElementById('resultOverlay');
+    const startBtn = document.getElementById('startBtn');
+    const overlayStartBtn = document.getElementById('overlayStartBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const resumeBtn = document.getElementById('resumeBtn');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const uploadStatus = document.getElementById('uploadStatus');
+    const classNameInput = document.getElementById('className');
+    const seatNumberInput = document.getElementById('seatNumber');
+    const studentNameInput = document.getElementById('studentName');
+
+    const currentQuestionEl = document.getElementById('currentQuestion');
+    const scoreValueEl = document.getElementById('scoreValue');
+    const questionTextEl = document.getElementById('questionText');
+    const finalScoreEl = document.getElementById('finalScore');
+    const finalCorrectEl = document.getElementById('finalCorrect');
+    const finalAccuracyEl = document.getElementById('finalAccuracy');
+    const resultSummaryEl = document.getElementById('resultSummary');
+    const reviewListEl = document.getElementById('reviewList');
+
+    let gameState = {
+      currentIndex: 0,
+      score: 0,
+      movingTimer: null,
+      currentQuestion: null,
+      answered: false,
+      paused: false,
+      results: []
+    };
+
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function resetGame() {
+      clearTimers();
+      removeTargets();
+      clearEffects();
+      gameState = {
+        currentIndex: 0,
+        score: 0,
+        movingTimer: null,
+        currentQuestion: null,
+        answered: false,
+        paused: false,
+        results: []
+      };
+      scoreValueEl.textContent = '0';
+      currentQuestionEl.textContent = '0';
+      questionTextEl.textContent = '按下開始遊戲後，題目會顯示在這裡。';
+      uploadStatus.textContent = '';
+      uploadStatus.className = 'upload-status';
+      classNameInput.value = '';
+      seatNumberInput.value = '';
+      studentNameInput.value = '';
+    }
+
+    function clearTimers() {
+      clearInterval(gameState.movingTimer);
+      gameState.movingTimer = null;
+    }
+
+    function removeTargets() {
+      gameArea.querySelectorAll('.target').forEach(el => el.remove());
+    }
+
+    function clearEffects() {
+      gameArea.querySelectorAll('.hit-effect, .miss-effect').forEach(el => el.remove());
+    }
+
+    function startGame() {
+      resetGame();
+      startOverlay.classList.add('hidden');
+      resultOverlay.classList.add('hidden');
+      pauseOverlay.classList.add('hidden');
+      pauseBtn.classList.remove('hidden');
+      nextQuestion();
+    }
+
+    function nextQuestion() {
+      clearTimers();
+      removeTargets();
+      clearEffects();
+
+      if (gameState.currentIndex >= questionBank.length) {
+        finishGame();
+        return;
+      }
+
+      gameState.currentQuestion = questionBank[gameState.currentIndex];
+      gameState.answered = false;
+      currentQuestionEl.textContent = String(gameState.currentIndex + 1);
+      questionTextEl.textContent = gameState.currentQuestion.prompt;
+      spawnTargets(gameState.currentQuestion.choices, gameState.currentQuestion.answer);
+      startMovingTargets();
+    }
+
+    function spawnTargets(choices, answer) {
+      const areaRect = gameArea.getBoundingClientRect();
+      const safeTop = 190;
+      const safeBottom = areaRect.height - 80;
+      const safeLeft = 90;
+      const safeRight = areaRect.width - 90;
+
+      shuffleArray(choices).forEach(choice => {
+        const target = document.createElement('div');
+        target.className = 'target';
+        target.textContent = choice;
+        target.dataset.name = choice;
+        target.dataset.correct = String(choice === answer);
+        target.style.left = `${randomNumber(safeLeft, safeRight)}px`;
+        target.style.top = `${randomNumber(safeTop, safeBottom)}px`;
+        target.dataset.vx = String(randomNumber(-2.4, 2.4));
+        target.dataset.vy = String(randomNumber(-1.8, 1.8));
+
+        if (Math.abs(Number(target.dataset.vx)) < 0.8) {
+          target.dataset.vx = String(Number(target.dataset.vx) < 0 ? -1.1 : 1.1);
+        }
+        if (Math.abs(Number(target.dataset.vy)) < 0.6) {
+          target.dataset.vy = String(Number(target.dataset.vy) < 0 ? -0.9 : 0.9);
+        }
+
+        target.addEventListener('click', e => {
+          e.stopPropagation();
+          handleShot(target);
+        });
+
+        gameArea.appendChild(target);
+      });
+    }
+
+    function startMovingTargets() {
+      gameState.movingTimer = setInterval(() => {
+        if (gameState.paused) return;
+
+        const areaRect = gameArea.getBoundingClientRect();
+        const minX = 70;
+        const maxX = areaRect.width - 70;
+        const minY = 190;
+        const maxY = areaRect.height - 70;
+
+        gameArea.querySelectorAll('.target').forEach(target => {
+          let x = parseFloat(target.style.left);
+          let y = parseFloat(target.style.top);
+          let vx = parseFloat(target.dataset.vx);
+          let vy = parseFloat(target.dataset.vy);
+
+          x += vx;
+          y += vy;
+
+          if (x <= minX || x >= maxX) {
+            vx *= -1;
+            x = Math.max(minX, Math.min(maxX, x));
+          }
+          if (y <= minY || y >= maxY) {
+            vy *= -1;
+            y = Math.max(minY, Math.min(maxY, y));
+          }
+
+          target.style.left = `${x}px`;
+          target.style.top = `${y}px`;
+          target.dataset.vx = String(vx);
+          target.dataset.vy = String(vy);
+        });
+      }, 16);
+    }
+
+    function handleShot(target) {
+      if (gameState.answered || gameState.paused) return;
+
+      const isCorrect = target.dataset.correct === 'true';
+      const shotName = target.dataset.name;
+
+      if (isCorrect) {
+        gameState.score += POINTS_PER_HIT;
+        scoreValueEl.textContent = String(gameState.score);
+        showFloatingText(target, '精準命中 得分', 'hit-effect');
+        markQuestion(true, shotName, gameState.currentQuestion.answer);
+      } else {
+        showFloatingText(target, '誤射', 'miss-effect');
+        markQuestion(false, shotName, gameState.currentQuestion.answer);
+      }
+    }
+
+    function markQuestion(isCorrect, selected, answer, reason = '') {
+      gameState.answered = true;
+      clearTimers();
+
+      gameState.results.push({
+        prompt: gameState.currentQuestion.prompt,
+        selected: selected || '未作答',
+        answer,
+        isCorrect,
+        reason
+      });
+
+      removeTargets();
+
+      setTimeout(() => {
+        clearEffects();
+        gameState.currentIndex += 1;
+        nextQuestion();
+      }, 900);
+    }
+
+    function showFloatingText(target, text, className) {
+      const fx = document.createElement('div');
+      fx.className = className;
+      fx.textContent = text;
+      fx.style.left = target.style.left;
+      fx.style.top = target.style.top;
+      gameArea.appendChild(fx);
+      setTimeout(() => fx.remove(), 800);
+    }
+
+    function finishGame() {
+      clearTimers();
+      removeTargets();
+      clearEffects();
+      pauseBtn.classList.add('hidden');
+
+      const total = questionBank.length;
+      const correctCount = gameState.results.filter(item => item.isCorrect).length;
+      const accuracy = Math.round((correctCount / total) * 100);
+
+      finalScoreEl.textContent = String(gameState.score);
+      finalCorrectEl.textContent = `${correctCount} / ${total}`;
+      finalAccuracyEl.textContent = `${accuracy}%`;
+
+      let summary = '再接再厲，繼續練習植物分類。';
+      if (accuracy >= 90) summary = '太厲害了，你對植物界的分類掌握得非常好！';
+      else if (accuracy >= 75) summary = '表現很好，已經掌握多數植物分類重點。';
+      else if (accuracy >= 60) summary = '有不錯的基礎，再複習幾個植物名稱會更穩。';
+
+      resultSummaryEl.textContent = summary;
+      renderReview();
+      resultOverlay.classList.remove('hidden');
+    }
+
+    function renderReview() {
+      reviewListEl.innerHTML = '';
+      const wrongItems = gameState.results.filter(item => !item.isCorrect);
+
+      if (wrongItems.length === 0) {
+        const div = document.createElement('div');
+        div.className = 'review-item';
+        div.innerHTML = '<strong>全部答對！</strong> 這次沒有錯題。';
+        reviewListEl.appendChild(div);
+        return;
+      }
+
+      wrongItems.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'review-item';
+        div.innerHTML = `
+          <div><strong>錯題 ${index + 1}</strong></div>
+          <div>題目：${item.prompt}</div>
+          <div>你的答案：${item.selected}</div>
+          <div>正確答案：${item.answer}</div>
+          ${item.reason ? `<div>狀況：${item.reason}</div>` : ''}
+        `;
+        reviewListEl.appendChild(div);
+      });
+    }
+
+    async function uploadScore() {
+      const className = classNameInput.value.trim();
+      const seatNumber = seatNumberInput.value.trim();
+      const studentName = studentNameInput.value.trim();
+
+      if (!className || !seatNumber || !studentName) {
+        uploadStatus.textContent = '請先完整填寫班級、座號、姓名。';
+        uploadStatus.className = 'upload-status error-text';
+        return;
+      }
+
+      const total = questionBank.length;
+      const correctCount = gameState.results.filter(item => item.isCorrect).length;
+      const accuracy = `${Math.round((correctCount / total) * 100)}%`;
+
+      const payload = {
+        className,
+        seatNumber,
+        studentName,
+        score: gameState.score,
+        correctCount,
+        totalCount: total,
+        accuracy
+      };
+
+      uploadBtn.disabled = true;
+      uploadStatus.textContent = '上傳中...';
+      uploadStatus.className = 'upload-status';
+
+      try {
+        const response = await fetch(UPLOAD_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          uploadStatus.textContent = '成績上傳成功。';
+          uploadStatus.className = 'upload-status success-text';
+        } else {
+          uploadStatus.textContent = result.message || '上傳失敗。';
+          uploadStatus.className = 'upload-status error-text';
+        }
+      } catch (error) {
+        uploadStatus.textContent = '上傳失敗，請檢查網址或 Apps Script 部署設定。';
+        uploadStatus.className = 'upload-status error-text';
+      } finally {
+        uploadBtn.disabled = false;
+      }
+    }
+
+    function randomNumber(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    gameArea.addEventListener('mousemove', e => {
+      const rect = gameArea.getBoundingClientRect();
+      crosshair.style.display = 'block';
+      crosshair.style.left = `${e.clientX - rect.left}px`;
+      crosshair.style.top = `${e.clientY - rect.top}px`;
+    });
+
+    gameArea.addEventListener('mouseleave', () => {
+      crosshair.style.display = 'none';
+    });
+
+    gameArea.addEventListener('click', e => {
+      if (e.target === gameArea && !gameState.answered && !gameState.paused && gameState.currentQuestion) {
+        const fx = document.createElement('div');
+        fx.className = 'miss-effect';
+        fx.textContent = '落空';
+        const rect = gameArea.getBoundingClientRect();
+        fx.style.left = `${e.clientX - rect.left}px`;
+        fx.style.top = `${e.clientY - rect.top}px`;
+        gameArea.appendChild(fx);
+        setTimeout(() => fx.remove(), 800);
+      }
+    });
+
+    function pauseGame() {
+      if (!gameState.currentQuestion || gameState.answered) return;
+      gameState.paused = true;
+      pauseOverlay.classList.remove('hidden');
+    }
+
+    function resumeGame() {
+      gameState.paused = false;
+      pauseOverlay.classList.add('hidden');
+    }
+
+    startBtn.addEventListener('click', startGame);
+    overlayStartBtn.addEventListener('click', startGame);
+    pauseBtn.addEventListener('click', pauseGame);
+    resumeBtn.addEventListener('click', resumeGame);
+    uploadBtn.addEventListener('click', uploadScore);
+  </script>
+</body>
+</html>

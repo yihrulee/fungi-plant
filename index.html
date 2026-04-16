@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>真菌界與植物界大探險</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      color: #1f2937;
+      background: linear-gradient(180deg, #f4fbf1 0%, #eaf5ff 100%);
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 32px 20px 48px;
+    }
+
+    .hero-card {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid #e5e7eb;
+      border-radius: 28px;
+      box-shadow: 0 20px 50px rgba(37, 99, 80, 0.10);
+      overflow: hidden;
+    }
+
+    .hero-content {
+      padding: 40px 40px 28px;
+      text-align: center;
+    }
+
+    .course-tag {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: #ecfdf3;
+      color: #166534;
+      font-weight: 700;
+      font-size: 0.95rem;
+      border: 1px solid #bbf7d0;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: 3rem;
+      line-height: 1.2;
+      color: #163a2c;
+    }
+
+    .subtitle {
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: #2f5d50;
+      margin-bottom: 18px;
+    }
+
+    .description {
+      max-width: 820px;
+      margin: 0 auto 28px;
+      font-size: 1.05rem;
+      line-height: 1.9;
+      color: #374151;
+    }
+
+    .hero-image-wrap {
+      width: 100%;
+      padding: 0 40px 28px;
+    }
+
+    .hero-image {
+      display: block;
+      width: 100%;
+      height: 360px;
+      object-fit: cover;
+      border-radius: 24px;
+      border: 2px solid #dbe7d8;
+      background: #f8fafc;
+    }
+
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      padding: 0 40px 32px;
+    }
+
+    .feature-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 14px 16px;
+      background: #f8fbf7;
+      border: 1px solid #d9ead9;
+      border-radius: 18px;
+      text-align: left;
+    }
+
+    .feature-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #dcfce7;
+      color: #166534;
+      flex-shrink: 0;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .feature-text strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #1f2937;
+    }
+
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      padding: 0 40px 40px;
+    }
+
+    .start-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      background: linear-gradient(135deg, #2f855a, #2563eb);
+      color: white;
+      font-weight: 800;
+      font-size: 1.08rem;
+      padding: 16px 34px;
+      border-radius: 18px;
+      box-shadow: 0 14px 26px rgba(37, 99, 235, 0.18);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .start-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 30px rgba(37, 99, 235, 0.22);
+    }
+
+    @media (max-width: 900px) {
+      .hero-content {
+        padding: 32px 24px 20px;
+      }
+
+      .hero-image-wrap,
+      .feature-list,
+      .cta-row {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+
+      .feature-list {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-image {
+        height: 260px;
+      }
+
+      h1 {
+        font-size: 2.2rem;
+      }
+
+      .subtitle {
+        font-size: 1.05rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero-card">
+      <div class="hero-content">
+        <div class="course-tag">國中生物互動課程</div>
+        <h1>真菌界與植物界大探險</h1>
+        <div class="subtitle">從香菇、黴菌到蕨類、開花植物，一步一步完成分類挑戰。</div>
+        <div class="description">
+          歡迎來到生物分類探險站。這門課程會帶你認識真菌界與植物界的重要特徵，
+          分辨不同生物的構造、繁殖方式與生活環境。你需要在每一頁完成題目挑戰，
+          全部答對後，才能前往下一站。
+        </div>
+      </div>
+
+      <div class="hero-image-wrap">
+        <img src="index_cover.png" alt="真菌界與植物界課程首頁主視覺" class="hero-image">
+      </div>
+
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="feature-icon">🔍</div>
+          <div class="feature-text">
+            <strong>觀察與分類</strong>
+            從外形、構造與繁殖方式，學會分辨真菌與植物的差異。
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">🧩</div>
+          <div class="feature-text">
+            <strong>闖關式作答</strong>
+            每一頁都要完成題目並全部答對，才能解鎖下一頁。
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">🌿</div>
+          <div class="feature-text">
+            <strong>生活連結學習</strong>
+            從麵包發酵、食物發霉到蕨類觀察，讓生物知識更貼近生活。
+          </div>
+        </div>
+      </div>
+
+      <div class="cta-row">
+        <a class="start-btn" href="fungi01_types.html">進入課程</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

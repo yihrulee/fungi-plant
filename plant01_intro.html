@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>植物界總覽</title>
+  <style>
+    :root {
+      --bg1: #f7fff4;
+      --bg2: #edf7ec;
+      --card: #ffffff;
+      --ink: #203026;
+      --sub: #5a6f60;
+      --green: #2f7d4a;
+      --green-dark: #245f38;
+      --green-soft: #e9f7ec;
+      --green-border: #67b380;
+      --red: #b94a48;
+      --red-soft: #fdecec;
+      --red-border: #d97a76;
+      --line: #dbe7d9;
+      --brown: #8b6b4a;
+      --brown-soft: #f7f1e8;
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      color: var(--ink);
+      line-height: 1.75;
+      background:
+        radial-gradient(circle at top left, var(--bg1) 0%, var(--bg2) 40%, #e7f1e6 100%);
+    }
+
+    .container {
+      width: min(1080px, 92%);
+      margin: 0 auto;
+      padding: 28px 0 48px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(255,255,255,.97), rgba(236,247,235,.97));
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      padding: 28px 24px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.9rem, 3vw, 2.8rem);
+      color: var(--green-dark);
+    }
+
+    .hero p {
+      margin: 0 0 10px;
+      color: var(--sub);
+      font-size: 1.02rem;
+    }
+
+    .hero-note {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-left: 5px solid var(--green);
+      background: #f8fcf7;
+      border-radius: 12px;
+      font-weight: 700;
+      color: #365641;
+    }
+
+    .guide {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .guide-badge {
+      background: #eef7ed;
+      border: 1px solid #d8e6d6;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: .95rem;
+      color: #335840;
+      font-weight: 700;
+    }
+
+    .mission {
+      background: var(--card);
+      border: 2px solid #e2ece0;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px 18px;
+      margin-bottom: 22px;
+      transition: .2s ease;
+    }
+
+    .mission.correct {
+      background: var(--green-soft);
+      border-color: var(--green-border);
+    }
+
+    .mission.incorrect {
+      background: var(--red-soft);
+      border-color: var(--red-border);
+    }
+
+    .mission-tag {
+      display: inline-block;
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: #eef7ed;
+      color: var(--green);
+      font-size: .9rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .mission h2 {
+      margin: 0 0 8px;
+      font-size: 1.34rem;
+      color: var(--green-dark);
+    }
+
+    .mission .lead {
+      margin: 0;
+      color: var(--sub);
+    }
+
+    .concept-box {
+      margin: 14px 0 18px;
+      padding: 14px 16px;
+      background: #f8fcf7;
+      border: 1px solid #dce9db;
+      border-radius: 14px;
+    }
+
+    .concept-box strong {
+      color: var(--green-dark);
+    }
+
+    .task-box {
+      background: #fff;
+      border: 1px solid #e5ede3;
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .task-title {
+      margin: 0 0 12px;
+      font-weight: 800;
+      color: #2d5e3b;
+      font-size: 1.05rem;
+    }
+
+    .task-sub {
+      margin: -4px 0 12px;
+      color: var(--sub);
+      font-size: .96rem;
+    }
+
+    .radio-list,
+    .check-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    label.option {
+      display: block;
+      padding: 13px 14px;
+      border: 2px solid #dbe7d9;
+      border-radius: 14px;
+      background: #fcfffb;
+      cursor: pointer;
+      transition: .18s ease;
+    }
+
+    label.option:hover {
+      border-color: #9ec39f;
+      transform: translateY(-1px);
+    }
+
+    label.option input {
+      margin-right: 10px;
+      transform: scale(1.08);
+    }
+
+    .match-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .match-row {
+      display: grid;
+      grid-template-columns: minmax(160px, 1fr) minmax(220px, 1fr);
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      background: #fbfef9;
+      border: 1px solid #e1ebdf;
+      border-radius: 14px;
+    }
+
+    .match-row .left {
+      font-weight: 800;
+      color: #2d5e3b;
+    }
+
+    .timeline-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 12px;
+    }
+
+    .timeline-grid label {
+      display: block;
+      font-weight: 800;
+      color: #2d5e3b;
+      margin-bottom: 6px;
+    }
+
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 2px solid #d8e4d6;
+      background: #fff;
+      font-size: 1rem;
+      color: var(--ink);
+    }
+
+    .mini-scene {
+      margin: 12px 0 14px;
+      padding: 14px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #f9fcf7, #f2f9f0);
+      border: 1px solid #dde8db;
+    }
+
+    .scene-title {
+      margin: 0 0 8px;
+      font-weight: 800;
+      color: #2d5e3b;
+    }
+
+    .scene-text {
+      margin: 0;
+      color: var(--sub);
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    button,
+    .nav-btn {
+      appearance: none;
+      border: none;
+      border-radius: 999px;
+      padding: 11px 18px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+      transition: .18s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .check-btn {
+      background: var(--green-dark);
+      color: #fff;
+    }
+
+    .check-btn:disabled {
+      background: #aab8ad;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .retry-btn {
+      background: var(--brown);
+      color: #fff;
+      display: none;
+    }
+
+    .feedback {
+      display: none;
+      margin-top: 14px;
+      padding: 13px 15px;
+      border-radius: 14px;
+      font-weight: 700;
+    }
+
+    .feedback.show {
+      display: block;
+    }
+
+    .feedback.success {
+      background: rgba(76, 175, 80, .12);
+      color: #255c2c;
+    }
+
+    .feedback.error {
+      background: rgba(217, 83, 79, .12);
+      color: #8b2f2c;
+    }
+
+    footer.page-nav {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .nav-btn {
+      border: 2px solid #d9cbb8;
+      background: var(--brown-soft);
+      color: #534b40;
+    }
+
+    .nav-btn.next {
+      background: var(--green-dark);
+      border-color: var(--green-dark);
+      color: #fff;
+    }
+
+    .nav-btn.disabled {
+      opacity: .45;
+      pointer-events: none;
+      filter: grayscale(.25);
+    }
+
+    .unlock-note {
+      width: 100%;
+      color: var(--sub);
+      font-size: .96rem;
+    }
+
+    .kw-green {
+      color: #2f7d4a;
+      font-weight: 800;
+    }
+
+    .kw-blue {
+      color: #2b6cb0;
+      font-weight: 800;
+    }
+
+    .kw-orange {
+      color: #c56a1a;
+      font-weight: 800;
+    }
+
+    .kw-red {
+      color: #b94a48;
+      font-weight: 800;
+    }
+
+    @media (max-width: 720px) {
+      .match-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <h1>植物界總覽</h1>
+      <p>
+        準備出發！先來認識植物界的基本特徵與分類。
+      </p>
+      <p>
+        你會先認識<span class="kw-green">植物的共同特徵</span>，
+        再知道植物界的大致分類，最後把<span class="kw-blue">維管束</span>和植物演化順序連起來。
+      </p>
+      <div class="hero-note">
+        請完成全部任務。只有當本頁所有任務都答對時，頁尾的「下一頁 →」才會解鎖。
+      </div>
+      <div class="guide">
+        <div class="guide-badge">先看概念，再做任務</div>
+        <div class="guide-badge">答錯可重做</div>
+        <div class="guide-badge">全部答對才能前往下一頁</div>
+      </div>
+    </section>
+
+    <section class="mission" id="q1" data-type="single">
+      <div class="mission-tag">任務一</div>
+      <h2>先認識植物的共同特徵</h2>
+      <p class="lead">
+        植物大多是<span class="kw-green">多細胞生物</span>，
+        具有<span class="kw-blue">細胞壁</span>，
+        也大多含有<span class="kw-blue">葉綠體</span>，
+        可以行<span class="kw-orange">光合作用</span>。
+      </p>
+
+      <div class="concept-box">
+        <strong>小知識：</strong>
+        植物和<span class="kw-red">真菌</span>不一樣。
+        植物大多能利用<span class="kw-blue">葉綠體</span>進行
+        <span class="kw-orange">光合作用</span>；
+        <span class="kw-red">真菌沒有葉綠體</span>，不能自己製造養分。
+      </div>
+
+      <div class="task-box">
+        <p class="task-title">互動任務：植物守門員的第一個問題</p>
+        <p class="task-sub">哪一句最符合植物的特徵？</p>
+
+        <div class="radio-list" data-randomize="true">
+          <label class="option">
+            <input type="radio" name="q1" value="a">
+            植物大多有葉綠體，能行光合作用。
+          </label>
+          <label class="option">
+            <input type="radio" name="q1" value="b">
+            植物一定要攝食其他生物才能獲得養分。
+          </label>
+          <label class="option">
+            <input type="radio" name="q1" value="c">
+            植物沒有細胞壁。
+          </label>
+        </div>
+
+        <div class="controls">
+          <button class="check-btn" disabled>檢查答案</button>
+          <button class="retry-btn" type="button">重做本題</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <section class="mission" id="q2" data-type="match">
+      <div class="mission-tag">任務二</div>
+      <h2>植物類群與維管束</h2>
+      <p class="lead">
+        植物可分成<span class="kw-green">蘚苔植物</span>、
+        <span class="kw-green">蕨類植物</span>和
+        <span class="kw-green">種子植物</span>。
+        其中<span class="kw-green">蘚苔植物</span>沒有
+        <span class="kw-blue">維管束</span>；
+        <span class="kw-green">蕨類植物</span>和
+        <span class="kw-green">種子植物</span>都有
+        <span class="kw-blue">維管束</span>。
+      </p>
+
+      <div class="concept-box">
+        <strong>小知識：</strong>
+        <span class="kw-blue">維管束</span>就像植物體內的運輸系統，
+        可以幫助<span class="kw-orange">水分</span>和
+        <span class="kw-orange">養分</span>更快移動。
+      </div>
+
+      <div class="task-box">
+        <p class="task-title">互動任務：幫植物貼上維管束標籤</p>
+        <p class="task-sub">請用下拉選單替每一類植物選出正確標籤。</p>
+
+        <div class="match-grid">
+          <div class="match-row">
+            <div class="left">蘚苔植物</div>
+            <div>
+              <select data-answer="no-vascular" class="match-select"></select>
+            </div>
+          </div>
+          <div class="match-row">
+            <div class="left">蕨類植物</div>
+            <div>
+              <select data-answer="vascular" class="match-select"></select>
+            </div>
+          </div>
+          <div class="match-row">
+            <div class="left">種子植物</div>
+            <div>
+              <select data-answer="vascular" class="match-select"></select>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="check-btn" disabled>檢查答案</button>
+          <button class="retry-btn" type="button">重做本題</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <section class="mission" id="q3" data-type="sequence">
+      <div class="mission-tag">任務三</div>
+      <h2>植物的出現與演化的簡單順序</h2>
+      <p class="lead">
+        植物的祖先和<span class="kw-green">藻類</span>有關。
+        登上陸地後，植物逐漸演化出更能適應陸地生活的構造。
+      </p>
+
+      <div class="concept-box">
+        <strong>小知識：</strong>
+        可以先記成：
+        <span class="kw-green">水中的藻類</span>
+        <span class="kw-red">（藻類是植物的祖先，藻類不是植物喔）</span>
+        →
+        <span class="kw-green">蘚苔植物</span>
+        →
+        <span class="kw-green">蕨類植物</span>
+        →
+        <span class="kw-green">種子植物</span>。
+      </div>
+
+      <div class="task-box">
+        <p class="task-title">互動任務：修復植物歷史展示牌</p>
+        <p class="task-sub">植物學家的展示順序被打亂了，請你把它排回正確位置。</p>
+
+        <div class="mini-scene">
+          <p class="scene-title">情境提示</p>
+          <p class="scene-text">
+            先從最早和植物祖先有關的生物開始，再往後排到更能適應陸地生活的植物類群。
+          </p>
+        </div>
+
+        <div class="timeline-grid">
+          <div>
+            <label for="q3s1">第 1 個</label>
+            <select id="q3s1" class="seq-select"></select>
+          </div>
+          <div>
+            <label for="q3s2">第 2 個</label>
+            <select id="q3s2" class="seq-select"></select>
+          </div>
+          <div>
+            <label for="q3s3">第 3 個</label>
+            <select id="q3s3" class="seq-select"></select>
+          </div>
+          <div>
+            <label for="q3s4">第 4 個</label>
+            <select id="q3s4" class="seq-select"></select>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="check-btn" disabled>檢查答案</button>
+          <button class="retry-btn" type="button">重做本題</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <section class="mission" id="q4" data-type="multi">
+      <div class="mission-tag">任務四</div>
+      <h2>維管束和繁殖方式，是後來的重要發展</h2>
+      <p class="lead">
+        植物適應陸地生活後，演化出不同層次的構造。
+        <span class="kw-blue">維管束</span>能加快運輸速度，
+        而<span class="kw-green">種子植物</span>則能靠<span class="kw-orange">種子</span>繁殖，
+        相較於<span class="kw-orange">種子</span>繁殖，
+        <span class="kw-green">蘚苔植物</span>跟<span class="kw-green">蕨類植物</span>則是利用<span class="kw-orange">孢子</span>繁殖。
+      </p>
+
+      <div class="concept-box">
+        <strong>小知識：</strong>
+        <span class="kw-green">蘚苔植物</span>沒有<span class="kw-blue">維管束</span>；
+        <span class="kw-green">蕨類植物</span>有<span class="kw-blue">維管束</span>，
+        但利用<span class="kw-orange">孢子</span>繁殖；
+        <span class="kw-green">種子植物</span>有<span class="kw-blue">維管束</span>，
+        也以<span class="kw-orange">種子</span>繁殖。
+      </div>
+
+      <div class="task-box">
+        <p class="task-title">互動任務：真假觀察站</p>
+        <p class="task-sub">請勾選正確的敘述。</p>
+
+        <div class="check-list" data-randomize="true">
+          <label class="option">
+            <input type="checkbox" value="a">
+            蘚苔植物沒有維管束。
+          </label>
+          <label class="option">
+            <input type="checkbox" value="b">
+            蕨類植物和種子植物都有維管束。
+          </label>
+          <label class="option">
+            <input type="checkbox" value="c">
+            所有植物都用種子繁殖。
+          </label>
+          <label class="option">
+            <input type="checkbox" value="d">
+            種子植物以種子繁殖。
+          </label>
+        </div>
+
+        <div class="controls">
+          <button class="check-btn" disabled>檢查答案</button>
+          <button class="retry-btn" type="button">重做本題</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <footer class="page-nav">
+      <a class="nav-btn" href="fungi04_mushroom.html">← 上一頁</a>
+      <a class="nav-btn next disabled" id="nextBtn" href="./plant02_bryophyte.html" aria-disabled="true">下一頁 →</a>
+      <div class="unlock-note" id="unlockMessage">請先把本頁所有任務都答對，才可前往下一頁。</div>
+    </footer>
+  </div>
+
+  <script>
+    const questionState = {
+      q1: false,
+      q2: false,
+      q3: false,
+      q4: false
+    };
+
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function randomizeOptionLabels(container) {
+      const labels = Array.from(container.querySelectorAll("label.option"));
+      const shuffled = shuffleArray(labels);
+      shuffled.forEach(label => container.appendChild(label));
+    }
+
+    function buildSelectOptions(select, items, placeholder = "請選擇") {
+      select.innerHTML = "";
+      const first = document.createElement("option");
+      first.value = "";
+      first.textContent = placeholder;
+      select.appendChild(first);
+
+      shuffleArray(items).forEach(item => {
+        const opt = document.createElement("option");
+        opt.value = item.value;
+        opt.textContent = item.label;
+        select.appendChild(opt);
+      });
+    }
+
+    function updateNextButton() {
+      const nextBtn = document.getElementById("nextBtn");
+      const unlockMessage = document.getElementById("unlockMessage");
+      const allCorrect = Object.values(questionState).every(Boolean);
+
+      if (allCorrect) {
+        nextBtn.classList.remove("disabled");
+        nextBtn.setAttribute("aria-disabled", "false");
+        unlockMessage.textContent = "全部答對，已解鎖下一頁。";
+      } else {
+        nextBtn.classList.add("disabled");
+        nextBtn.setAttribute("aria-disabled", "true");
+        unlockMessage.textContent = "請先把本頁所有任務都答對，才可前往下一頁。";
+      }
+    }
+
+    function lockInputs(section, locked) {
+      section.querySelectorAll("input, select").forEach(el => {
+        el.disabled = locked;
+      });
+    }
+
+    function setResult(section, isCorrect, msg) {
+      const feedback = section.querySelector(".feedback");
+      const retryBtn = section.querySelector(".retry-btn");
+      const checkBtn = section.querySelector(".check-btn");
+
+      section.classList.remove("correct", "incorrect");
+      section.classList.add(isCorrect ? "correct" : "incorrect");
+
+      feedback.className = "feedback show " + (isCorrect ? "success" : "error");
+      feedback.innerHTML = msg;
+
+      lockInputs(section, true);
+      checkBtn.disabled = true;
+      retryBtn.style.display = isCorrect ? "none" : "inline-flex";
+    }
+
+    function resetSection(section) {
+      section.classList.remove("correct", "incorrect");
+
+      const feedback = section.querySelector(".feedback");
+      const retryBtn = section.querySelector(".retry-btn");
+      const checkBtn = section.querySelector(".check-btn");
+
+      feedback.className = "feedback";
+      feedback.innerHTML = "";
+      retryBtn.style.display = "none";
+
+      lockInputs(section, false);
+
+      if (section.dataset.type === "single") {
+        section.querySelectorAll('input[type="radio"]').forEach(input => {
+          input.checked = false;
+        });
+      }
+
+      if (section.dataset.type === "multi") {
+        section.querySelectorAll('input[type="checkbox"]').forEach(input => {
+          input.checked = false;
+        });
+      }
+
+      if (section.dataset.type === "match") {
+        initMatchQuestion(section, true);
+      }
+
+      if (section.dataset.type === "sequence") {
+        initSequenceQuestion(section, true);
+      }
+
+      checkBtn.disabled = true;
+      questionState[section.id] = false;
+      updateNextButton();
+    }
+
+    function initSingleQuestion(section, correctValue, successMsg, errorMsg) {
+      const radios = section.querySelectorAll('input[type="radio"]');
+      const checkBtn = section.querySelector(".check-btn");
+      const retryBtn = section.querySelector(".retry-btn");
+
+      radios.forEach(radio => {
+        radio.addEventListener("change", () => {
+          const hasAnswer = !!section.querySelector('input[type="radio"]:checked');
+          checkBtn.disabled = !hasAnswer;
+        });
+      });
+
+      checkBtn.addEventListener("click", () => {
+        const selected = section.querySelector('input[type="radio"]:checked');
+        if (!selected) return;
+
+        const ok = selected.value === correctValue;
+        questionState[section.id] = ok;
+        setResult(section, ok, ok ? successMsg : errorMsg);
+        updateNextButton();
+      });
+
+      retryBtn.addEventListener("click", () => resetSection(section));
+    }
+
+    function initMultiQuestion(section, correctValues, successMsg, errorMsg) {
+      const checks = section.querySelectorAll('input[type="checkbox"]');
+      const checkBtn = section.querySelector(".check-btn");
+      const retryBtn = section.querySelector(".retry-btn");
+
+      function refresh() {
+        const hasAnswer = Array.from(checks).some(c => c.checked);
+        checkBtn.disabled = !hasAnswer;
+      }
+
+      checks.forEach(chk => chk.addEventListener("change", refresh));
+
+      checkBtn.addEventListener("click", () => {
+        const selected = Array.from(checks)
+          .filter(c => c.checked)
+          .map(c => c.value)
+          .sort();
+
+        const answer = [...correctValues].sort();
+        const ok = selected.length === answer.length && selected.every((v, i) => v === answer[i]);
+
+        questionState[section.id] = ok;
+        setResult(section, ok, ok ? successMsg : errorMsg);
+        updateNextButton();
+      });
+
+      retryBtn.addEventListener("click", () => resetSection(section));
+    }
+
+    const matchOptionPool = [
+      { value: "no-vascular", label: "沒有維管束" },
+      { value: "vascular", label: "有維管束" }
+    ];
+
+    function initMatchQuestion(section, rebuildOnly = false) {
+      const selects = section.querySelectorAll(".match-select");
+      const checkBtn = section.querySelector(".check-btn");
+      const retryBtn = section.querySelector(".retry-btn");
+
+      selects.forEach(select => {
+        buildSelectOptions(select, matchOptionPool);
+        select.addEventListener("change", () => {
+          const allFilled = Array.from(selects).every(s => s.value !== "");
+          checkBtn.disabled = !allFilled;
+        });
+      });
+
+      if (rebuildOnly) return;
+
+      checkBtn.addEventListener("click", () => {
+        const ok = Array.from(selects).every(select => select.value === select.dataset.answer);
+        questionState[section.id] = ok;
+        setResult(
+          section,
+          ok,
+          ok
+            ? "答對了！蘚苔植物沒有維管束；蕨類植物和種子植物都有維管束。"
+            : "這題還不對。請再想想：哪一類植物沒有維管束？哪兩類已經有體內運輸系統？"
+        );
+        updateNextButton();
+      });
+
+      retryBtn.addEventListener("click", () => resetSection(section));
+    }
+
+    const sequencePool = [
+      { value: "algae", label: "水中的藻類（藻類是植物的祖先，藻類不是植物喔）" },
+      { value: "bryophyte", label: "蘚苔植物" },
+      { value: "fern", label: "蕨類植物" },
+      { value: "seedplant", label: "種子植物" }
+    ];
+
+    function initSequenceQuestion(section, rebuildOnly = false) {
+      const selects = section.querySelectorAll(".seq-select");
+      const checkBtn = section.querySelector(".check-btn");
+      const retryBtn = section.querySelector(".retry-btn");
+      const answer = ["algae", "bryophyte", "fern", "seedplant"];
+
+      selects.forEach(select => {
+        buildSelectOptions(select, sequencePool);
+        select.addEventListener("change", () => {
+          const allFilled = Array.from(selects).every(s => s.value !== "");
+          checkBtn.disabled = !allFilled;
+        });
+      });
+
+      if (rebuildOnly) return;
+
+      checkBtn.addEventListener("click", () => {
+        const values = Array.from(selects).map(s => s.value);
+        const ok = values.every((v, i) => v === answer[i]);
+
+        questionState[section.id] = ok;
+        setResult(
+          section,
+          ok,
+          ok
+            ? "答對了！可以先記住這條大方向：水中的藻類（藻類是植物的祖先，藻類不是植物）→ 蘚苔植物 → 蕨類植物 → 種子植物。"
+            : "順序不正確。請重新想想：最前面要先放和植物祖先有關的水中藻類，之後才是逐漸適應陸地的植物類群。"
+        );
+        updateNextButton();
+      });
+
+      retryBtn.addEventListener("click", () => resetSection(section));
+    }
+
+    document.querySelectorAll('[data-randomize="true"]').forEach(container => {
+      randomizeOptionLabels(container);
+    });
+
+    initSingleQuestion(
+      document.getElementById("q1"),
+      "a",
+      "答對了！植物大多具有葉綠體，能行光合作用，這是真菌沒有的特徵。",
+      "再想想看。植物界和真菌界的重要差別之一，就是植物大多能行光合作用。"
+    );
+
+    initMatchQuestion(document.getElementById("q2"));
+    initSequenceQuestion(document.getElementById("q3"));
+
+    initMultiQuestion(
+      document.getElementById("q4"),
+      ["a", "b", "d"],
+      "答對了！蘚苔植物沒有維管束；蕨類植物和種子植物都有維管束，而種子植物以種子繁殖。",
+      "有些選項勾錯了。請再想想：並不是所有植物都用種子繁殖。"
+    );
+
+    updateNextButton();
+  </script>
+</body>
+</html>
