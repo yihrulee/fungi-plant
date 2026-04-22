@@ -381,6 +381,21 @@
       color: #534b40;
     }
 
+    .page-nav .nav-btn.locked {
+      background: #ececec;
+      border-color: #d4d4d4;
+      color: #8a8a8a;
+      cursor: not-allowed;
+      pointer-events: auto;
+      opacity: .95;
+    }
+
+    .page-nav .nav-btn.unlocked {
+      background: var(--green-dark);
+      border-color: #1f4e2f;
+      color: #fff;
+    }
+
     @media (max-width: 900px) {
       .game-header {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -505,7 +520,7 @@
 
     <footer class="page-nav">
       <a class="nav-btn" href="plant05_angiosperm.html">← 上一頁</a>
-      <a class="nav-btn" href="index.html">回首頁</a>
+      <a class="nav-btn locked" id="heroChallengeBtn" href="javascript:void(0)" aria-disabled="true" title="成功上傳成績後才可進入">成功上傳成績後再解鎖｜進入英雄挑戰賽</a>
     </footer>
   </div>
 
@@ -605,6 +620,7 @@
     const classNameInput = document.getElementById('className');
     const seatNumberInput = document.getElementById('seatNumber');
     const studentNameInput = document.getElementById('studentName');
+    const heroChallengeBtn = document.getElementById('heroChallengeBtn');
 
     const currentQuestionEl = document.getElementById('currentQuestion');
     const scoreValueEl = document.getElementById('scoreValue');
@@ -655,6 +671,7 @@
       classNameInput.value = '';
       seatNumberInput.value = '';
       studentNameInput.value = '';
+      lockHeroChallenge();
     }
 
     function clearTimers() {
@@ -865,6 +882,25 @@
       });
     }
 
+
+    function lockHeroChallenge() {
+      heroChallengeBtn.classList.add('locked');
+      heroChallengeBtn.classList.remove('unlocked');
+      heroChallengeBtn.setAttribute('href', 'javascript:void(0)');
+      heroChallengeBtn.setAttribute('aria-disabled', 'true');
+      heroChallengeBtn.setAttribute('title', '成功上傳成績後才可進入');
+      heroChallengeBtn.textContent = '成功上傳成績後再解鎖｜進入英雄挑戰賽';
+    }
+
+    function unlockHeroChallenge() {
+      heroChallengeBtn.classList.remove('locked');
+      heroChallengeBtn.classList.add('unlocked');
+      heroChallengeBtn.setAttribute('href', 'play_home_final.html');
+      heroChallengeBtn.setAttribute('aria-disabled', 'false');
+      heroChallengeBtn.setAttribute('title', '已解鎖，可進入英雄挑戰賽');
+      heroChallengeBtn.textContent = '已解鎖｜進入英雄挑戰賽';
+    }
+
     async function uploadScore() {
       const className = classNameInput.value.trim();
       const seatNumber = seatNumberInput.value.trim();
@@ -906,8 +942,9 @@
         const result = await response.json();
 
         if (result.success) {
-          uploadStatus.textContent = '成績上傳成功。';
+          uploadStatus.textContent = '成績上傳成功，已解鎖英雄挑戰賽。';
           uploadStatus.className = 'upload-status success-text';
+          unlockHeroChallenge();
         } else {
           uploadStatus.textContent = result.message || '上傳失敗。';
           uploadStatus.className = 'upload-status error-text';
@@ -964,6 +1001,13 @@
     pauseBtn.addEventListener('click', pauseGame);
     resumeBtn.addEventListener('click', resumeGame);
     uploadBtn.addEventListener('click', uploadScore);
+    heroChallengeBtn.addEventListener('click', e => {
+      if (heroChallengeBtn.classList.contains('locked')) {
+        e.preventDefault();
+        uploadStatus.textContent = '請先成功上傳成績，再進入英雄挑戰賽。';
+        uploadStatus.className = 'upload-status error-text';
+      }
+    });
   </script>
 </body>
 </html>
